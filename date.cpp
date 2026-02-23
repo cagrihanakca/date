@@ -31,4 +31,18 @@ namespace pro
     {
         return m_year;
     }
+
+    int Date::GetYearDay() const
+    {
+        int yearDay{ m_day };
+        for (int i{ 1 }; i < m_mon; ++i) {
+            yearDay += monthDays[IsLeap(m_year)][i];
+        }
+        return yearDay;
+    }
+
+    bool Date::IsLeap(int year)
+    {
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    }
 }
