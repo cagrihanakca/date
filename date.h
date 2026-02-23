@@ -3,7 +3,9 @@
 
 namespace pro
 {
+    class Date {
 
+    };
 }
 
 #endif // DATE_H
