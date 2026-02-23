@@ -12,7 +12,7 @@ namespace pro
             SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
         };
 
-        Date();
+        Date() = default;
         Date(int day, int mon, int year);
         explicit Date(const char *p);
         explicit Date(std::time_t timer);
@@ -48,6 +48,10 @@ namespace pro
 
         static constexpr bool IsLeap(int year);
         [[nodiscard]] static Date RandomDate();
+    private:
+        int m_day{ 1 };
+        int m_mon{ 1 };
+        int m_year{ yearBase };
     };
 
     [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs);
