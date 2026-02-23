@@ -26,4 +26,9 @@ namespace pro
     {
         return m_mon;
     }
+
+    int Date::GetYear() const
+    {
+        return m_year;
+    }
 }
