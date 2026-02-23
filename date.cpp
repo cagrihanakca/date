@@ -21,4 +21,9 @@ namespace pro
     {
         return m_day;
     }
+
+    int Date::GetMonth() const
+    {
+        return m_mon;
+    }
 }
