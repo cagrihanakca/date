@@ -16,4 +16,9 @@ namespace pro
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
     }
+
+    int Date::GetMonthDay() const
+    {
+        return m_day;
+    }
 }
