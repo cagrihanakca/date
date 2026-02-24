@@ -52,6 +52,12 @@ namespace pro
         return *this;
     }
 
+    Date &Date::SetMonth(int mon)
+    {
+        m_mon = mon;
+        return *this;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
