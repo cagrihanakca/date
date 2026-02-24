@@ -64,6 +64,14 @@ namespace pro
         return *this;
     }
 
+    Date &Date::Set(int day, int mon, int year)
+    {
+        m_day = day;
+        m_mon = mon;
+        m_year = year;
+        return *this;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
