@@ -136,6 +136,11 @@ namespace pro
         return !(rhs < lhs);
     }
 
+    bool operator>(const Date &lhs, const Date &rhs)
+    {
+        return rhs < lhs;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
