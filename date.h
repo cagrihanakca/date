@@ -30,6 +30,7 @@ namespace pro
         Date &Set(int day, int mon, int year);
 
         [[nodiscard]] Date operator-(int day) const;
+        friend int operator-(const Date &date1, const Date &date2);
 
         Date &operator+=(int day);
         Date &operator-=(int day);
@@ -67,7 +68,6 @@ namespace pro
     [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs);
     [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs);
 
-    [[nodiscard]] int operator-(const Date &date1, const Date &date2);
     [[nodiscard]] Date operator+(const Date &date, int n);
     [[nodiscard]] Date operator+(int n, const Date &date);
 

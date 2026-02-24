@@ -77,6 +77,11 @@ namespace pro
         return GetDateFromTotalDays(GetTotalDays() - day);
     }
 
+    int operator-(const Date &date1, const Date &date2)
+    {
+        return std::abs(date1.GetTotalDays() - date2.GetTotalDays());
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
