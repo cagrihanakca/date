@@ -126,6 +126,11 @@ namespace pro
         return ret;
     }
 
+    bool operator<(const Date &lhs, const Date &rhs)
+    {
+        return lhs.GetTotalDays() < rhs.GetTotalDays();
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
