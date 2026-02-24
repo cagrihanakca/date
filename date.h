@@ -30,6 +30,7 @@ namespace pro
         Date &Set(int day, int mon, int year);
 
         [[nodiscard]] Date operator-(int day) const;
+
         Date &operator+=(int day);
         Date &operator-=(int day);
         Date &operator++();
@@ -54,6 +55,7 @@ namespace pro
         int m_mon{ 1 };
         int m_year{ yearBase };
         int GetTotalDays() const;
+        [[nodiscard]] static Date GetDateFromTotalDays(int totalDays);
         static constexpr std::array<std::array<int, 13>, 2> monthDays{{
             { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
             { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }

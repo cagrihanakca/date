@@ -72,6 +72,11 @@ namespace pro
         return *this;
     }
 
+    Date Date::operator-(int day) const
+    {
+        return GetDateFromTotalDays(GetTotalDays() - day);
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
@@ -85,5 +90,22 @@ namespace pro
         }
         totalDays += GetYearDay();
         return totalDays;
+    }
+
+    Date Date::GetDateFromTotalDays(int totalDays)
+    {
+        int year{ yearBase };
+        while (totalDays >= (IsLeap(year) ? 366 : 365)) {
+            totalDays -= (IsLeap(year) ? 366 : 365);
+            ++year;
+        }
+
+        int mon{ 1 };
+        while (totalDays >= monthDays[IsLeap(year)][mon]) {
+            totalDays -= monthDays[IsLeap(year)][mon];
+            ++mon;
+        }
+
+        return { totalDays, mon, year };
     }
 }
