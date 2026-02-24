@@ -46,6 +46,12 @@ namespace pro
         return static_cast<Date::Weekday>(GetTotalDays() % 7 + 1);
     }
 
+    Date &Date::SetMonthDay(int day)
+    {
+        m_day = day;
+        return *this;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
