@@ -82,6 +82,11 @@ namespace pro
         return std::abs(date1.GetTotalDays() - date2.GetTotalDays());
     }
 
+    Date operator+(const Date &date, int n)
+    {
+        return Date::GetDateFromTotalDays(date.GetTotalDays() + n);
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);

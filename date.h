@@ -31,6 +31,7 @@ namespace pro
 
         [[nodiscard]] Date operator-(int day) const;
         friend int operator-(const Date &date1, const Date &date2);
+        friend Date operator+(const Date &date, int n);
 
         Date &operator+=(int day);
         Date &operator-=(int day);
@@ -68,7 +69,6 @@ namespace pro
     [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs);
     [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs);
 
-    [[nodiscard]] Date operator+(const Date &date, int n);
     [[nodiscard]] Date operator+(int n, const Date &date);
 
     Date::Weekday &operator++(Date::Weekday &wd);
