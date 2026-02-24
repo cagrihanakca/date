@@ -87,6 +87,11 @@ namespace pro
         return Date::GetDateFromTotalDays(date.GetTotalDays() + n);
     }
 
+    Date operator+(int n, const Date &date)
+    {
+        return date + n;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
