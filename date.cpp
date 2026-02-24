@@ -102,6 +102,30 @@ namespace pro
         return *this += -day;
     }
 
+    Date &Date::operator++()
+    {
+        return *this += 1;
+    }
+
+    Date Date::operator++(int)
+    {
+        auto ret{ *this };
+        ++*this;
+        return ret;
+    }
+
+    Date &Date::operator--()
+    {
+        return *this -= 1;
+    }
+
+    Date Date::operator--(int)
+    {
+        auto ret{ *this };
+        --*this;
+        return ret;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
