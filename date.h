@@ -65,12 +65,12 @@ namespace pro
         }};
     };
 
+    [[nodiscard]] Date operator+(int n, const Date &date);
+
     [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs);
     [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs);
     [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs);
     [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs);
-
-    [[nodiscard]] Date operator+(int n, const Date &date);
 
     Date::Weekday &operator++(Date::Weekday &wd);
     Date::Weekday operator++(Date::Weekday &wd, int);
