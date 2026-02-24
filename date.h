@@ -35,6 +35,7 @@ namespace pro
 
         Date &operator+=(int day);
         Date &operator-=(int day);
+
         Date &operator++();
         Date operator++(int);
         Date &operator--();
