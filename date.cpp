@@ -97,6 +97,11 @@ namespace pro
         return *this = GetDateFromTotalDays(GetTotalDays() + day);
     }
 
+    Date &Date::operator-=(int day)
+    {
+        return *this += -day;
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
