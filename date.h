@@ -10,7 +10,7 @@ namespace pro
     class Date {
     public:
         enum class Weekday {
-            SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+            SUNDAY = 1, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
         };
 
         Date() = default;
@@ -53,6 +53,7 @@ namespace pro
         int m_day{ 1 };
         int m_mon{ 1 };
         int m_year{ yearBase };
+        int GetTotalDays() const;
         static constexpr std::array<std::array<int, 13>, 2> monthDays{{
             { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
             { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }

@@ -41,8 +41,23 @@ namespace pro
         return yearDay;
     }
 
+    Date::Weekday Date::GetWeekDay() const
+    {
+        return static_cast<Date::Weekday>(GetTotalDays() % 7 + 1);
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    }
+
+    int Date::GetTotalDays() const
+    {
+        int totalDays{};
+        for (int i{ yearBase }; i < m_year; ++i) {
+            totalDays += IsLeap(i) ? 366 : 365;
+        }
+        totalDays += GetYearDay();
+        return totalDays;
     }
 }
