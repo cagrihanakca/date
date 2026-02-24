@@ -2,6 +2,8 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <istream>
+#include <string>
 
 namespace pro
 {
@@ -154,6 +156,18 @@ namespace pro
     bool operator!=(const Date &lhs, const Date &rhs)
     {
         return !(lhs == rhs);
+    }
+
+    std::istream &operator>>(std::istream &is, Date &date)
+    {
+        std::string temp;
+        is >> temp;
+
+        date.m_day = std::atoi(temp.c_str());
+        date.m_mon = std::atoi(temp.c_str() + 3);
+        date.m_year = std::atoi(temp.c_str() + 6);
+
+        return is;
     }
 
     bool Date::IsLeap(int year)
