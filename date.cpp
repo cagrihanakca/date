@@ -259,4 +259,10 @@ namespace pro
         ++wd;
         return ret;
     }
+
+    Date::Weekday &operator--(Date::Weekday &wd)
+    {
+        return wd = (wd == Date::Weekday::SUNDAY) ?
+            Date::Weekday::SATURDAY : static_cast<Date::Weekday>(static_cast<int>(wd) - 1);
+    }
 }
