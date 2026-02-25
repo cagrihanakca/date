@@ -13,6 +13,8 @@ namespace pro
 
     Date::Date(const char *p) : m_day{ std::atoi(p) }, m_mon{ std::atoi(p + 3) }, m_year{ std::atoi(p + 6) } {}
 
+    Date::Date(const std::string &date) : Date{ date.c_str() } {}
+
     Date::Date(std::time_t timer)
     {
         const auto *tp{ std::localtime(&timer) };
