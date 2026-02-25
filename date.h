@@ -58,12 +58,12 @@ namespace pro
         static constexpr int randomMinYear{ 1900 };
         static constexpr int randomMaxYear{ 2026 };
 
+        [[nodiscard]] static Date CurrentDate();
         [[nodiscard]] static int CurrentMonthDay();
         [[nodiscard]] static int CurrentMonth();
         [[nodiscard]] static int CurrentYear();
         [[nodiscard]] static int CurrentYearDay();
         [[nodiscard]] static Weekday CurrentWeekday();
-        [[nodiscard]] static Date CurrentDate();
 
         [[nodiscard]] static bool IsLeap(int year);
         [[nodiscard]] static Date RandomDate();

@@ -185,6 +185,11 @@ namespace pro
             << Date::days[static_cast<std::size_t>(date.GetWeekDay())];
     }
 
+    Date Date::CurrentDate()
+    {
+        return Date{ std::time(nullptr) };
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
