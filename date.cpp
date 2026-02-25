@@ -187,7 +187,7 @@ namespace pro
     {
         static std::mt19937 eng{ std::random_device{}() };
         std::uniform_int_distribution dayDist{ 1, 31 };
-        std::uniform_int_distribution monDist{ JANUARY, DECEMBER };
+        std::uniform_int_distribution monDist{ 1, 12 };
         std::uniform_int_distribution yearDist{ randomMinYear, randomMaxYear };
 
         Date randDate{ dayDist(eng), monDist(eng), yearDist(eng) };
