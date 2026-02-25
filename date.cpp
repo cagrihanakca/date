@@ -252,4 +252,11 @@ namespace pro
         return wd = (wd == Date::Weekday::SATURDAY) ?
             Date::Weekday::SUNDAY : static_cast<Date::Weekday>(static_cast<int>(wd) + 1);
     }
+
+    Date::Weekday operator++(Date::Weekday &wd, int)
+    {
+        auto ret{ wd };
+        ++wd;
+        return ret;
+    }
 }
