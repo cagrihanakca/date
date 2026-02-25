@@ -2,6 +2,9 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <istream>
+#include <ostream>
+#include <string>
 
 namespace pro
 {
@@ -154,6 +157,24 @@ namespace pro
     bool operator!=(const Date &lhs, const Date &rhs)
     {
         return !(lhs == rhs);
+    }
+
+    std::istream &operator>>(std::istream &is, Date &date)
+    {
+        std::string temp;
+        is >> temp;
+
+        date.m_day = std::atoi(temp.c_str());
+        date.m_mon = std::atoi(temp.c_str() + 3);
+        date.m_year = std::atoi(temp.c_str() + 6);
+
+        return is;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const Date &date)
+    {
+        return os << date.m_day << ' ' << Date::months[date.m_mon] << ' ' << date.m_year << ' '
+            << Date::days[static_cast<std::size_t>(date.GetWeekDay())];
     }
 
     bool Date::IsLeap(int year)
