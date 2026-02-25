@@ -23,6 +23,11 @@ namespace pro
         m_year = tp->tm_year + 1900;
     }
 
+    Date::Date(std::istream &is)
+    {
+        is >> *this;
+    }
+
     int Date::GetMonthDay() const
     {
         return m_day;
