@@ -200,6 +200,11 @@ namespace pro
         return CurrentDate().GetMonth();
     }
 
+    int Date::CurrentYear()
+    {
+        return CurrentDate().GetYear();
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
