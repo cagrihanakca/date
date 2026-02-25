@@ -14,6 +14,7 @@ namespace pro
             SUNDAY = 1, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
         };
 
+
         Date() = default;
         Date(int day, int mon, int year);
         explicit Date(const char *p);
@@ -59,15 +60,19 @@ namespace pro
         int m_mon{ 1 };
         int m_year{ yearBase };
         int GetTotalDays() const;
+        [[nodiscard]] bool IsValid() const;
         [[nodiscard]] static Date GetDateFromTotalDays(int totalDays);
-        static constexpr std::array<std::array<int, 13>, 2> monthDays{{
-            { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
-            { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
-        }};
+        enum Month {
+            JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
+        };
         static inline std::array<std::string, 13> months{
             "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
             "November", "December"
         };
+        static constexpr std::array<std::array<int, 13>, 2> monthDays{{
+            { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
+            { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+        }};
         static inline std::array<std::string, 8> days{
             "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
         };

@@ -4,6 +4,7 @@
 #include <ctime>
 #include <istream>
 #include <ostream>
+#include <random>
 #include <string>
 
 namespace pro
@@ -182,6 +183,21 @@ namespace pro
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
+    Date Date::RandomDate()
+    {
+        static std::mt19937 eng{ std::random_device{}() };
+        std::uniform_int_distribution dayDist{ 1, 31 };
+        std::uniform_int_distribution monDist{ JANUARY, DECEMBER };
+        std::uniform_int_distribution yearDist{ randomMinYear, randomMaxYear };
+
+        Date randDate{ dayDist(eng), monDist(eng), yearDist(eng) };
+        while (!randDate.IsValid()) {
+            randDate.Set(dayDist(eng), monDist(eng), yearDist(eng));
+        }
+
+        return randDate;
+    }
+
     int Date::GetTotalDays() const
     {
         int totalDays{};
@@ -190,6 +206,28 @@ namespace pro
         }
         totalDays += GetYearDay();
         return totalDays;
+    }
+
+    bool Date::IsValid() const
+    {
+        if (m_day < 1 || m_day > 31 || m_mon < JANUARY || m_mon > DECEMBER || m_year < yearBase) {
+            return false;
+        }
+
+        if (m_day == 31 &&
+            (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
+            return false;
+        }
+
+        if (m_day == 30 && m_mon == FEBRUARY) {
+            return false;
+        }
+
+        if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
+            return false;
+        }
+
+        return true;
     }
 
     Date Date::GetDateFromTotalDays(int totalDays)
