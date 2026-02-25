@@ -246,4 +246,30 @@ namespace pro
 
         return { totalDays, mon, year };
     }
+
+    Date::Weekday &operator++(Date::Weekday &wd)
+    {
+        return wd = (wd == Date::Weekday::SATURDAY) ?
+            Date::Weekday::SUNDAY : static_cast<Date::Weekday>(static_cast<int>(wd) + 1);
+    }
+
+    Date::Weekday operator++(Date::Weekday &wd, int)
+    {
+        auto ret{ wd };
+        ++wd;
+        return ret;
+    }
+
+    Date::Weekday &operator--(Date::Weekday &wd)
+    {
+        return wd = (wd == Date::Weekday::SUNDAY) ?
+            Date::Weekday::SATURDAY : static_cast<Date::Weekday>(static_cast<int>(wd) - 1);
+    }
+
+    Date::Weekday operator--(Date::Weekday &wd, int)
+    {
+        auto ret{ wd };
+        --wd;
+        return ret;
+    }
 }
