@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <istream>
+#include <ostream>
 #include <string>
 
 namespace pro
@@ -168,6 +169,12 @@ namespace pro
         date.m_year = std::atoi(temp.c_str() + 6);
 
         return is;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const Date &date)
+    {
+        return os << date.m_day << ' ' << Date::months[date.m_mon] << ' ' << date.m_year << ' '
+            << Date::days[static_cast<std::size_t>(date.GetWeekDay())];
     }
 
     bool Date::IsLeap(int year)
