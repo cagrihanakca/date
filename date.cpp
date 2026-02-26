@@ -331,4 +331,9 @@ namespace pro
         int daysAfter{ static_cast<int>(wd) + n % 7 };
         return static_cast<Date::Weekday>(daysAfter <= 7 ? daysAfter : daysAfter % 7);
     }
+
+    Date::Weekday operator+(int n, const Date::Weekday &wd)
+    {
+        return wd + n;
+    }
 }
