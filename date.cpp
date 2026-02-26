@@ -336,4 +336,10 @@ namespace pro
     {
         return wd + n;
     }
+
+    Date::Weekday operator-(const Date::Weekday &wd, int n)
+    {
+        int daysBefore{ static_cast<int>(wd) - n % 7 };
+        return static_cast<Date::Weekday>(daysBefore >= 1 ? daysBefore : 7 - (n % 7 - static_cast<int>(wd)));
+    }
 }
