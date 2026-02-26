@@ -210,6 +210,11 @@ namespace pro
         return CurrentDate().GetYearDay();
     }
 
+    Date::Weekday Date::CurrentWeekday()
+    {
+        return CurrentDate().GetWeekDay();
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
