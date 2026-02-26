@@ -105,7 +105,6 @@ namespace pro
     [[nodiscard]] Date::Weekday operator+(const Date::Weekday &wd, int n);
     [[nodiscard]] Date::Weekday operator+(int n, const Date::Weekday &wd);
     [[nodiscard]] Date::Weekday operator-(const Date::Weekday &wd, int n);
-    [[nodiscard]] Date::Weekday operator-(const Date::Weekday &wd1, const Date::Weekday &wd2);
 }
 
 #endif // DATE_H
