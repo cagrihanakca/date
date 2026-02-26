@@ -84,6 +84,11 @@ namespace pro
         return *this;
     }
 
+    Date &Date::SetToCurrentDate()
+    {
+        return *this = CurrentDate();
+    }
+
     Date Date::operator-(int day) const
     {
         return GetDateFromTotalDays(GetTotalDays() - day);
