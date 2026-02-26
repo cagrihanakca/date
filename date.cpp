@@ -1,5 +1,6 @@
 #include "date.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <istream>
@@ -282,6 +283,16 @@ namespace pro
         }
 
         return { totalDays, mon, year };
+    }
+
+    std::istream &operator>>(std::istream &is, Date::Weekday &wd)
+    {
+        std::string input;
+        is >> input;
+
+        wd = static_cast<Date::Weekday>(std::find(Date::days.cbegin(), Date::days.cend(), input) - Date::days.cbegin());
+
+        return is;
     }
 
     Date::Weekday &operator++(Date::Weekday &wd)
