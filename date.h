@@ -14,11 +14,12 @@ namespace pro
             SUNDAY = 1, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
         };
 
-
         Date() = default;
         Date(int day, int mon, int year);
         explicit Date(const char *p);
+        explicit Date(const std::string &date);
         explicit Date(std::time_t timer);
+        explicit Date(std::istream &is);
 
         [[nodiscard]] int GetMonthDay() const;
         [[nodiscard]] int GetMonth() const;
@@ -30,6 +31,7 @@ namespace pro
         Date &SetMonth(int mon);
         Date &SetYear(int year);
         Date &Set(int day, int mon, int year);
+        Date &SetToCurrentDate();
 
         [[nodiscard]] Date operator-(int day) const;
         friend int operator-(const Date &date1, const Date &date2);
@@ -49,9 +51,19 @@ namespace pro
         friend std::istream &operator>>(std::istream &is, Date &date);
         friend std::ostream &operator<<(std::ostream &os, const Date &date);
 
+        friend std::istream &operator>>(std::istream &is, Date::Weekday &wd);
+        friend std::ostream &operator<<(std::ostream &os, const Date::Weekday &wd);
+
         static constexpr int yearBase{ 1900 };
         static constexpr int randomMinYear{ 1900 };
         static constexpr int randomMaxYear{ 2026 };
+
+        [[nodiscard]] static Date CurrentDate();
+        [[nodiscard]] static int CurrentMonthDay();
+        [[nodiscard]] static int CurrentMonth();
+        [[nodiscard]] static int CurrentYear();
+        [[nodiscard]] static int CurrentYearDay();
+        [[nodiscard]] static Weekday CurrentWeekday();
 
         [[nodiscard]] static bool IsLeap(int year);
         [[nodiscard]] static Date RandomDate();
@@ -89,6 +101,10 @@ namespace pro
     Date::Weekday operator++(Date::Weekday &wd, int);
     Date::Weekday &operator--(Date::Weekday &wd);
     Date::Weekday operator--(Date::Weekday &wd, int);
+
+    [[nodiscard]] Date::Weekday operator+(const Date::Weekday &wd, int n);
+    [[nodiscard]] Date::Weekday operator+(int n, const Date::Weekday &wd);
+    [[nodiscard]] Date::Weekday operator-(const Date::Weekday &wd, int n);
 }
 
 #endif // DATE_H

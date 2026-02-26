@@ -1,5 +1,6 @@
 #include "date.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <istream>
@@ -13,12 +14,19 @@ namespace pro
 
     Date::Date(const char *p) : m_day{ std::atoi(p) }, m_mon{ std::atoi(p + 3) }, m_year{ std::atoi(p + 6) } {}
 
+    Date::Date(const std::string &date) : Date{ date.c_str() } {}
+
     Date::Date(std::time_t timer)
     {
         const auto *tp{ std::localtime(&timer) };
         m_day = tp->tm_mday;
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
+    }
+
+    Date::Date(std::istream &is)
+    {
+        is >> *this;
     }
 
     int Date::GetMonthDay() const
@@ -74,6 +82,11 @@ namespace pro
         m_mon = mon;
         m_year = year;
         return *this;
+    }
+
+    Date &Date::SetToCurrentDate()
+    {
+        return *this = CurrentDate();
     }
 
     Date Date::operator-(int day) const
@@ -178,6 +191,36 @@ namespace pro
             << Date::days[static_cast<std::size_t>(date.GetWeekDay())];
     }
 
+    Date Date::CurrentDate()
+    {
+        return Date{ std::time(nullptr) };
+    }
+
+    int Date::CurrentMonthDay()
+    {
+        return CurrentDate().GetMonthDay();
+    }
+
+    int Date::CurrentMonth()
+    {
+        return CurrentDate().GetMonth();
+    }
+
+    int Date::CurrentYear()
+    {
+        return CurrentDate().GetYear();
+    }
+
+    int Date::CurrentYearDay()
+    {
+        return CurrentDate().GetYearDay();
+    }
+
+    Date::Weekday Date::CurrentWeekday()
+    {
+        return CurrentDate().GetWeekDay();
+    }
+
     bool Date::IsLeap(int year)
     {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
@@ -247,6 +290,21 @@ namespace pro
         return { totalDays, mon, year };
     }
 
+    std::istream &operator>>(std::istream &is, Date::Weekday &wd)
+    {
+        std::string input;
+        is >> input;
+
+        wd = static_cast<Date::Weekday>(std::find(Date::days.cbegin(), Date::days.cend(), input) - Date::days.cbegin());
+
+        return is;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const Date::Weekday &wd)
+    {
+        return os << Date::days[static_cast<std::size_t>(wd)];
+    }
+
     Date::Weekday &operator++(Date::Weekday &wd)
     {
         return wd = (wd == Date::Weekday::SATURDAY) ?
@@ -271,5 +329,22 @@ namespace pro
         auto ret{ wd };
         --wd;
         return ret;
+    }
+
+    Date::Weekday operator+(const Date::Weekday &wd, int n)
+    {
+        int daysAfter{ static_cast<int>(wd) + n % 7 };
+        return static_cast<Date::Weekday>(daysAfter <= 7 ? daysAfter : daysAfter % 7);
+    }
+
+    Date::Weekday operator+(int n, const Date::Weekday &wd)
+    {
+        return wd + n;
+    }
+
+    Date::Weekday operator-(const Date::Weekday &wd, int n)
+    {
+        int daysBefore{ static_cast<int>(wd) - n % 7 };
+        return static_cast<Date::Weekday>(daysBefore >= 1 ? daysBefore : 7 - (n % 7 - static_cast<int>(wd)));
     }
 }
