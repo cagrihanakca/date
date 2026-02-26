@@ -295,6 +295,11 @@ namespace pro
         return is;
     }
 
+    std::ostream &operator<<(std::ostream &os, const Date::Weekday &wd)
+    {
+        return os << Date::days[static_cast<std::size_t>(wd)];
+    }
+
     Date::Weekday &operator++(Date::Weekday &wd)
     {
         return wd = (wd == Date::Weekday::SATURDAY) ?
