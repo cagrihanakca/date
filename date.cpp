@@ -226,12 +226,12 @@ namespace pro
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
-    Date Date::RandomDate()
+    Date Date::RandomDate(int randMinYear, int randMaxYear)
     {
         static std::mt19937 eng{ std::random_device{}() };
         std::uniform_int_distribution dayDist{ 1, 31 };
         std::uniform_int_distribution monDist{ 1, 12 };
-        std::uniform_int_distribution yearDist{ randomMinYear, randomMaxYear };
+        std::uniform_int_distribution yearDist{ randMinYear, randMaxYear };
 
         Date randDate{ dayDist(eng), monDist(eng), yearDist(eng) };
         while (!randDate.IsValid()) {

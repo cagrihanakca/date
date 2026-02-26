@@ -55,8 +55,6 @@ namespace pro
         friend std::ostream &operator<<(std::ostream &os, const Date::Weekday &wd);
 
         static constexpr int yearBase{ 1900 };
-        static constexpr int randomMinYear{ 1900 };
-        static constexpr int randomMaxYear{ 2026 };
 
         [[nodiscard]] static Date CurrentDate();
         [[nodiscard]] static int CurrentMonthDay();
@@ -66,7 +64,7 @@ namespace pro
         [[nodiscard]] static Weekday CurrentWeekday();
 
         [[nodiscard]] static bool IsLeap(int year);
-        [[nodiscard]] static Date RandomDate();
+        [[nodiscard]] static Date RandomDate(int randMinYear = yearBase, int randMaxYear = CurrentYear());
     private:
         int m_day{ 1 };
         int m_mon{ 1 };
