@@ -123,6 +123,10 @@ namespace pro
 
     Date Date::operator-(int day) const
     {
+        auto totalDays{ GetTotalDays() };
+        if (totalDays <= day) {
+            throw std::invalid_argument{ "a date before 01/01/1900" };
+        }
         return GetDateFromTotalDays(GetTotalDays() - day);
     }
 
