@@ -98,6 +98,9 @@ namespace pro
 
     Date &Date::SetYear(int year)
     {
+        if (!Date{ m_day, m_mon, year}.IsValid()) {
+            throw std::invalid_argument{ m_ex };
+        }
         m_year = year;
         return *this;
     }
