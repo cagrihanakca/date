@@ -18,7 +18,12 @@ namespace pro
         }
     }
 
-    Date::Date(const char *p) : m_day{ std::atoi(p) }, m_mon{ std::atoi(p + 3) }, m_year{ std::atoi(p + 6) } {}
+    Date::Date(const char *p) : m_day{ std::atoi(p) }, m_mon{ std::atoi(p + 3) }, m_year{ std::atoi(p + 6) }
+    {
+        if (!IsValid()) {
+            throw std::invalid_argument{ m_ex };
+        }
+    }
 
     Date::Date(const std::string &date) : Date{ date.c_str() } {}
 
