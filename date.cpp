@@ -221,6 +221,10 @@ namespace pro
         date.m_mon = std::atoi(temp.c_str() + 3);
         date.m_year = std::atoi(temp.c_str() + 6);
 
+        if (!date.IsValid()) {
+            throw std::invalid_argument{ date.m_ex };
+        }
+
         return is;
     }
 
