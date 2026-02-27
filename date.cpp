@@ -44,6 +44,9 @@ namespace pro
     Date::Date(std::istream &is)
     {
         is >> *this;
+        if (!IsValid()) {
+            throw std::invalid_argument{ m_ex };
+        }
     }
 
     int Date::GetMonthDay() const
