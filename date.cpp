@@ -107,6 +107,9 @@ namespace pro
 
     Date &Date::Set(int day, int mon, int year)
     {
+        if (!Date{ day, mon, year }.IsValid()) {
+            throw std::invalid_argument{ m_ex };
+        }
         m_day = day;
         m_mon = mon;
         m_year = year;
