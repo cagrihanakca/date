@@ -169,6 +169,9 @@ namespace pro
 
     Date &Date::operator--()
     {
+        if (*this == Date{ 1, 1, 1900} ) {
+            throw std::invalid_argument{ "a date before 01/01/1900" };
+        }
         return *this -= 1;
     }
 
