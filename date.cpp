@@ -89,6 +89,9 @@ namespace pro
 
     Date &Date::SetMonth(int mon)
     {
+        if (!Date{ m_day, mon, m_year}.IsValid()) {
+            throw std::invalid_argument{ m_ex };
+        }
         m_mon = mon;
         return *this;
     }
