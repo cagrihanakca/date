@@ -6,11 +6,17 @@
 #include <istream>
 #include <ostream>
 #include <random>
+#include <stdexcept>
 #include <string>
 
 namespace pro
 {
-    Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year } {}
+    Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
+    {
+        if (!IsValid()) {
+            throw std::invalid_argument{ m_ex };
+        }
+    }
 
     Date::Date(const char *p) : m_day{ std::atoi(p) }, m_mon{ std::atoi(p + 3) }, m_year{ std::atoi(p + 6) } {}
 
@@ -253,20 +259,36 @@ namespace pro
 
     bool Date::IsValid() const
     {
-        if (m_day < 1 || m_day > 31 || m_mon < JANUARY || m_mon > DECEMBER || m_year < yearBase) {
+        using namespace std::literals::string_literals;
+
+        if (m_day < 1 || m_day > 31) {
+            m_ex = "invalid day: "s += std::to_string(m_day);
+            return false;
+        }
+
+        if (m_mon < JANUARY || m_mon > DECEMBER) {
+           m_ex = "invalid month: "s += std::to_string(m_mon);
+           return false;
+        }
+
+        if (m_year < yearBase) {
+            m_ex =  "invalid year: "s += std::to_string(m_year);
             return false;
         }
 
         if (m_day == 31 &&
             (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
+            m_ex = months[m_mon] += " cannot have 31 days";
             return false;
         }
 
         if (m_day == 30 && m_mon == FEBRUARY) {
+            m_ex = "February cannot have 30 days";
             return false;
         }
 
         if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
+            m_ex = std::to_string(m_year) += " isn't leap. February cannot have 29 days";
             return false;
         }
 
