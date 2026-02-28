@@ -356,8 +356,11 @@ namespace pro
     {
         std::string input;
         is >> input;
-
-        wd = static_cast<Date::Weekday>(std::find(Date::days.cbegin(), Date::days.cend(), input) - Date::days.cbegin());
+        if (auto it{ std::find(Date::days.cbegin(), Date::days.cend(), input) }; it != Date::days.cend()) {
+            wd = static_cast<Date::Weekday>(it - Date::days.cbegin());
+        } else {
+            throw std::invalid_argument{ "invalid weekday: " + input };
+        }
 
         return is;
     }
