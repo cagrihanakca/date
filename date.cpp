@@ -73,9 +73,9 @@ namespace pro
         return yearDay;
     }
 
-    Date::Weekday Date::GetWeekDay() const
+    int Date::GetWeekDay() const
     {
-        return static_cast<Date::Weekday>(GetTotalDays() % 7 + 1);
+        return (GetTotalDays() - 1) % 7 + 1;
     }
 
     Date &Date::SetMonthDay(int day)
@@ -231,7 +231,7 @@ namespace pro
     std::ostream &operator<<(std::ostream &os, const Date &date)
     {
         return os << date.m_day << ' ' << Date::months[date.m_mon] << ' ' << date.m_year << ' '
-            << Date::days[static_cast<std::size_t>(date.GetWeekDay())];
+            << Date::days[date.GetWeekDay()];
     }
 
     Date Date::CurrentDate()
@@ -259,7 +259,7 @@ namespace pro
         return CurrentDate().GetYearDay();
     }
 
-    Date::Weekday Date::CurrentWeekday()
+    int Date::CurrentWeekday()
     {
         return CurrentDate().GetWeekDay();
     }

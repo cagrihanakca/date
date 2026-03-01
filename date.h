@@ -25,7 +25,7 @@ namespace pro
         [[nodiscard]] int GetMonth() const;
         [[nodiscard]] int GetYear() const;
         [[nodiscard]] int GetYearDay() const;
-        [[nodiscard]] Weekday GetWeekDay() const;
+        [[nodiscard]] int GetWeekDay() const;
 
         Date &SetMonthDay(int day);
         Date &SetMonth(int mon);
@@ -61,7 +61,7 @@ namespace pro
         [[nodiscard]] static int CurrentMonth();
         [[nodiscard]] static int CurrentYear();
         [[nodiscard]] static int CurrentYearDay();
-        [[nodiscard]] static Weekday CurrentWeekday();
+        [[nodiscard]] static int CurrentWeekday();
 
         [[nodiscard]] static bool IsLeap(int year);
         [[nodiscard]] static Date RandomDate(int randMinYear = yearBase, int randMaxYear = CurrentYear());
@@ -85,7 +85,7 @@ namespace pro
             { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
         }};
         static inline std::array<std::string, 8> days{
-            "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+            "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
         };
     };
 
