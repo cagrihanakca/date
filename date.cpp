@@ -1,6 +1,5 @@
 #include "date.h"
 
-#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <istream>
@@ -350,66 +349,5 @@ namespace pro
         }
 
         return { totalDays, mon, year };
-    }
-
-    std::istream &operator>>(std::istream &is, Date::Weekday &wd)
-    {
-        std::string input;
-        is >> input;
-        if (auto it{ std::find(Date::days.cbegin(), Date::days.cend(), input) }; it != Date::days.cend()) {
-            wd = static_cast<Date::Weekday>(it - Date::days.cbegin());
-        } else {
-            throw std::invalid_argument{ "invalid weekday: " + input };
-        }
-
-        return is;
-    }
-
-    std::ostream &operator<<(std::ostream &os, const Date::Weekday &wd)
-    {
-        return os << Date::days[static_cast<std::size_t>(wd)];
-    }
-
-    Date::Weekday &operator++(Date::Weekday &wd)
-    {
-        return wd = (wd == Date::Weekday::SATURDAY) ?
-            Date::Weekday::SUNDAY : static_cast<Date::Weekday>(static_cast<int>(wd) + 1);
-    }
-
-    Date::Weekday operator++(Date::Weekday &wd, int)
-    {
-        auto ret{ wd };
-        ++wd;
-        return ret;
-    }
-
-    Date::Weekday &operator--(Date::Weekday &wd)
-    {
-        return wd = (wd == Date::Weekday::SUNDAY) ?
-            Date::Weekday::SATURDAY : static_cast<Date::Weekday>(static_cast<int>(wd) - 1);
-    }
-
-    Date::Weekday operator--(Date::Weekday &wd, int)
-    {
-        auto ret{ wd };
-        --wd;
-        return ret;
-    }
-
-    Date::Weekday operator+(const Date::Weekday &wd, int n)
-    {
-        int daysAfter{ static_cast<int>(wd) + n % 7 };
-        return static_cast<Date::Weekday>(daysAfter <= 7 ? daysAfter : daysAfter % 7);
-    }
-
-    Date::Weekday operator+(int n, const Date::Weekday &wd)
-    {
-        return wd + n;
-    }
-
-    Date::Weekday operator-(const Date::Weekday &wd, int n)
-    {
-        int daysBefore{ static_cast<int>(wd) - n % 7 };
-        return static_cast<Date::Weekday>(daysBefore >= 1 ? daysBefore : 7 - (n % 7 - static_cast<int>(wd)));
     }
 }
