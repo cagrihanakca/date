@@ -21,6 +21,7 @@ namespace pro
         [[nodiscard]] int GetMonth() const;
         [[nodiscard]] int GetYear() const;
         [[nodiscard]] int GetYearDay() const;
+        [[nodiscard]] int GetYearWeek() const;
         [[nodiscard]] int GetWeekDay() const;
 
         Date &SetMonthDay(int day);
