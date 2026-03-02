@@ -67,6 +67,9 @@ namespace pro
         int GetTotalDays() const;
         [[nodiscard]] bool IsValid() const;
         [[nodiscard]] static Date GetDateFromTotalDays(int totalDays);
+        enum Weekday {
+            MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+        };
         enum Month {
             JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
         };
