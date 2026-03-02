@@ -290,9 +290,14 @@ namespace pro
         std::uniform_int_distribution monDist{ 1, 12 };
         std::uniform_int_distribution yearDist{ randMinYear, randMaxYear };
 
-        Date randDate{ dayDist(eng), monDist(eng), yearDist(eng) };
-        while (!randDate.IsValid()) {
-            randDate.Set(dayDist(eng), monDist(eng), yearDist(eng));
+        Date randDate;
+        while (true) {
+            try {
+                randDate.Set(dayDist(eng), monDist(eng), yearDist(eng));
+            } catch (const std::exception &) {
+                continue;
+            }
+            break;
         }
 
         return randDate;
