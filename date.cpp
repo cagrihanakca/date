@@ -329,7 +329,7 @@ namespace pro
 
         if (m_day == 31 &&
             (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
-            m_ex = months[m_mon] += " cannot have 31 days";
+            m_ex = months[m_mon] + " cannot have 31 days";
             return false;
         }
 
