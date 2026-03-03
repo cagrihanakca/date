@@ -124,12 +124,18 @@ namespace pro
 
     Date &Date::Set(int day, int mon, int year)
     {
-        if (!Date{ day, mon, year }.IsValid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        const auto tempDay{ m_day };
+        const auto tempMon{ m_mon };
+        const auto tempYear{ m_year };
         m_day = day;
         m_mon = mon;
         m_year = year;
+        if (!IsValid()) {
+            m_day = tempDay;
+            m_mon = tempMon;
+            m_year = tempYear;
+            throw std::invalid_argument{ m_ex };
+        }
         return *this;
     }
 
