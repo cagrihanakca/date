@@ -278,7 +278,7 @@ namespace pro
     bool Date::IsLeap(int year)
     {
         if (year < yearBase) {
-            throw std::invalid_argument{ "a year before 1900 "};
+            throw std::invalid_argument{ "a year before 1900" };
         }
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
