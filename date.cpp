@@ -91,10 +91,12 @@ namespace pro
 
     Date &Date::SetMonthDay(int day)
     {
-        if (!Date{ day, m_mon, m_year }.IsValid()) {
+        const auto temp{ m_day };
+        m_day = day;
+        if (!IsValid()) {
+            m_day = temp;
             throw std::invalid_argument{ m_ex };
         }
-        m_day = day;
         return *this;
     }
 
