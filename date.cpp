@@ -91,39 +91,51 @@ namespace pro
 
     Date &Date::SetMonthDay(int day)
     {
-        if (!Date{ day, m_mon, m_year }.IsValid()) {
+        const auto temp{ m_day };
+        m_day = day;
+        if (!IsValid()) {
+            m_day = temp;
             throw std::invalid_argument{ m_ex };
         }
-        m_day = day;
         return *this;
     }
 
     Date &Date::SetMonth(int mon)
     {
-        if (!Date{ m_day, mon, m_year}.IsValid()) {
+        const auto temp{ m_mon };
+        m_mon = mon;
+        if (!IsValid()) {
+            m_mon = temp;
             throw std::invalid_argument{ m_ex };
         }
-        m_mon = mon;
         return *this;
     }
 
     Date &Date::SetYear(int year)
     {
-        if (!Date{ m_day, m_mon, year}.IsValid()) {
+        const auto temp{ m_year };
+        m_year = year;
+        if (!IsValid()) {
+            m_year = temp;
             throw std::invalid_argument{ m_ex };
         }
-        m_year = year;
         return *this;
     }
 
     Date &Date::Set(int day, int mon, int year)
     {
-        if (!Date{ day, mon, year }.IsValid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        const auto tempDay{ m_day };
+        const auto tempMon{ m_mon };
+        const auto tempYear{ m_year };
         m_day = day;
         m_mon = mon;
         m_year = year;
+        if (!IsValid()) {
+            m_day = tempDay;
+            m_mon = tempMon;
+            m_year = tempYear;
+            throw std::invalid_argument{ m_ex };
+        }
         return *this;
     }
 
