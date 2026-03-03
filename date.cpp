@@ -113,10 +113,12 @@ namespace pro
 
     Date &Date::SetYear(int year)
     {
-        if (!Date{ m_day, m_mon, year}.IsValid()) {
+        const auto temp{ m_year };
+        m_year = year;
+        if (!IsValid()) {
+            m_year = temp;
             throw std::invalid_argument{ m_ex };
         }
-        m_year = year;
         return *this;
     }
 
