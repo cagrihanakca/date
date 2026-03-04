@@ -327,20 +327,18 @@ namespace pro
 
     bool Date::IsValid() const
     {
-        using namespace std::literals::string_literals;
-
         if (m_day < 1 || m_day > 31) {
-            m_ex = "invalid day: "s += std::to_string(m_day);
+            m_ex = "invalid day: " + std::to_string(m_day);
             return false;
         }
 
         if (m_mon < JANUARY || m_mon > DECEMBER) {
-           m_ex = "invalid month: "s += std::to_string(m_mon);
+           m_ex = "invalid month: " + std::to_string(m_mon);
            return false;
         }
 
         if (m_year < yearBase) {
-            m_ex =  "invalid year: "s += std::to_string(m_year);
+            m_ex =  "invalid year: " + std::to_string(m_year);
             return false;
         }
 
@@ -356,7 +354,7 @@ namespace pro
         }
 
         if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
-            m_ex = std::to_string(m_year) += " isn't leap. February cannot have 29 days";
+            m_ex = std::to_string(m_year) + " isn't leap. February cannot have 29 days";
             return false;
         }
 
