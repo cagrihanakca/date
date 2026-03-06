@@ -157,7 +157,7 @@ namespace pro
         if (totalDays <= day) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
-        return GetDateFromTotalDays(GetTotalDays() - day);
+        return GetDateFromTotalDays(totalDays - day);
     }
 
     int operator-(const Date &date1, const Date &date2)
