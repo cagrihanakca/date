@@ -72,8 +72,8 @@ namespace pro
 
     int Date::GetYearDay() const
     {
-        int yearDay{ m_day };
-        for (int i{ 1 }; i < m_mon; ++i) {
+        auto yearDay{ m_day };
+        for (auto i{ 1 }; i < m_mon; ++i) {
             yearDay += monthDays[IsLeap(m_year)][i];
         }
         return yearDay;
@@ -327,7 +327,7 @@ namespace pro
     int Date::GetTotalDays() const
     {
         int totalDays{};
-        for (int i{ yearBase }; i < m_year; ++i) {
+        for (auto i{ yearBase }; i < m_year; ++i) {
             totalDays += IsLeap(i) ? 366 : 365;
         }
         totalDays += GetYearDay();
@@ -372,13 +372,13 @@ namespace pro
 
     Date Date::GetDateFromTotalDays(int totalDays)
     {
-        int year{ yearBase };
+        auto year{ yearBase };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {
             totalDays -= (IsLeap(year) ? 366 : 365);
             ++year;
         }
 
-        int mon{ 1 };
+        auto mon{ 1 };
         while (totalDays >= monthDays[IsLeap(year)][mon]) {
             totalDays -= monthDays[IsLeap(year)][mon];
             ++mon;
