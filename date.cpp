@@ -131,9 +131,7 @@ namespace pro
 
     Date &Date::Set(int day, int mon, int year)
     {
-        const auto tempDay{ m_day };
-        const auto tempMon{ m_mon };
-        const auto tempYear{ m_year };
+        const auto tempDay{ m_day }, tempMon{ m_mon }, tempYear{ m_year };
         m_day = day;
         m_mon = mon;
         m_year = year;
@@ -307,10 +305,7 @@ namespace pro
     Date Date::RandomDate(int randMinYear, int randMaxYear)
     {
         static std::mt19937 eng{ std::random_device{}() };
-        std::uniform_int_distribution dayDist{ 1, 31 };
-        std::uniform_int_distribution monDist{ 1, 12 };
-        std::uniform_int_distribution yearDist{ randMinYear, randMaxYear };
-
+        std::uniform_int_distribution dayDist{ 1, 31 }, monDist{ 1, 12 }, yearDist{ randMinYear, randMaxYear };
         Date randDate;
         while (true) {
             try {
