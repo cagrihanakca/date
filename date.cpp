@@ -247,13 +247,15 @@ namespace pro
 
     std::istream &operator>>(std::istream &is, Date &date)
     {
-        std::string temp;
-        is >> temp;
+        std::string in;
+        is >> in;
+        if (!std::regex_match(in, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
+            throw std::invalid_argument{ "invalid date input: " + in + " format(dd/mm/yyyy)" };
+        }
 
-        date.m_day = std::atoi(temp.c_str());
-        date.m_mon = std::atoi(temp.c_str() + 3);
-        date.m_year = std::atoi(temp.c_str() + 6);
-
+        date.m_day = std::atoi(in.c_str());
+        date.m_mon = std::atoi(in.c_str() + 3);
+        date.m_year = std::atoi(in.c_str() + 6);
         if (!date.IsValid()) {
             throw std::invalid_argument{ date.m_ex };
         }
