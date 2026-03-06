@@ -5,6 +5,7 @@
 #include <istream>
 #include <ostream>
 #include <random>
+#include <regex>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
@@ -18,8 +19,17 @@ namespace pro
         }
     }
 
-    Date::Date(const char *p) : m_day{ std::atoi(p) }, m_mon{ std::atoi(p + 3) }, m_year{ std::atoi(p + 6) }
+    Date::Date(const char *p)
     {
+        using namespace std::literals::string_literals;
+
+        if (!std::regex_match(p, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
+            throw std::invalid_argument{ "invalid date format: "s + p + " (dd/mm/yyyy)" };
+        }
+
+        m_day = std::atoi(p);
+        m_mon = std::atoi(p + 3);
+        m_year = std::atoi(p + 6);
         if (!IsValid()) {
             throw std::invalid_argument{ m_ex };
         }
