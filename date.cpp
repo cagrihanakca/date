@@ -53,9 +53,6 @@ namespace pro
     Date::Date(std::istream &is)
     {
         is >> *this;
-        if (!IsValid()) {
-            throw std::invalid_argument{ m_ex };
-        }
     }
 
     int Date::GetMonthDay() const
@@ -75,8 +72,8 @@ namespace pro
 
     int Date::GetYearDay() const
     {
-        int yearDay{ m_day };
-        for (int i{ 1 }; i < m_mon; ++i) {
+        auto yearDay{ m_day };
+        for (auto i{ 1 }; i < m_mon; ++i) {
             yearDay += monthDays[IsLeap(m_year)][i];
         }
         return yearDay;
@@ -134,9 +131,7 @@ namespace pro
 
     Date &Date::Set(int day, int mon, int year)
     {
-        const auto tempDay{ m_day };
-        const auto tempMon{ m_mon };
-        const auto tempYear{ m_year };
+        const auto tempDay{ m_day }, tempMon{ m_mon }, tempYear{ m_year };
         m_day = day;
         m_mon = mon;
         m_year = year;
@@ -156,11 +151,11 @@ namespace pro
 
     Date Date::operator-(int day) const
     {
-        auto totalDays{ GetTotalDays() };
+        const auto totalDays{ GetTotalDays() };
         if (totalDays <= day) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
-        return GetDateFromTotalDays(GetTotalDays() - day);
+        return GetDateFromTotalDays(totalDays - day);
     }
 
     int operator-(const Date &date1, const Date &date2)
@@ -195,7 +190,7 @@ namespace pro
 
     Date Date::operator++(int)
     {
-        auto ret{ *this };
+        const auto ret{ *this };
         ++*this;
         return ret;
     }
@@ -210,7 +205,7 @@ namespace pro
 
     Date Date::operator--(int)
     {
-        auto ret{ *this };
+        const auto ret{ *this };
         --*this;
         return ret;
     }
@@ -310,10 +305,7 @@ namespace pro
     Date Date::RandomDate(int randMinYear, int randMaxYear)
     {
         static std::mt19937 eng{ std::random_device{}() };
-        std::uniform_int_distribution dayDist{ 1, 31 };
-        std::uniform_int_distribution monDist{ 1, 12 };
-        std::uniform_int_distribution yearDist{ randMinYear, randMaxYear };
-
+        std::uniform_int_distribution dayDist{ 1, 31 }, monDist{ 1, 12 }, yearDist{ randMinYear, randMaxYear };
         Date randDate;
         while (true) {
             try {
@@ -330,7 +322,7 @@ namespace pro
     int Date::GetTotalDays() const
     {
         int totalDays{};
-        for (int i{ yearBase }; i < m_year; ++i) {
+        for (auto i{ yearBase }; i < m_year; ++i) {
             totalDays += IsLeap(i) ? 366 : 365;
         }
         totalDays += GetYearDay();
@@ -375,13 +367,13 @@ namespace pro
 
     Date Date::GetDateFromTotalDays(int totalDays)
     {
-        int year{ yearBase };
+        auto year{ yearBase };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {
             totalDays -= (IsLeap(year) ? 366 : 365);
             ++year;
         }
 
-        int mon{ 1 };
+        auto mon{ 1 };
         while (totalDays >= monthDays[IsLeap(year)][mon]) {
             totalDays -= monthDays[IsLeap(year)][mon];
             ++mon;
