@@ -79,7 +79,7 @@ namespace pro
         return yearDay;
     }
 
-    int Date::GetYearWeek() const
+    int Date::YearWeek() const
     {
         Date firstWeek;
         if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.GetWeekDay() > THURSDAY) {
