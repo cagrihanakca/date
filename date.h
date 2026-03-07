@@ -24,7 +24,7 @@ namespace pro
         [[nodiscard]] int YearWeek() const;
         [[nodiscard]] int Weekday() const;
 
-        Date &SetMonthDay(int day);
+        Date &MonthDay(int day);
         Date &SetMonth(int mon);
         Date &SetYear(int year);
         Date &Set(int day, int mon, int year);

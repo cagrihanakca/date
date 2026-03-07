@@ -96,7 +96,7 @@ namespace pro
         return (GetTotalDays() - 1) % 7 + 1;
     }
 
-    Date &Date::SetMonthDay(int day)
+    Date &Date::MonthDay(int day)
     {
         const auto temp{ m_day };
         m_day = day;
