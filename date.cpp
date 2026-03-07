@@ -55,7 +55,7 @@ namespace pro
         is >> *this;
     }
 
-    int Date::GetMonthDay() const
+    int Date::MonthDay() const
     {
         return m_day;
     }
@@ -271,7 +271,7 @@ namespace pro
 
     int Date::CurrentMonthDay()
     {
-        return CurrentDate().GetMonthDay();
+        return CurrentDate().MonthDay();
     }
 
     int Date::CurrentMonth()

@@ -17,7 +17,7 @@ namespace pro
         explicit Date(std::time_t timer);
         explicit Date(std::istream &is);
 
-        [[nodiscard]] int GetMonthDay() const;
+        [[nodiscard]] int MonthDay() const;
         [[nodiscard]] int GetMonth() const;
         [[nodiscard]] int GetYear() const;
         [[nodiscard]] int GetYearDay() const;
