@@ -60,7 +60,7 @@ namespace pro
         return m_day;
     }
 
-    int Date::GetMonth() const
+    int Date::Month() const
     {
         return m_mon;
     }
@@ -276,7 +276,7 @@ namespace pro
 
     int Date::CurrentMonth()
     {
-        return CurrentDate().GetMonth();
+        return CurrentDate().Month();
     }
 
     int Date::CurrentYear()
