@@ -93,7 +93,7 @@ namespace pro
 
     int Date::Weekday() const
     {
-        return (GetTotalDays() - 1) % 7 + 1;
+        return (TotalDays() - 1) % 7 + 1;
     }
 
     Date &Date::MonthDay(int day)
@@ -151,7 +151,7 @@ namespace pro
 
     Date Date::operator-(int day) const
     {
-        const auto totalDays{ GetTotalDays() };
+        const auto totalDays{ TotalDays() };
         if (totalDays <= day) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
@@ -160,12 +160,12 @@ namespace pro
 
     int operator-(const Date &date1, const Date &date2)
     {
-        return std::abs(date1.GetTotalDays() - date2.GetTotalDays());
+        return std::abs(date1.TotalDays() - date2.TotalDays());
     }
 
     Date operator+(const Date &date, int n)
     {
-        return Date::GetDateFromTotalDays(date.GetTotalDays() + n);
+        return Date::GetDateFromTotalDays(date.TotalDays() + n);
     }
 
     Date operator+(int n, const Date &date)
@@ -175,7 +175,7 @@ namespace pro
 
     Date &Date::operator+=(int day)
     {
-        return *this = GetDateFromTotalDays(GetTotalDays() + day);
+        return *this = GetDateFromTotalDays(TotalDays() + day);
     }
 
     Date &Date::operator-=(int day)
@@ -212,7 +212,7 @@ namespace pro
 
     bool operator<(const Date &lhs, const Date &rhs)
     {
-        return lhs.GetTotalDays() < rhs.GetTotalDays();
+        return lhs.TotalDays() < rhs.TotalDays();
     }
 
     bool operator<=(const Date &lhs, const Date &rhs)
@@ -232,7 +232,7 @@ namespace pro
 
     bool operator==(const Date &lhs, const Date &rhs)
     {
-        return lhs.GetTotalDays() == rhs.GetTotalDays();
+        return lhs.TotalDays() == rhs.TotalDays();
     }
 
     bool operator!=(const Date &lhs, const Date &rhs)
@@ -319,7 +319,7 @@ namespace pro
         return randDate;
     }
 
-    int Date::GetTotalDays() const
+    int Date::TotalDays() const
     {
         int totalDays{};
         for (auto i{ yearBase }; i < m_year; ++i) {

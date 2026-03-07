@@ -64,7 +64,7 @@ namespace pro
         int m_mon{ 1 };
         int m_year{ yearBase };
         mutable std::string m_ex;
-        [[nodiscard]] int GetTotalDays() const;
+        [[nodiscard]] int TotalDays() const;
         [[nodiscard]] bool IsValid() const;
         [[nodiscard]] static Date GetDateFromTotalDays(int totalDays);
         enum Weekday {
