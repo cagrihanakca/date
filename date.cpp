@@ -82,16 +82,16 @@ namespace pro
     int Date::YearWeek() const
     {
         Date firstWeek;
-        if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.GetWeekDay() > THURSDAY) {
-            firstWeek = firstDay + (8 - firstDay.GetWeekDay());
+        if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.Weekday() > THURSDAY) {
+            firstWeek = firstDay + (8 - firstDay.Weekday());
         } else {
-            firstWeek = firstDay - (firstDay.GetWeekDay() - 1);
+            firstWeek = firstDay - (firstDay.Weekday() - 1);
         }
 
         return (*this - firstWeek) / 7 + 1;
     }
 
-    int Date::GetWeekDay() const
+    int Date::Weekday() const
     {
         return (GetTotalDays() - 1) % 7 + 1;
     }
@@ -261,7 +261,7 @@ namespace pro
     std::ostream &operator<<(std::ostream &os, const Date &date)
     {
         return os << date.m_day << ' ' << Date::months[date.m_mon] << ' ' << date.m_year << ' '
-            << Date::days[date.GetWeekDay()];
+            << Date::days[date.Weekday()];
     }
 
     Date Date::CurrentDate()
@@ -291,7 +291,7 @@ namespace pro
 
     int Date::CurrentWeekday()
     {
-        return CurrentDate().GetWeekDay();
+        return CurrentDate().Weekday();
     }
 
     bool Date::IsLeap(int year)
