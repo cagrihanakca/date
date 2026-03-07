@@ -70,7 +70,7 @@ namespace pro
         return m_year;
     }
 
-    int Date::GetYearDay() const
+    int Date::YearDay() const
     {
         auto yearDay{ m_day };
         for (auto i{ 1 }; i < m_mon; ++i) {
@@ -286,7 +286,7 @@ namespace pro
 
     int Date::CurrentYearDay()
     {
-        return CurrentDate().GetYearDay();
+        return CurrentDate().YearDay();
     }
 
     int Date::CurrentWeekday()
@@ -325,7 +325,7 @@ namespace pro
         for (auto i{ yearBase }; i < m_year; ++i) {
             totalDays += IsLeap(i) ? 366 : 365;
         }
-        totalDays += GetYearDay();
+        totalDays += YearDay();
         return totalDays;
     }
 

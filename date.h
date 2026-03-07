@@ -20,7 +20,7 @@ namespace pro
         [[nodiscard]] int MonthDay() const;
         [[nodiscard]] int Month() const;
         [[nodiscard]] int Year() const;
-        [[nodiscard]] int GetYearDay() const;
+        [[nodiscard]] int YearDay() const;
         [[nodiscard]] int GetYearWeek() const;
         [[nodiscard]] int GetWeekDay() const;
 
