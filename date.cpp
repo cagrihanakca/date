@@ -261,7 +261,7 @@ namespace pro
     std::ostream &operator<<(std::ostream &os, const Date &date)
     {
         return os << date.m_day << ' ' << Date::months[date.m_mon] << ' ' << date.m_year << ' '
-            << Date::days[date.Weekday()];
+            << Date::weekdays[date.Weekday()];
     }
 
     Date Date::CurrentDate()
