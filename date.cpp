@@ -107,7 +107,7 @@ namespace pro
         return *this;
     }
 
-    Date &Date::SetMonth(int mon)
+    Date &Date::Month(int mon)
     {
         const auto temp{ m_mon };
         m_mon = mon;
