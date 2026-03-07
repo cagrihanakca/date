@@ -14,7 +14,7 @@ namespace pro
 {
     Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
     {
-        if (!IsValid()) {
+        if (!Valid()) {
             throw std::invalid_argument{ m_ex };
         }
     }
@@ -30,7 +30,7 @@ namespace pro
         m_day = std::atoi(p);
         m_mon = std::atoi(p + 3);
         m_year = std::atoi(p + 6);
-        if (!IsValid()) {
+        if (!Valid()) {
             throw std::invalid_argument{ m_ex };
         }
     }
@@ -55,22 +55,22 @@ namespace pro
         is >> *this;
     }
 
-    int Date::GetMonthDay() const
+    int Date::MonthDay() const
     {
         return m_day;
     }
 
-    int Date::GetMonth() const
+    int Date::Month() const
     {
         return m_mon;
     }
 
-    int Date::GetYear() const
+    int Date::Year() const
     {
         return m_year;
     }
 
-    int Date::GetYearDay() const
+    int Date::YearDay() const
     {
         auto yearDay{ m_day };
         for (auto i{ 1 }; i < m_mon; ++i) {
@@ -79,50 +79,50 @@ namespace pro
         return yearDay;
     }
 
-    int Date::GetYearWeek() const
+    int Date::YearWeek() const
     {
         Date firstWeek;
-        if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.GetWeekDay() > THURSDAY) {
-            firstWeek = firstDay + (8 - firstDay.GetWeekDay());
+        if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.Weekday() > THURSDAY) {
+            firstWeek = firstDay + (8 - firstDay.Weekday());
         } else {
-            firstWeek = firstDay - (firstDay.GetWeekDay() - 1);
+            firstWeek = firstDay - (firstDay.Weekday() - 1);
         }
 
         return (*this - firstWeek) / 7 + 1;
     }
 
-    int Date::GetWeekDay() const
+    int Date::Weekday() const
     {
-        return (GetTotalDays() - 1) % 7 + 1;
+        return (TotalDays() - 1) % 7 + 1;
     }
 
-    Date &Date::SetMonthDay(int day)
+    Date &Date::MonthDay(int day)
     {
         const auto temp{ m_day };
         m_day = day;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_day = temp;
             throw std::invalid_argument{ m_ex };
         }
         return *this;
     }
 
-    Date &Date::SetMonth(int mon)
+    Date &Date::Month(int mon)
     {
         const auto temp{ m_mon };
         m_mon = mon;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_mon = temp;
             throw std::invalid_argument{ m_ex };
         }
         return *this;
     }
 
-    Date &Date::SetYear(int year)
+    Date &Date::Year(int year)
     {
         const auto temp{ m_year };
         m_year = year;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_year = temp;
             throw std::invalid_argument{ m_ex };
         }
@@ -135,7 +135,7 @@ namespace pro
         m_day = day;
         m_mon = mon;
         m_year = year;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_day = tempDay;
             m_mon = tempMon;
             m_year = tempYear;
@@ -144,28 +144,28 @@ namespace pro
         return *this;
     }
 
-    Date &Date::SetToCurrentDate()
+    Date &Date::SetCurrentDate()
     {
         return *this = CurrentDate();
     }
 
     Date Date::operator-(int day) const
     {
-        const auto totalDays{ GetTotalDays() };
+        const auto totalDays{ TotalDays() };
         if (totalDays <= day) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
-        return GetDateFromTotalDays(totalDays - day);
+        return DateFromTotalDays(totalDays - day);
     }
 
     int operator-(const Date &date1, const Date &date2)
     {
-        return std::abs(date1.GetTotalDays() - date2.GetTotalDays());
+        return std::abs(date1.TotalDays() - date2.TotalDays());
     }
 
     Date operator+(const Date &date, int n)
     {
-        return Date::GetDateFromTotalDays(date.GetTotalDays() + n);
+        return Date::DateFromTotalDays(date.TotalDays() + n);
     }
 
     Date operator+(int n, const Date &date)
@@ -175,7 +175,7 @@ namespace pro
 
     Date &Date::operator+=(int day)
     {
-        return *this = GetDateFromTotalDays(GetTotalDays() + day);
+        return *this = DateFromTotalDays(TotalDays() + day);
     }
 
     Date &Date::operator-=(int day)
@@ -197,7 +197,7 @@ namespace pro
 
     Date &Date::operator--()
     {
-        if (*this == Date{ 1, 1, yearBase }) {
+        if (*this == Date{ 1, 1, baseYear }) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
         return *this -= 1;
@@ -212,7 +212,7 @@ namespace pro
 
     bool operator<(const Date &lhs, const Date &rhs)
     {
-        return lhs.GetTotalDays() < rhs.GetTotalDays();
+        return lhs.TotalDays() < rhs.TotalDays();
     }
 
     bool operator<=(const Date &lhs, const Date &rhs)
@@ -232,7 +232,7 @@ namespace pro
 
     bool operator==(const Date &lhs, const Date &rhs)
     {
-        return lhs.GetTotalDays() == rhs.GetTotalDays();
+        return lhs.TotalDays() == rhs.TotalDays();
     }
 
     bool operator!=(const Date &lhs, const Date &rhs)
@@ -251,7 +251,7 @@ namespace pro
         date.m_day = std::atoi(in.c_str());
         date.m_mon = std::atoi(in.c_str() + 3);
         date.m_year = std::atoi(in.c_str() + 6);
-        if (!date.IsValid()) {
+        if (!date.Valid()) {
             throw std::invalid_argument{ date.m_ex };
         }
 
@@ -261,7 +261,7 @@ namespace pro
     std::ostream &operator<<(std::ostream &os, const Date &date)
     {
         return os << date.m_day << ' ' << Date::months[date.m_mon] << ' ' << date.m_year << ' '
-            << Date::days[date.GetWeekDay()];
+            << Date::weekdays[date.Weekday()];
     }
 
     Date Date::CurrentDate()
@@ -271,32 +271,32 @@ namespace pro
 
     int Date::CurrentMonthDay()
     {
-        return CurrentDate().GetMonthDay();
+        return CurrentDate().MonthDay();
     }
 
     int Date::CurrentMonth()
     {
-        return CurrentDate().GetMonth();
+        return CurrentDate().Month();
     }
 
     int Date::CurrentYear()
     {
-        return CurrentDate().GetYear();
+        return CurrentDate().Year();
     }
 
     int Date::CurrentYearDay()
     {
-        return CurrentDate().GetYearDay();
+        return CurrentDate().YearDay();
     }
 
     int Date::CurrentWeekday()
     {
-        return CurrentDate().GetWeekDay();
+        return CurrentDate().Weekday();
     }
 
     bool Date::IsLeap(int year)
     {
-        if (year < yearBase) {
+        if (year < baseYear) {
             throw std::invalid_argument{ "a year before 1900" };
         }
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
@@ -319,17 +319,17 @@ namespace pro
         return randDate;
     }
 
-    int Date::GetTotalDays() const
+    int Date::TotalDays() const
     {
         int totalDays{};
-        for (auto i{ yearBase }; i < m_year; ++i) {
+        for (auto i{ baseYear }; i < m_year; ++i) {
             totalDays += IsLeap(i) ? 366 : 365;
         }
-        totalDays += GetYearDay();
+        totalDays += YearDay();
         return totalDays;
     }
 
-    bool Date::IsValid() const
+    bool Date::Valid() const
     {
         if (m_day < 1 || m_day > 31) {
             m_ex = "invalid day: " + std::to_string(m_day);
@@ -341,7 +341,7 @@ namespace pro
            return false;
         }
 
-        if (m_year < yearBase) {
+        if (m_year < baseYear) {
             m_ex =  "invalid year: " + std::to_string(m_year);
             return false;
         }
@@ -365,9 +365,9 @@ namespace pro
         return true;
     }
 
-    Date Date::GetDateFromTotalDays(int totalDays)
+    Date Date::DateFromTotalDays(int totalDays)
     {
-        auto year{ yearBase };
+        auto year{ baseYear };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {
             totalDays -= (IsLeap(year) ? 366 : 365);
             ++year;
