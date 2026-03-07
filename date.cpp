@@ -197,7 +197,7 @@ namespace pro
 
     Date &Date::operator--()
     {
-        if (*this == Date{ 1, 1, yearBase }) {
+        if (*this == Date{ 1, 1, baseYear }) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
         return *this -= 1;
@@ -296,7 +296,7 @@ namespace pro
 
     bool Date::IsLeap(int year)
     {
-        if (year < yearBase) {
+        if (year < baseYear) {
             throw std::invalid_argument{ "a year before 1900" };
         }
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
@@ -322,7 +322,7 @@ namespace pro
     int Date::TotalDays() const
     {
         int totalDays{};
-        for (auto i{ yearBase }; i < m_year; ++i) {
+        for (auto i{ baseYear }; i < m_year; ++i) {
             totalDays += IsLeap(i) ? 366 : 365;
         }
         totalDays += YearDay();
@@ -341,7 +341,7 @@ namespace pro
            return false;
         }
 
-        if (m_year < yearBase) {
+        if (m_year < baseYear) {
             m_ex =  "invalid year: " + std::to_string(m_year);
             return false;
         }
@@ -367,7 +367,7 @@ namespace pro
 
     Date Date::DateFromTotalDays(int totalDays)
     {
-        auto year{ yearBase };
+        auto year{ baseYear };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {
             totalDays -= (IsLeap(year) ? 366 : 365);
             ++year;
