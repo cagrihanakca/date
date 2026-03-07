@@ -65,7 +65,7 @@ namespace pro
         return m_mon;
     }
 
-    int Date::GetYear() const
+    int Date::Year() const
     {
         return m_year;
     }
@@ -281,7 +281,7 @@ namespace pro
 
     int Date::CurrentYear()
     {
-        return CurrentDate().GetYear();
+        return CurrentDate().Year();
     }
 
     int Date::CurrentYearDay()
