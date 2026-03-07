@@ -118,7 +118,7 @@ namespace pro
         return *this;
     }
 
-    Date &Date::SetYear(int year)
+    Date &Date::Year(int year)
     {
         const auto temp{ m_year };
         m_year = year;

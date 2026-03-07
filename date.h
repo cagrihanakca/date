@@ -26,7 +26,7 @@ namespace pro
 
         Date &MonthDay(int day);
         Date &Month(int mon);
-        Date &SetYear(int year);
+        Date &Year(int year);
         Date &Set(int day, int mon, int year);
         Date &SetToCurrentDate();
 
