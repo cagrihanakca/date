@@ -14,7 +14,7 @@ namespace pro
 {
     Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
     {
-        if (!IsValid()) {
+        if (!Valid()) {
             throw std::invalid_argument{ m_ex };
         }
     }
@@ -30,7 +30,7 @@ namespace pro
         m_day = std::atoi(p);
         m_mon = std::atoi(p + 3);
         m_year = std::atoi(p + 6);
-        if (!IsValid()) {
+        if (!Valid()) {
             throw std::invalid_argument{ m_ex };
         }
     }
@@ -100,7 +100,7 @@ namespace pro
     {
         const auto temp{ m_day };
         m_day = day;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_day = temp;
             throw std::invalid_argument{ m_ex };
         }
@@ -111,7 +111,7 @@ namespace pro
     {
         const auto temp{ m_mon };
         m_mon = mon;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_mon = temp;
             throw std::invalid_argument{ m_ex };
         }
@@ -122,7 +122,7 @@ namespace pro
     {
         const auto temp{ m_year };
         m_year = year;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_year = temp;
             throw std::invalid_argument{ m_ex };
         }
@@ -135,7 +135,7 @@ namespace pro
         m_day = day;
         m_mon = mon;
         m_year = year;
-        if (!IsValid()) {
+        if (!Valid()) {
             m_day = tempDay;
             m_mon = tempMon;
             m_year = tempYear;
@@ -251,7 +251,7 @@ namespace pro
         date.m_day = std::atoi(in.c_str());
         date.m_mon = std::atoi(in.c_str() + 3);
         date.m_year = std::atoi(in.c_str() + 6);
-        if (!date.IsValid()) {
+        if (!date.Valid()) {
             throw std::invalid_argument{ date.m_ex };
         }
 
@@ -329,7 +329,7 @@ namespace pro
         return totalDays;
     }
 
-    bool Date::IsValid() const
+    bool Date::Valid() const
     {
         if (m_day < 1 || m_day > 31) {
             m_ex = "invalid day: " + std::to_string(m_day);
