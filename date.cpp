@@ -155,7 +155,7 @@ namespace pro
         if (totalDays <= day) {
             throw std::invalid_argument{ "a date before 01/01/1900" };
         }
-        return GetDateFromTotalDays(totalDays - day);
+        return DateFromTotalDays(totalDays - day);
     }
 
     int operator-(const Date &date1, const Date &date2)
@@ -165,7 +165,7 @@ namespace pro
 
     Date operator+(const Date &date, int n)
     {
-        return Date::GetDateFromTotalDays(date.TotalDays() + n);
+        return Date::DateFromTotalDays(date.TotalDays() + n);
     }
 
     Date operator+(int n, const Date &date)
@@ -175,7 +175,7 @@ namespace pro
 
     Date &Date::operator+=(int day)
     {
-        return *this = GetDateFromTotalDays(TotalDays() + day);
+        return *this = DateFromTotalDays(TotalDays() + day);
     }
 
     Date &Date::operator-=(int day)
@@ -365,7 +365,7 @@ namespace pro
         return true;
     }
 
-    Date Date::GetDateFromTotalDays(int totalDays)
+    Date Date::DateFromTotalDays(int totalDays)
     {
         auto year{ yearBase };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {

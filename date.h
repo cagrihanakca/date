@@ -66,7 +66,7 @@ namespace pro
         mutable std::string m_ex;
         [[nodiscard]] int TotalDays() const;
         [[nodiscard]] bool Valid() const;
-        [[nodiscard]] static Date GetDateFromTotalDays(int totalDays);
+        [[nodiscard]] static Date DateFromTotalDays(int totalDays);
         enum Weekday {
             MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
         };
