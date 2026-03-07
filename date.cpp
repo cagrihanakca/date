@@ -144,7 +144,7 @@ namespace pro
         return *this;
     }
 
-    Date &Date::SetToCurrentDate()
+    Date &Date::SetCurrentDate()
     {
         return *this = CurrentDate();
     }

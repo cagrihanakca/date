@@ -28,7 +28,7 @@ namespace pro
         Date &Month(int mon);
         Date &Year(int year);
         Date &Set(int day, int mon, int year);
-        Date &SetToCurrentDate();
+        Date &SetCurrentDate();
 
         [[nodiscard]] Date operator-(int day) const;
         friend int operator-(const Date &date1, const Date &date2);
