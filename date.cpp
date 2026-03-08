@@ -60,7 +60,7 @@ namespace pro
         return m_day;
     }
 
-    int Date::Month() const
+    int Date::Month() const noexcept
     {
         return m_mon;
     }

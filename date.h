@@ -18,7 +18,7 @@ namespace pro
         explicit Date(std::istream &is);
 
         [[nodiscard]] int MonthDay() const noexcept;
-        [[nodiscard]] int Month() const;
+        [[nodiscard]] int Month() const noexcept;
         [[nodiscard]] int Year() const;
         [[nodiscard]] int YearDay() const;
         [[nodiscard]] int YearWeek() const;
