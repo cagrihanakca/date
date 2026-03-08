@@ -70,7 +70,7 @@ namespace pro
         return m_year;
     }
 
-    int Date::YearDay() const
+    int Date::YearDay() const noexcept
     {
         auto yearDay{ m_day };
         for (auto i{ 1 }; i < m_mon; ++i) {
