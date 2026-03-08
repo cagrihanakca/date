@@ -91,7 +91,7 @@ namespace pro
         return (*this - firstWeek) / 7 + 1;
     }
 
-    int Date::Weekday() const
+    int Date::Weekday() const noexcept
     {
         return (TotalDays() - 1) % 7 + 1;
     }

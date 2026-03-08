@@ -22,7 +22,7 @@ namespace pro
         [[nodiscard]] int Year() const noexcept;
         [[nodiscard]] int YearDay() const noexcept;
         [[nodiscard]] int YearWeek() const noexcept;
-        [[nodiscard]] int Weekday() const;
+        [[nodiscard]] int Weekday() const noexcept;
 
         Date &MonthDay(int day);
         Date &Month(int mon);
