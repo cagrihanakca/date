@@ -55,7 +55,7 @@ namespace pro
         is >> *this;
     }
 
-    int Date::MonthDay() const
+    int Date::MonthDay() const noexcept
     {
         return m_day;
     }
