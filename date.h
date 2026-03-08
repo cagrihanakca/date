@@ -10,7 +10,7 @@ namespace pro
 {
     class Date {
     public:
-        Date() = default;
+        Date() noexcept = default;
         Date(int day, int mon, int year);
         explicit Date(const char *p);
         explicit Date(const std::string &date);
