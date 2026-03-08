@@ -65,7 +65,7 @@ namespace pro
         return m_mon;
     }
 
-    int Date::Year() const
+    int Date::Year() const noexcept
     {
         return m_year;
     }
