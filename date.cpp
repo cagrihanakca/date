@@ -278,7 +278,11 @@ namespace pro
 
     Date Date::CurrentDate()
     {
-        return Date{ std::time(nullptr) };
+        try {
+            return Date{ std::time(nullptr) };
+        } catch (const std::exception &) {
+            throw std::runtime_error{ "current date is unavailable" };
+        }
     }
 
     int Date::CurrentMonthDay()
