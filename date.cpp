@@ -150,6 +150,10 @@ namespace pro
 
     Date Date::operator-(int day) const
     {
+        if (day < 0) {
+            throw std::invalid_argument{ "days cannot be negative" };
+        }
+
         const auto totalDays{ TotalDays() };
         if (totalDays <= day) {
             throw std::invalid_argument{ "a date before base date (01/01/1900)" };
