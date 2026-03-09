@@ -55,22 +55,22 @@ namespace pro
         is >> *this;
     }
 
-    int Date::MonthDay() const
+    int Date::MonthDay() const noexcept
     {
         return m_day;
     }
 
-    int Date::Month() const
+    int Date::Month() const noexcept
     {
         return m_mon;
     }
 
-    int Date::Year() const
+    int Date::Year() const noexcept
     {
         return m_year;
     }
 
-    int Date::YearDay() const
+    int Date::YearDay() const noexcept
     {
         auto yearDay{ m_day };
         for (auto i{ 1 }; i < m_mon; ++i) {
@@ -79,7 +79,7 @@ namespace pro
         return yearDay;
     }
 
-    int Date::YearWeek() const
+    int Date::YearWeek() const noexcept
     {
         Date firstWeek;
         if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.Weekday() > THURSDAY) {
@@ -91,7 +91,7 @@ namespace pro
         return (*this - firstWeek) / 7 + 1;
     }
 
-    int Date::Weekday() const
+    int Date::Weekday() const noexcept
     {
         return (TotalDays() - 1) % 7 + 1;
     }
@@ -158,7 +158,7 @@ namespace pro
         return DateFromTotalDays(totalDays - day);
     }
 
-    int operator-(const Date &date1, const Date &date2)
+    int operator-(const Date &date1, const Date &date2) noexcept
     {
         return std::abs(date1.TotalDays() - date2.TotalDays());
     }
@@ -210,32 +210,32 @@ namespace pro
         return ret;
     }
 
-    bool operator<(const Date &lhs, const Date &rhs)
+    bool operator<(const Date &lhs, const Date &rhs) noexcept
     {
         return lhs.TotalDays() < rhs.TotalDays();
     }
 
-    bool operator<=(const Date &lhs, const Date &rhs)
+    bool operator<=(const Date &lhs, const Date &rhs) noexcept
     {
         return !(rhs < lhs);
     }
 
-    bool operator>(const Date &lhs, const Date &rhs)
+    bool operator>(const Date &lhs, const Date &rhs) noexcept
     {
         return rhs < lhs;
     }
 
-    bool operator>=(const Date &lhs, const Date &rhs)
+    bool operator>=(const Date &lhs, const Date &rhs) noexcept
     {
         return !(lhs < rhs);
     }
 
-    bool operator==(const Date &lhs, const Date &rhs)
+    bool operator==(const Date &lhs, const Date &rhs) noexcept
     {
         return lhs.TotalDays() == rhs.TotalDays();
     }
 
-    bool operator!=(const Date &lhs, const Date &rhs)
+    bool operator!=(const Date &lhs, const Date &rhs) noexcept
     {
         return !(lhs == rhs);
     }
@@ -319,7 +319,7 @@ namespace pro
         return randDate;
     }
 
-    int Date::TotalDays() const
+    int Date::TotalDays() const noexcept
     {
         int totalDays{};
         for (auto i{ baseYear }; i < m_year; ++i) {
@@ -365,7 +365,7 @@ namespace pro
         return true;
     }
 
-    Date Date::DateFromTotalDays(int totalDays)
+    Date Date::DateFromTotalDays(int totalDays) noexcept
     {
         auto year{ baseYear };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {

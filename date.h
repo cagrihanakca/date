@@ -10,19 +10,19 @@ namespace pro
 {
     class Date {
     public:
-        Date() = default;
+        Date() noexcept = default;
         Date(int day, int mon, int year);
         explicit Date(const char *p);
         explicit Date(const std::string &date);
         explicit Date(std::time_t timer);
         explicit Date(std::istream &is);
 
-        [[nodiscard]] int MonthDay() const;
-        [[nodiscard]] int Month() const;
-        [[nodiscard]] int Year() const;
-        [[nodiscard]] int YearDay() const;
-        [[nodiscard]] int YearWeek() const;
-        [[nodiscard]] int Weekday() const;
+        [[nodiscard]] int MonthDay() const noexcept;
+        [[nodiscard]] int Month() const noexcept;
+        [[nodiscard]] int Year() const noexcept;
+        [[nodiscard]] int YearDay() const noexcept;
+        [[nodiscard]] int YearWeek() const noexcept;
+        [[nodiscard]] int Weekday() const noexcept;
 
         Date &MonthDay(int day);
         Date &Month(int mon);
@@ -31,7 +31,7 @@ namespace pro
         Date &SetCurrentDate();
 
         [[nodiscard]] Date operator-(int day) const;
-        friend int operator-(const Date &date1, const Date &date2);
+        friend int operator-(const Date &date1, const Date &date2) noexcept;
         friend Date operator+(const Date &date, int n);
 
         Date &operator+=(int day);
@@ -42,8 +42,8 @@ namespace pro
         Date &operator--();
         Date operator--(int);
 
-        friend bool operator<(const Date &lhs, const Date &rhs);
-        friend bool operator==(const Date &lhs, const Date &rhs);
+        friend bool operator<(const Date &lhs, const Date &rhs) noexcept;
+        friend bool operator==(const Date &lhs, const Date &rhs) noexcept;
 
         friend std::istream &operator>>(std::istream &is, Date &date);
         friend std::ostream &operator<<(std::ostream &os, const Date &date);
@@ -64,9 +64,9 @@ namespace pro
         int m_mon{ 1 };
         int m_year{ baseYear };
         mutable std::string m_ex;
-        [[nodiscard]] int TotalDays() const;
+        [[nodiscard]] int TotalDays() const noexcept;
         [[nodiscard]] bool Valid() const;
-        [[nodiscard]] static Date DateFromTotalDays(int totalDays);
+        [[nodiscard]] static Date DateFromTotalDays(int totalDays) noexcept;
         enum Weekday {
             MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
         };
@@ -88,10 +88,10 @@ namespace pro
 
     [[nodiscard]] Date operator+(int n, const Date &date);
 
-    [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs);
-    [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs);
-    [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs);
-    [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs);
+    [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs) noexcept;
 }
 
 #endif // DATE_H
