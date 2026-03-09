@@ -319,7 +319,7 @@ namespace pro
         return randDate;
     }
 
-    int Date::TotalDays() const
+    int Date::TotalDays() const noexcept
     {
         int totalDays{};
         for (auto i{ baseYear }; i < m_year; ++i) {
