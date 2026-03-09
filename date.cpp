@@ -210,32 +210,32 @@ namespace pro
         return ret;
     }
 
-    bool operator<(const Date &lhs, const Date &rhs)
+    bool operator<(const Date &lhs, const Date &rhs) noexcept
     {
         return lhs.TotalDays() < rhs.TotalDays();
     }
 
-    bool operator<=(const Date &lhs, const Date &rhs)
+    bool operator<=(const Date &lhs, const Date &rhs) noexcept
     {
         return !(rhs < lhs);
     }
 
-    bool operator>(const Date &lhs, const Date &rhs)
+    bool operator>(const Date &lhs, const Date &rhs) noexcept
     {
         return rhs < lhs;
     }
 
-    bool operator>=(const Date &lhs, const Date &rhs)
+    bool operator>=(const Date &lhs, const Date &rhs) noexcept
     {
         return !(lhs < rhs);
     }
 
-    bool operator==(const Date &lhs, const Date &rhs)
+    bool operator==(const Date &lhs, const Date &rhs) noexcept
     {
         return lhs.TotalDays() == rhs.TotalDays();
     }
 
-    bool operator!=(const Date &lhs, const Date &rhs)
+    bool operator!=(const Date &lhs, const Date &rhs) noexcept
     {
         return !(lhs == rhs);
     }

@@ -42,8 +42,8 @@ namespace pro
         Date &operator--();
         Date operator--(int);
 
-        friend bool operator<(const Date &lhs, const Date &rhs);
-        friend bool operator==(const Date &lhs, const Date &rhs);
+        friend bool operator<(const Date &lhs, const Date &rhs) noexcept;
+        friend bool operator==(const Date &lhs, const Date &rhs) noexcept;
 
         friend std::istream &operator>>(std::istream &is, Date &date);
         friend std::ostream &operator<<(std::ostream &os, const Date &date);
@@ -88,10 +88,10 @@ namespace pro
 
     [[nodiscard]] Date operator+(int n, const Date &date);
 
-    [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs);
-    [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs);
-    [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs);
-    [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs);
+    [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs) noexcept;
 }
 
 #endif // DATE_H
