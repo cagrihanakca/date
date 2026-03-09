@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <istream>
+#include <limits>
 #include <ostream>
 #include <random>
 #include <regex>
@@ -163,7 +164,16 @@ namespace pro
 
     Date operator+(const Date &date, int n)
     {
-        return Date::DateFromTotalDays(date.TotalDays() + n);
+        if (n < 0) {
+            throw std::invalid_argument{ "days cannot be negative" };
+        }
+
+        auto totalDays{ date.TotalDays() };
+        if ((std::numeric_limits<int>::max() - n) < totalDays) {
+            throw std::invalid_argument{ std::to_string(n) + " days after cannot be represent" };
+        }
+
+        return Date::DateFromTotalDays(totalDays + n);
     }
 
     Date operator+(int n, const Date &date)
