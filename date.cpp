@@ -8,7 +8,6 @@
 #include <regex>
 #include <stdexcept>
 #include <string>
-#include <type_traits>
 
 namespace pro
 {
@@ -39,12 +38,11 @@ namespace pro
 
     Date::Date(std::time_t timer)
     {
-        if constexpr (std::is_signed_v<std::time_t>) {
-            if (timer < 0) {
-                throw std::invalid_argument{ "negative calendar time" };
-            }
-        }
         const auto *tp{ std::localtime(&timer) };
+        if (!tp) {
+            throw std::runtime_error{ "calendar time conversion failed" };
+        }
+
         m_day = tp->tm_mday;
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
