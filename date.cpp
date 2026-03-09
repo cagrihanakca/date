@@ -158,7 +158,7 @@ namespace pro
         return DateFromTotalDays(totalDays - day);
     }
 
-    int operator-(const Date &date1, const Date &date2)
+    int operator-(const Date &date1, const Date &date2) noexcept
     {
         return std::abs(date1.TotalDays() - date2.TotalDays());
     }

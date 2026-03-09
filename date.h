@@ -31,7 +31,7 @@ namespace pro
         Date &SetCurrentDate();
 
         [[nodiscard]] Date operator-(int day) const;
-        friend int operator-(const Date &date1, const Date &date2);
+        friend int operator-(const Date &date1, const Date &date2) noexcept;
         friend Date operator+(const Date &date, int n);
 
         Date &operator+=(int day);
