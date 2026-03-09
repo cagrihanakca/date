@@ -365,7 +365,7 @@ namespace pro
         return true;
     }
 
-    Date Date::DateFromTotalDays(int totalDays)
+    Date Date::DateFromTotalDays(int totalDays) noexcept
     {
         auto year{ baseYear };
         while (totalDays >= (IsLeap(year) ? 366 : 365)) {
