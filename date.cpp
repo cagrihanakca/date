@@ -185,9 +185,9 @@ namespace pro
         return date + n;
     }
 
-    Date &Date::operator+=(int day)
+    Date &Date::operator+=(int n)
     {
-        return *this = DateFromTotalDays(TotalDays() + day);
+        return *this = *this + n;
     }
 
     Date &Date::operator-=(int day)
