@@ -398,13 +398,13 @@ namespace pro
     Date Date::DateFromTotalDays(int totalDays) noexcept
     {
         auto year{ baseYear };
-        while (totalDays >= (IsLeap(year) ? 366 : 365)) {
+        while (totalDays > (IsLeap(year) ? 366 : 365)) {
             totalDays -= (IsLeap(year) ? 366 : 365);
             ++year;
         }
 
         auto mon{ 1 };
-        while (totalDays >= monthDays[IsLeap(year)][mon]) {
+        while (totalDays > monthDays[IsLeap(year)][mon]) {
             totalDays -= monthDays[IsLeap(year)][mon];
             ++mon;
         }
