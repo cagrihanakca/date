@@ -315,21 +315,38 @@ namespace pro
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
-    Date Date::RandomDate(int randMinYear, int randMaxYear)
+    Date Date::RandomDate(int minYear, int maxYear)
     {
-        static std::mt19937 eng{ std::random_device{}() };
-        std::uniform_int_distribution dayDist{ 1, 31 }, monDist{ 1, 12 }, yearDist{ randMinYear, randMaxYear };
-        Date randDate;
-        while (true) {
-            try {
-                randDate.Set(dayDist(eng), monDist(eng), yearDist(eng));
-            } catch (const std::exception &) {
-                continue;
-            }
-            break;
+        if ((minYear < 1900) || (maxYear < 1900)) {
+            throw std::invalid_argument{ "a year less than 1900 is not allowed" };
         }
 
-        return randDate;
+        if (minYear > maxYear) {
+            throw std::invalid_argument{ "min year cannot be greater than max year" };
+        }
+
+        static std::mt19937 eng;
+        try {
+            eng.seed(std::random_device{}());
+        } catch (const std::exception &) {
+            throw std::runtime_error{ "random date creating failed" };
+        }
+
+        auto year{ std::uniform_int_distribution{ minYear, maxYear }(eng) };
+        auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
+        int day{};
+        switch (mon) {
+            case MARCH: case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
+                day = std::uniform_int_distribution{ 1, 30 }(eng);
+                break;
+            case FEBRUARY:
+                day = std::uniform_int_distribution{ 1, IsLeap(year) ? 29 : 28 }(eng);
+                break;
+            default:
+                day = std::uniform_int_distribution{ 1, 31 }(eng);
+        }
+
+        return { day, mon, year };
     }
 
     int Date::TotalDays() const noexcept
