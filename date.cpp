@@ -190,9 +190,9 @@ namespace pro
         return *this = *this + n;
     }
 
-    Date &Date::operator-=(int day)
+    Date &Date::operator-=(int n)
     {
-        return *this += -day;
+        return *this = *this - n;
     }
 
     Date &Date::operator++()
