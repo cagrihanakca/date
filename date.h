@@ -58,7 +58,7 @@ namespace pro
         [[nodiscard]] static int CurrentWeekday();
 
         [[nodiscard]] static bool IsLeap(int year);
-        [[nodiscard]] static Date RandomDate(int randMinYear = baseYear, int randMaxYear = CurrentYear());
+        [[nodiscard]] static Date RandomDate(int minYear = baseYear, int maxYear = CurrentYear());
     private:
         int m_day{ 1 };
         int m_mon{ 1 };

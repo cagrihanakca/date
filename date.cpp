@@ -3,12 +3,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <istream>
+#include <limits>
 #include <ostream>
 #include <random>
 #include <regex>
 #include <stdexcept>
 #include <string>
-#include <type_traits>
 
 namespace pro
 {
@@ -39,12 +39,11 @@ namespace pro
 
     Date::Date(std::time_t timer)
     {
-        if constexpr (std::is_signed_v<std::time_t>) {
-            if (timer < 0) {
-                throw std::invalid_argument{ "negative calendar time" };
-            }
-        }
         const auto *tp{ std::localtime(&timer) };
+        if (!tp) {
+            throw std::runtime_error{ "calendar time conversion failed" };
+        }
+
         m_day = tp->tm_mday;
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
@@ -151,9 +150,13 @@ namespace pro
 
     Date Date::operator-(int day) const
     {
+        if (day < 0) {
+            throw std::invalid_argument{ "days cannot be negative" };
+        }
+
         const auto totalDays{ TotalDays() };
         if (totalDays <= day) {
-            throw std::invalid_argument{ "a date before 01/01/1900" };
+            throw std::invalid_argument{ "a date before base date (01/01/1900)" };
         }
         return DateFromTotalDays(totalDays - day);
     }
@@ -165,7 +168,16 @@ namespace pro
 
     Date operator+(const Date &date, int n)
     {
-        return Date::DateFromTotalDays(date.TotalDays() + n);
+        if (n < 0) {
+            throw std::invalid_argument{ "days cannot be negative" };
+        }
+
+        auto totalDays{ date.TotalDays() };
+        if ((std::numeric_limits<int>::max() - n) < totalDays) {
+            throw std::invalid_argument{ std::to_string(n) + " days after cannot be represent" };
+        }
+
+        return Date::DateFromTotalDays(totalDays + n);
     }
 
     Date operator+(int n, const Date &date)
@@ -173,14 +185,14 @@ namespace pro
         return date + n;
     }
 
-    Date &Date::operator+=(int day)
+    Date &Date::operator+=(int n)
     {
-        return *this = DateFromTotalDays(TotalDays() + day);
+        return *this = *this + n;
     }
 
-    Date &Date::operator-=(int day)
+    Date &Date::operator-=(int n)
     {
-        return *this += -day;
+        return *this = *this - n;
     }
 
     Date &Date::operator++()
@@ -197,9 +209,6 @@ namespace pro
 
     Date &Date::operator--()
     {
-        if (*this == Date{ 1, 1, baseYear }) {
-            throw std::invalid_argument{ "a date before 01/01/1900" };
-        }
         return *this -= 1;
     }
 
@@ -266,7 +275,11 @@ namespace pro
 
     Date Date::CurrentDate()
     {
-        return Date{ std::time(nullptr) };
+        try {
+            return Date{ std::time(nullptr) };
+        } catch (const std::exception &) {
+            throw std::runtime_error{ "current date is unavailable" };
+        }
     }
 
     int Date::CurrentMonthDay()
@@ -302,21 +315,38 @@ namespace pro
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
-    Date Date::RandomDate(int randMinYear, int randMaxYear)
+    Date Date::RandomDate(int minYear, int maxYear)
     {
-        static std::mt19937 eng{ std::random_device{}() };
-        std::uniform_int_distribution dayDist{ 1, 31 }, monDist{ 1, 12 }, yearDist{ randMinYear, randMaxYear };
-        Date randDate;
-        while (true) {
-            try {
-                randDate.Set(dayDist(eng), monDist(eng), yearDist(eng));
-            } catch (const std::exception &) {
-                continue;
-            }
-            break;
+        if ((minYear < 1900) || (maxYear < 1900)) {
+            throw std::invalid_argument{ "a year less than 1900 is not allowed" };
         }
 
-        return randDate;
+        if (minYear > maxYear) {
+            throw std::invalid_argument{ "min year cannot be greater than max year" };
+        }
+
+        static std::mt19937 eng;
+        try {
+            eng.seed(std::random_device{}());
+        } catch (const std::exception &) {
+            throw std::runtime_error{ "random date creating failed" };
+        }
+
+        auto year{ std::uniform_int_distribution{ minYear, maxYear }(eng) };
+        auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
+        int day{};
+        switch (mon) {
+            case MARCH: case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
+                day = std::uniform_int_distribution{ 1, 30 }(eng);
+                break;
+            case FEBRUARY:
+                day = std::uniform_int_distribution{ 1, IsLeap(year) ? 29 : 28 }(eng);
+                break;
+            default:
+                day = std::uniform_int_distribution{ 1, 31 }(eng);
+        }
+
+        return { day, mon, year };
     }
 
     int Date::TotalDays() const noexcept
