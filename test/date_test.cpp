@@ -8,6 +8,7 @@ TEST(ConstructorTest, DefaultCtor) {
     EXPECT_EQ(d.MonthDay(), 1);
     EXPECT_EQ(d.Month(), 1);
     EXPECT_EQ(d.Year(), Date::baseYear);
+    EXPECT_NO_THROW(Date{});
 }
 
 TEST(ConstructorTest, DayMonYearCtor) {
