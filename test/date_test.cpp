@@ -16,4 +16,8 @@ TEST(ConstructorTest, DayMonYearCtor) {
     EXPECT_EQ(d.MonthDay(), 16);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
+    EXPECT_NO_THROW(Date(16, 12, 2024));
+    EXPECT_THROW(Date(38, 12, 2024), std::invalid_argument);
+    EXPECT_THROW(Date(12, 65, 2024), std::invalid_argument);
+    EXPECT_THROW(Date(12, 12, 1474), std::invalid_argument);
 }
