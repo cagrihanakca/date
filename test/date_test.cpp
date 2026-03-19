@@ -1,7 +1,6 @@
-#include "gtest/gtest.h"
-#include "date.h"
-
 #include <string>
+#include "date.h"
+#include "gtest/gtest.h"
 
 using namespace pro;
 
