@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include "date.h"
 
+#include <string>
+
 using namespace pro;
 
 TEST(ConstructorTest, DefaultCtor)
@@ -47,4 +49,26 @@ TEST(ConstructorTest, CStringCtor)
     EXPECT_THROW(Date{ "aaaa12/12/2024" }, std::invalid_argument);
     EXPECT_THROW(Date{ "12/bbbb12/2024" }, std::invalid_argument);
     EXPECT_THROW(Date{ "12/12/ccccc2024" }, std::invalid_argument);
+}
+
+TEST(ConstructorTest, StringCtor)
+{
+    using namespace std::literals::string_literals;
+
+    Date testDate{ "12/12/2024"s };
+
+    EXPECT_EQ(testDate.MonthDay(), 12);
+    EXPECT_EQ(testDate.Month(), 12);
+    EXPECT_EQ(testDate.Year(), 2024);
+
+    EXPECT_NO_THROW(Date("12/12/2024"s));
+
+    EXPECT_THROW(Date{ "38/12/2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "12/65/2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "12/12/1474"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "12 12 2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "12.12.2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, std::invalid_argument);
 }
