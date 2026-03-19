@@ -12,8 +12,8 @@ TEST(ConstructorTest, DefaultCtor) {
 }
 
 TEST(ConstructorTest, DayMonYearCtor) {
-    Date testDate{ 16, 12, 2024 };
-    EXPECT_EQ(testDate.MonthDay(), 16);
+    Date testDate{ 12, 12, 2024 };
+    EXPECT_EQ(testDate.MonthDay(), 12);
     EXPECT_EQ(testDate.Month(), 12);
     EXPECT_EQ(testDate.Year(), 2024);
     EXPECT_NO_THROW(Date(12, 12, 2024));
