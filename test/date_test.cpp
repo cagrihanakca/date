@@ -7,13 +7,13 @@ using namespace pro;
 
 TEST(ConstructorTest, DefaultCtor)
 {
+    ASSERT_NO_THROW(Date{});
+
     Date testDate;
 
     EXPECT_EQ(testDate.MonthDay(), 1);
     EXPECT_EQ(testDate.Month(), 1);
     EXPECT_EQ(testDate.Year(), Date::baseYear);
-
-    EXPECT_NO_THROW(Date{});
 }
 
 TEST(ConstructorTest, DayMonYearCtor)
