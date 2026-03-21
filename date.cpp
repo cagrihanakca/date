@@ -41,7 +41,7 @@ namespace pro
     {
         const auto *tp{ std::localtime(&timer) };
         if (!tp) {
-            throw std::runtime_error{ "calendar time conversion failed" };
+            throw std::runtime_error{ "time since epoch is invalid" };
         }
 
         m_day = tp->tm_mday;
