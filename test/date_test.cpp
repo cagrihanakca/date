@@ -1,3 +1,4 @@
+#include <ctime>
 #include <string>
 #include "date.h"
 #include "gtest/gtest.h"
@@ -70,4 +71,21 @@ TEST(ConstructorTest, StringCtor)
     EXPECT_THROW(Date{ "aaaa12/12/2024"s }, std::invalid_argument);
     EXPECT_THROW(Date{ "12/bbbb12/2024"s }, std::invalid_argument);
     EXPECT_THROW(Date{ "12/12/ccccc2024"s }, std::invalid_argument);
+}
+
+TEST(ConstructorTest, CalendarTimeCtor)
+{
+    std::time_t timer{};
+    std::time(&timer);
+
+    Date testDate{ timer };
+    const auto *tp{ std::localtime(&timer) };
+
+    EXPECT_EQ(testDate.MonthDay(), tp->tm_mday);
+    EXPECT_EQ(testDate.Month(), tp->tm_mon + 1);
+    EXPECT_EQ(testDate.Year(), tp->tm_year + 1900);
+
+    EXPECT_NO_THROW(Date{ timer });
+
+    EXPECT_THROW(Date{ -1 }, std::runtime_error);
 }
