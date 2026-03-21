@@ -78,14 +78,14 @@ TEST(ConstructorTest, CalendarTimeCtor)
     std::time_t timer{};
     std::time(&timer);
 
+    ASSERT_NO_THROW(Date{ timer });
+
     Date testDate{ timer };
     const auto *tp{ std::localtime(&timer) };
 
     EXPECT_EQ(testDate.MonthDay(), tp->tm_mday);
     EXPECT_EQ(testDate.Month(), tp->tm_mon + 1);
     EXPECT_EQ(testDate.Year(), tp->tm_year + 1900);
-
-    EXPECT_NO_THROW(Date{ timer });
 
     EXPECT_THROW(Date{ -1 }, std::runtime_error);
 }
