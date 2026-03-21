@@ -55,13 +55,13 @@ TEST(ConstructorTest, StringCtor)
 {
     using namespace std::literals::string_literals;
 
+    ASSERT_NO_THROW(Date("12/12/2024"s));
+
     Date testDate{ "12/12/2024"s };
 
     EXPECT_EQ(testDate.MonthDay(), 12);
     EXPECT_EQ(testDate.Month(), 12);
     EXPECT_EQ(testDate.Year(), 2024);
-
-    EXPECT_NO_THROW(Date("12/12/2024"s));
 
     EXPECT_THROW(Date{ "38/12/2024"s }, std::invalid_argument);
     EXPECT_THROW(Date{ "12/65/2024"s }, std::invalid_argument);
