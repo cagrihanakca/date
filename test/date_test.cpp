@@ -1,4 +1,5 @@
 #include <ctime>
+#include <sstream>
 #include <string>
 #include "date.h"
 #include "gtest/gtest.h"
@@ -88,4 +89,29 @@ TEST(ConstructorTest, CalendarTimeCtor)
     EXPECT_EQ(testDate.Year(), tp->tm_year + 1900);
 
     EXPECT_THROW(Date{ -1 }, std::runtime_error);
+}
+
+TEST(ConstructorTest, IstreamCtor)
+{
+    std::istringstream istr{ "12/12/2024" };
+
+    ASSERT_NO_THROW(Date{ istr });
+
+    istr.clear();
+    istr.str("12/12/2024");
+
+    Date testDate{ istr };
+
+    EXPECT_EQ(testDate.MonthDay(), 12);
+    EXPECT_EQ(testDate.Month(), 12);
+    EXPECT_EQ(testDate.Year(), 2024);
+
+    const std::vector<std::string> inputs{
+        "38/12/2024", "12/65/2024", "12/12/1474", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
+        "12/12/ccccc2024"
+    };
+    for (const auto &in : inputs) {
+        std::istringstream istr{ in };
+        EXPECT_THROW(Date{ in }, std::invalid_argument);
+    }
 }
