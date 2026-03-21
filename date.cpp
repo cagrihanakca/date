@@ -47,6 +47,9 @@ namespace pro
         m_day = tp->tm_mday;
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
+        if (!Valid()) {
+            throw std::invalid_argument{ m_ex };
+        }
     }
 
     Date::Date(std::istream &is)
