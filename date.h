@@ -4,6 +4,7 @@
 #include <array>
 #include <ctime>
 #include <iosfwd>
+#include <stdexcept>
 #include <string>
 
 namespace pro
@@ -59,6 +60,17 @@ namespace pro
 
         [[nodiscard]] static bool IsLeap(int year);
         [[nodiscard]] static Date RandomDate(int minYear = baseYear, int maxYear = CurrentYear());
+
+        class InvalidDate : public std::invalid_argument {
+        public:
+            enum class Reason {
+                DAY, MONTH, YEAR, FORMAT
+            };
+            InvalidDate(Reason reason, const std::string &errMsg);
+            [[nodiscard]] Reason GetReason() const noexcept;
+        private:
+            Reason m_reason;
+        };
     private:
         int m_day{ 1 };
         int m_mon{ 1 };
