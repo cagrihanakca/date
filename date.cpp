@@ -406,6 +406,38 @@ namespace pro
         return true;
     }
 
+    void Date::Validate() const
+    {
+        using enum InvalidDate::Reason;
+
+        if (m_day < 1 || m_day > 31) {
+            throw InvalidDate{ DAY, "invalid day: " + std::to_string(m_day) + " (the day must be between [1, 31])" };
+        }
+
+        if (m_mon < JANUARY || m_mon > DECEMBER) {
+            throw InvalidDate{ MONTH, "invalid month: " + std::to_string(m_mon) +
+                " (the month must be between [1, 12])" };
+        }
+
+        if (m_year < baseYear) {
+            throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) + " isn't less than base year (1900)" };
+        }
+
+        if (m_day == 31 &&
+            (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
+            throw InvalidDate{ MONTH, "invalid month: " + months[m_mon] + " cannot have 31 days" };
+        }
+
+        if (m_day == 30 && m_mon == FEBRUARY) {
+            throw InvalidDate{ DAY, "invalid month: February cannot have 30 days" };
+        }
+
+        if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
+            throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) +
+                " isnt' leap. February cannot have 29 days if a year isn't leap" };
+        }
+    }
+
     Date Date::DateFromTotalDays(int totalDays) noexcept
     {
         auto year{ baseYear };
