@@ -78,6 +78,7 @@ namespace pro
         mutable std::string m_ex;
         [[nodiscard]] int TotalDays() const noexcept;
         [[nodiscard]] bool Valid() const;
+        void Validate() const;
         [[nodiscard]] static Date DateFromTotalDays(int totalDays) noexcept;
         enum Weekday {
             MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
