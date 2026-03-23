@@ -15,6 +15,11 @@ namespace pro
     Date::InvalidDate::InvalidDate(Reason reason, const std::string &msg)
         : std::invalid_argument{ msg }, m_reason{ reason } {}
 
+    Date::InvalidDate::Reason Date::InvalidDate::GetReason() const noexcept
+    {
+        return m_reason;
+    }
+
     Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
     {
         if (!Valid()) {
