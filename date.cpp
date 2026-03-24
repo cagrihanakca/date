@@ -348,7 +348,7 @@ namespace pro
         auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
         int day{};
         switch (mon) {
-            case MARCH: case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
+            case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
                 day = std::uniform_int_distribution{ 1, 30 }(eng);
                 break;
             case FEBRUARY:
