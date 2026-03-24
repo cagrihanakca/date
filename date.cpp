@@ -194,7 +194,8 @@ namespace pro
 
         auto totalDays{ date.TotalDays() };
         if ((std::numeric_limits<int>::max() - n) < totalDays) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) + " days after cannot be represent" };
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
+                " days after cannot be represented" };
         }
 
         return Date::DateFromTotalDays(totalDays + n);
@@ -375,7 +376,7 @@ namespace pro
         }
 
         if (m_year < baseYear) {
-            throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) + " isn't less than base year (1900)" };
+            throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) + " is less than the base year (1900)" };
         }
 
         if (m_day == 31 &&
@@ -384,12 +385,12 @@ namespace pro
         }
 
         if (m_day == 30 && m_mon == FEBRUARY) {
-            throw InvalidDate{ DAY, "invalid month: February cannot have 30 days" };
+            throw InvalidDate{ DAY, "invalid day: February cannot have 30 days" };
         }
 
         if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
             throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) +
-                " isnt' leap. February cannot have 29 days if a year isn't leap" };
+                " isn't leap. February cannot have 29 days if a year isn't leap" };
         }
     }
 
