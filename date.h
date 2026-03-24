@@ -4,6 +4,7 @@
 #include <array>
 #include <ctime>
 #include <iosfwd>
+#include <stdexcept>
 #include <string>
 
 namespace pro
@@ -59,13 +60,23 @@ namespace pro
 
         [[nodiscard]] static bool IsLeap(int year);
         [[nodiscard]] static Date RandomDate(int minYear = baseYear, int maxYear = CurrentYear());
+
+        class InvalidDate : public std::invalid_argument {
+        public:
+            enum class Reason {
+                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
+            };
+            InvalidDate(Reason reason, const std::string &errMsg);
+            [[nodiscard]] Reason GetReason() const noexcept;
+        private:
+            Reason m_reason;
+        };
     private:
         int m_day{ 1 };
         int m_mon{ 1 };
         int m_year{ baseYear };
-        mutable std::string m_ex;
+        void Validate() const;
         [[nodiscard]] int TotalDays() const noexcept;
-        [[nodiscard]] bool Valid() const;
         [[nodiscard]] static Date DateFromTotalDays(int totalDays) noexcept;
         enum Weekday {
             MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY

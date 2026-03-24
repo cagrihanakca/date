@@ -1,5 +1,6 @@
 #include "date.h"
 
+#include <chrono>
 #include <cstdlib>
 #include <ctime>
 #include <istream>
@@ -12,11 +13,17 @@
 
 namespace pro
 {
+    Date::InvalidDate::InvalidDate(Reason reason, const std::string &msg)
+        : std::invalid_argument{ msg }, m_reason{ reason } {}
+
+    Date::InvalidDate::Reason Date::InvalidDate::GetReason() const noexcept
+    {
+        return m_reason;
+    }
+
     Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
     {
-        if (!Valid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        Validate();
     }
 
     Date::Date(const char *p)
@@ -24,15 +31,14 @@ namespace pro
         using namespace std::literals::string_literals;
 
         if (!std::regex_match(p, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
-            throw std::invalid_argument{ "invalid date format: "s + p + " (dd/mm/yyyy)" };
+            throw InvalidDate{ InvalidDate::Reason::FORMAT, "invalid date format: "s + p +
+                " isn't compatible dd/mm/yyyy" };
         }
 
         m_day = std::atoi(p);
         m_mon = std::atoi(p + 3);
         m_year = std::atoi(p + 6);
-        if (!Valid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        Validate();
     }
 
     Date::Date(const std::string &date) : Date{ date.c_str() } {}
@@ -41,15 +47,13 @@ namespace pro
     {
         const auto *tp{ std::localtime(&timer) };
         if (!tp) {
-            throw std::runtime_error{ "time since epoch is invalid" };
+            throw InvalidDate{ InvalidDate::Reason::EPOCH, "conversion from the time since epoch to the date failed" };
         }
 
         m_day = tp->tm_mday;
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
-        if (!Valid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        Validate();
     }
 
     Date::Date(std::istream &is)
@@ -102,9 +106,11 @@ namespace pro
     {
         const auto temp{ m_day };
         m_day = day;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch (const InvalidDate &ex) {
             m_day = temp;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -113,9 +119,11 @@ namespace pro
     {
         const auto temp{ m_mon };
         m_mon = mon;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch(const InvalidDate &ex) {
             m_mon = temp;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -124,9 +132,11 @@ namespace pro
     {
         const auto temp{ m_year };
         m_year = year;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch (const InvalidDate &ex) {
             m_year = temp;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -137,11 +147,13 @@ namespace pro
         m_day = day;
         m_mon = mon;
         m_year = year;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch (const InvalidDate &ex) {
             m_day = tempDay;
             m_mon = tempMon;
             m_year = tempYear;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -153,13 +165,16 @@ namespace pro
 
     Date Date::operator-(int day) const
     {
+        using enum InvalidDate::Reason;
+
         if (day < 0) {
-            throw std::invalid_argument{ "days cannot be negative" };
+            throw InvalidDate{ DAY, "invalid day: " + std::to_string(day) + ". a day cannot be negative" };
         }
 
         const auto totalDays{ TotalDays() };
         if (totalDays <= day) {
-            throw std::invalid_argument{ "a date before base date (01/01/1900)" };
+            throw InvalidDate{ RANGE, "invalid date: " + std::to_string(day) +
+                " days before falls before the base date (01/01/1900)" };
         }
         return DateFromTotalDays(totalDays - day);
     }
@@ -171,13 +186,15 @@ namespace pro
 
     Date operator+(const Date &date, int n)
     {
+        using enum Date::InvalidDate::Reason;
+
         if (n < 0) {
-            throw std::invalid_argument{ "days cannot be negative" };
+            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
         }
 
         auto totalDays{ date.TotalDays() };
         if ((std::numeric_limits<int>::max() - n) < totalDays) {
-            throw std::invalid_argument{ std::to_string(n) + " days after cannot be represent" };
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) + " days after cannot be represent" };
         }
 
         return Date::DateFromTotalDays(totalDays + n);
@@ -257,15 +274,14 @@ namespace pro
         std::string in;
         is >> in;
         if (!std::regex_match(in, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
-            throw std::invalid_argument{ "invalid date input: " + in + " format(dd/mm/yyyy)" };
+            throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT, "invalid date format: " + in +
+                " isn't compatible dd/mm/yyyy" };
         }
 
         date.m_day = std::atoi(in.c_str());
         date.m_mon = std::atoi(in.c_str() + 3);
         date.m_year = std::atoi(in.c_str() + 6);
-        if (!date.Valid()) {
-            throw std::invalid_argument{ date.m_ex };
-        }
+        date.Validate();
 
         return is;
     }
@@ -278,11 +294,7 @@ namespace pro
 
     Date Date::CurrentDate()
     {
-        try {
-            return Date{ std::time(nullptr) };
-        } catch (const std::exception &) {
-            throw std::runtime_error{ "current date is unavailable" };
-        }
+        return Date{ std::time(nullptr) };
     }
 
     int Date::CurrentMonthDay()
@@ -313,7 +325,8 @@ namespace pro
     bool Date::IsLeap(int year)
     {
         if (year < baseYear) {
-            throw std::invalid_argument{ "a year before 1900" };
+            throw std::invalid_argument{ "invalid year: " + std::to_string(year) +
+                " is less than the base year (1900)" };
         }
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
@@ -321,20 +334,16 @@ namespace pro
     Date Date::RandomDate(int minYear, int maxYear)
     {
         if ((minYear < 1900) || (maxYear < 1900)) {
-            throw std::invalid_argument{ "a year less than 1900 is not allowed" };
+            throw std::invalid_argument{ "a year less than base year (1900) is not allowed" };
         }
 
         if (minYear > maxYear) {
             throw std::invalid_argument{ "min year cannot be greater than max year" };
         }
 
-        static std::mt19937 eng;
-        try {
-            eng.seed(std::random_device{}());
-        } catch (const std::exception &) {
-            throw std::runtime_error{ "random date creating failed" };
-        }
-
+        static std::mt19937 eng{
+            static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count())
+        };
         auto year{ std::uniform_int_distribution{ minYear, maxYear }(eng) };
         auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
         int day{};
@@ -352,6 +361,38 @@ namespace pro
         return { day, mon, year };
     }
 
+    void Date::Validate() const
+    {
+        using enum InvalidDate::Reason;
+
+        if (m_day < 1 || m_day > 31) {
+            throw InvalidDate{ DAY, "invalid day: " + std::to_string(m_day) + " (the day must be between [1, 31])" };
+        }
+
+        if (m_mon < JANUARY || m_mon > DECEMBER) {
+            throw InvalidDate{ MONTH, "invalid month: " + std::to_string(m_mon) +
+                " (the month must be between [1, 12])" };
+        }
+
+        if (m_year < baseYear) {
+            throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) + " isn't less than base year (1900)" };
+        }
+
+        if (m_day == 31 &&
+            (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
+            throw InvalidDate{ MONTH, "invalid month: " + months[m_mon] + " cannot have 31 days" };
+        }
+
+        if (m_day == 30 && m_mon == FEBRUARY) {
+            throw InvalidDate{ DAY, "invalid month: February cannot have 30 days" };
+        }
+
+        if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
+            throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) +
+                " isnt' leap. February cannot have 29 days if a year isn't leap" };
+        }
+    }
+
     int Date::TotalDays() const noexcept
     {
         int totalDays{};
@@ -360,42 +401,6 @@ namespace pro
         }
         totalDays += YearDay();
         return totalDays;
-    }
-
-    bool Date::Valid() const
-    {
-        if (m_day < 1 || m_day > 31) {
-            m_ex = "invalid day: " + std::to_string(m_day);
-            return false;
-        }
-
-        if (m_mon < JANUARY || m_mon > DECEMBER) {
-           m_ex = "invalid month: " + std::to_string(m_mon);
-           return false;
-        }
-
-        if (m_year < baseYear) {
-            m_ex =  "invalid year: " + std::to_string(m_year);
-            return false;
-        }
-
-        if (m_day == 31 &&
-            (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
-            m_ex = months[m_mon] + " cannot have 31 days";
-            return false;
-        }
-
-        if (m_day == 30 && m_mon == FEBRUARY) {
-            m_ex = "February cannot have 30 days";
-            return false;
-        }
-
-        if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
-            m_ex = std::to_string(m_year) + " isn't leap. February cannot have 29 days";
-            return false;
-        }
-
-        return true;
     }
 
     Date Date::DateFromTotalDays(int totalDays) noexcept
