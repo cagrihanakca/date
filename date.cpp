@@ -22,9 +22,7 @@ namespace pro
 
     Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
     {
-        if (!Valid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        Validate();
     }
 
     Date::Date(const char *p)
@@ -38,9 +36,7 @@ namespace pro
         m_day = std::atoi(p);
         m_mon = std::atoi(p + 3);
         m_year = std::atoi(p + 6);
-        if (!Valid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        Validate();
     }
 
     Date::Date(const std::string &date) : Date{ date.c_str() } {}
@@ -55,9 +51,7 @@ namespace pro
         m_day = tp->tm_mday;
         m_mon = tp->tm_mon + 1;
         m_year = tp->tm_year + 1900;
-        if (!Valid()) {
-            throw std::invalid_argument{ m_ex };
-        }
+        Validate();
     }
 
     Date::Date(std::istream &is)
@@ -110,9 +104,11 @@ namespace pro
     {
         const auto temp{ m_day };
         m_day = day;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch (const InvalidDate &ex) {
             m_day = temp;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -121,9 +117,11 @@ namespace pro
     {
         const auto temp{ m_mon };
         m_mon = mon;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch(const InvalidDate &ex) {
             m_mon = temp;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -132,9 +130,11 @@ namespace pro
     {
         const auto temp{ m_year };
         m_year = year;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch (const InvalidDate &ex) {
             m_year = temp;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -145,11 +145,13 @@ namespace pro
         m_day = day;
         m_mon = mon;
         m_year = year;
-        if (!Valid()) {
+        try {
+            Validate();
+        } catch (const InvalidDate &ex) {
             m_day = tempDay;
             m_mon = tempMon;
             m_year = tempYear;
-            throw std::invalid_argument{ m_ex };
+            throw;
         }
         return *this;
     }
@@ -271,9 +273,7 @@ namespace pro
         date.m_day = std::atoi(in.c_str());
         date.m_mon = std::atoi(in.c_str() + 3);
         date.m_year = std::atoi(in.c_str() + 6);
-        if (!date.Valid()) {
-            throw std::invalid_argument{ date.m_ex };
-        }
+        date.Validate();
 
         return is;
     }
@@ -360,52 +360,6 @@ namespace pro
         return { day, mon, year };
     }
 
-    int Date::TotalDays() const noexcept
-    {
-        int totalDays{};
-        for (auto i{ baseYear }; i < m_year; ++i) {
-            totalDays += IsLeap(i) ? 366 : 365;
-        }
-        totalDays += YearDay();
-        return totalDays;
-    }
-
-    bool Date::Valid() const
-    {
-        if (m_day < 1 || m_day > 31) {
-            m_ex = "invalid day: " + std::to_string(m_day);
-            return false;
-        }
-
-        if (m_mon < JANUARY || m_mon > DECEMBER) {
-           m_ex = "invalid month: " + std::to_string(m_mon);
-           return false;
-        }
-
-        if (m_year < baseYear) {
-            m_ex =  "invalid year: " + std::to_string(m_year);
-            return false;
-        }
-
-        if (m_day == 31 &&
-            (m_mon == FEBRUARY || m_mon == APRIL || m_mon == JUNE || m_mon == SEPTEMBER || m_mon == NOVEMBER)) {
-            m_ex = months[m_mon] + " cannot have 31 days";
-            return false;
-        }
-
-        if (m_day == 30 && m_mon == FEBRUARY) {
-            m_ex = "February cannot have 30 days";
-            return false;
-        }
-
-        if (m_day == 29 && m_mon == FEBRUARY && !IsLeap(m_year)) {
-            m_ex = std::to_string(m_year) + " isn't leap. February cannot have 29 days";
-            return false;
-        }
-
-        return true;
-    }
-
     void Date::Validate() const
     {
         using enum InvalidDate::Reason;
@@ -436,6 +390,16 @@ namespace pro
             throw InvalidDate{ YEAR, "invalid year: " + std::to_string(m_year) +
                 " isnt' leap. February cannot have 29 days if a year isn't leap" };
         }
+    }
+
+    int Date::TotalDays() const noexcept
+    {
+        int totalDays{};
+        for (auto i{ baseYear }; i < m_year; ++i) {
+            totalDays += IsLeap(i) ? 366 : 365;
+        }
+        totalDays += YearDay();
+        return totalDays;
     }
 
     Date Date::DateFromTotalDays(int totalDays) noexcept
