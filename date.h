@@ -64,7 +64,7 @@ namespace pro
         class InvalidDate : public std::invalid_argument {
         public:
             enum class Reason {
-                DAY, MONTH, YEAR, FORMAT
+                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
             };
             InvalidDate(Reason reason, const std::string &errMsg);
             [[nodiscard]] Reason GetReason() const noexcept;
