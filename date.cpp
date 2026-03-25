@@ -108,7 +108,7 @@ namespace pro
         m_day = day;
         try {
             Validate();
-        } catch (const InvalidDate &ex) {
+        } catch (const InvalidDate &) {
             m_day = temp;
             throw;
         }
@@ -121,7 +121,7 @@ namespace pro
         m_mon = mon;
         try {
             Validate();
-        } catch(const InvalidDate &ex) {
+        } catch(const InvalidDate &) {
             m_mon = temp;
             throw;
         }
@@ -134,7 +134,7 @@ namespace pro
         m_year = year;
         try {
             Validate();
-        } catch (const InvalidDate &ex) {
+        } catch (const InvalidDate &) {
             m_year = temp;
             throw;
         }
@@ -149,7 +149,7 @@ namespace pro
         m_year = year;
         try {
             Validate();
-        } catch (const InvalidDate &ex) {
+        } catch (const InvalidDate &) {
             m_day = tempDay;
             m_mon = tempMon;
             m_year = tempYear;
