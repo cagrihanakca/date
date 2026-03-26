@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace pro
+namespace cgr
 {
     Date::InvalidDate::InvalidDate(Reason reason, const std::string &msg)
         : std::invalid_argument{ msg }, m_reason{ reason } {}

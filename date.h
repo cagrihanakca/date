@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace pro
+namespace cgr
 {
     class Date {
     public:
