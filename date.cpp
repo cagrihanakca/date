@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
+#include <format>
 #include <istream>
 #include <limits>
 #include <ostream>
@@ -47,23 +48,21 @@ namespace
         using enum Date::InvalidDate::Reason;
 
         if (day < 1 || day > 31) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(day) +
-                " (the day must be between [1, 31])" };
+            throw Date::InvalidDate{ DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
         }
 
         if (month < JANUARY || month > DECEMBER) {
-            throw Date::InvalidDate{ MONTH, "invalid month: " + std::to_string(month) +
-                " (the month must be between [1, 12])" };
+            throw Date::InvalidDate{ MONTH,
+                std::format("invalid month: {} (the month must be between [1, 12])", month) };
         }
 
         if (year < BASE_YEAR) {
-            throw Date::InvalidDate{ YEAR, "invalid year: " + std::to_string(year) +
-                " is less than the base year (1900)" };
+            throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is less than the base year (1900)", year) };
         }
 
         if (day == 31 &&
             (month == FEBRUARY || month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER)) {
-            throw Date::InvalidDate{ MONTH, "invalid month: " + monthNames[month] + " cannot have 31 days" };
+            throw Date::InvalidDate{ MONTH, std::format("invalid month: {} cannot have 31 days", monthNames[month]) };
         }
 
         if (day == 30 && month == FEBRUARY) {
@@ -71,8 +70,8 @@ namespace
         }
 
         if (day == 29 && month == FEBRUARY && !Date::IsLeap(year)) {
-            throw Date::InvalidDate{ YEAR, "invalid year: " + std::to_string(year) +
-                " isn't leap. February cannot have 29 days if a year isn't leap" };
+            throw Date::InvalidDate{ YEAR,
+                std::format("invalid year: {} isn't leap. February cannot have 29 days if a year isn't leap", year) };
         }
     }
 
@@ -162,11 +161,9 @@ namespace cgr
 
     Date::Date(const char *str)
     {
-        using namespace std::literals::string_literals;
-
         if (!std::regex_match(str, datePattern)) {
-            throw InvalidDate{ InvalidDate::Reason::FORMAT, "invalid date format: "s + str +
-                " isn't compatible dd/mm/yyyy" };
+            throw InvalidDate{ InvalidDate::Reason::FORMAT,
+                std::format("invalid date format: {} isn't compatible dd/mm/yyyy", str) };
         }
 
         m_day = std::atoi(str);
@@ -329,8 +326,7 @@ namespace cgr
     bool Date::IsLeap(int year)
     {
         if (year < BASE_YEAR) {
-            throw std::invalid_argument{ "invalid year: " + std::to_string(year) +
-                " is less than the base year (1900)" };
+            throw std::invalid_argument{ std::format("invalid year: {} is less than the base year (1900)", year) };
         }
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
@@ -340,13 +336,12 @@ namespace cgr
         using enum Date::InvalidDate::Reason;
 
         if (days < 0) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(days) + ". a day cannot be negative" };
+            throw Date::InvalidDate{ DAY, std::format("invalid day: {}. a day cannot be negative", days) };
         }
 
         auto daysSinceBase{ DaysSinceBase(d) };
         if ((std::numeric_limits<int>::max() - days) < daysSinceBase) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(days) +
-                " days after cannot be represented" };
+            throw Date::InvalidDate{ RANGE, std::format("invalid date: {} days after cannot be represented", days) };
         }
 
         return DateFromDaysSinceBase(daysSinceBase + days);
@@ -362,13 +357,13 @@ namespace cgr
         using enum Date::InvalidDate::Reason;
 
         if (days < 0) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(days) + ". a day cannot be negative" };
+            throw Date::InvalidDate{ DAY, std::format("invalid day: {}. a day cannot be negative", days) };
         }
 
         const auto daysSinceBase{ DaysSinceBase(d) };
         if (daysSinceBase <= days) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(days) +
-                " days before falls before the base date (01/01/1900)" };
+            throw Date::InvalidDate{ RANGE,
+                std::format("invalid date: {} days before falls before the base date (01/01/1900)", days) };
         }
 
         return DateFromDaysSinceBase(daysSinceBase - days);
@@ -414,8 +409,9 @@ namespace cgr
         std::string input;
         is >> input;
         if (!std::regex_match(input, datePattern)) {
-            throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT, "invalid date format: " + input +
-                " isn't compatible dd/mm/yyyy" };
+            throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT,
+                std::format("invalid date format: {} isn't compatible dd/mm/yyyy", input) };
+
         }
 
         d.m_day = std::atoi(input.c_str());
