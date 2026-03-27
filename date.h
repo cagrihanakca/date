@@ -21,7 +21,7 @@ namespace cgr
             Reason m_reason;
         };
 
-        [[nodiscard]] static Date CurrentDate();
+        [[nodiscard]] static Date Today();
         [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
 
         Date();
@@ -42,7 +42,6 @@ namespace cgr
         Date &Month(int month);
         Date &Year(int year);
         Date &Set(int day, int month, int year);
-        Date &SetCurrentDate();
 
         Date &operator+=(int days);
         Date &operator-=(int days);
@@ -53,12 +52,6 @@ namespace cgr
         Date operator--(int);
 
         [[nodiscard]] static bool IsLeap(int year);
-
-        [[nodiscard]] static int CurrentMonthDay();
-        [[nodiscard]] static int CurrentMonth();
-        [[nodiscard]] static int CurrentYear();
-        [[nodiscard]] static int CurrentYearDay();
-        [[nodiscard]] static int CurrentWeekday();
 
         friend Date operator+(const Date &d, int days);
         friend Date operator-(const Date &d, int days);

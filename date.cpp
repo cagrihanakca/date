@@ -116,7 +116,7 @@ namespace cgr
         return m_reason;
     }
 
-    Date Date::CurrentDate()
+    Date Date::Today()
     {
         return Date{ std::time(nullptr) };
     }
@@ -290,11 +290,6 @@ namespace cgr
         return *this;
     }
 
-    Date &Date::SetCurrentDate()
-    {
-        return *this = CurrentDate();
-    }
-
     Date &Date::operator+=(int days)
     {
         return *this = *this + days;
@@ -336,31 +331,6 @@ namespace cgr
                 " is less than the base year (1900)" };
         }
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
-    }
-
-    int Date::CurrentMonthDay()
-    {
-        return CurrentDate().Day();
-    }
-
-    int Date::CurrentMonth()
-    {
-        return CurrentDate().Month();
-    }
-
-    int Date::CurrentYear()
-    {
-        return CurrentDate().Year();
-    }
-
-    int Date::CurrentYearDay()
-    {
-        return CurrentDate().DayOfYear();
-    }
-
-    int Date::CurrentWeekday()
-    {
-        return CurrentDate().Weekday();
     }
 
     Date operator+(const Date &d, int days)
