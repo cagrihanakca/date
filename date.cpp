@@ -114,6 +114,41 @@ namespace cgr
         return m_reason;
     }
 
+    Date Date::CurrentDate()
+    {
+        return Date{ std::time(nullptr) };
+    }
+
+    Date Date::RandomDate(int minYear, int maxYear)
+    {
+        if ((minYear < BASE_YEAR) || (maxYear < BASE_YEAR)) {
+            throw std::invalid_argument{ "a year less than base year (1900) is not allowed" };
+        }
+
+        if (minYear > maxYear) {
+            throw std::invalid_argument{ "min year cannot be greater than max year" };
+        }
+
+        static std::mt19937 eng{
+            static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count())
+        };
+        auto year{ std::uniform_int_distribution{ minYear, maxYear }(eng) };
+        auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
+        int day{};
+        switch (mon) {
+            case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
+                day = std::uniform_int_distribution{ 1, 30 }(eng);
+                break;
+            case FEBRUARY:
+                day = std::uniform_int_distribution{ 1, IsLeap(year) ? 29 : 28 }(eng);
+                break;
+            default:
+                day = std::uniform_int_distribution{ 1, 31 }(eng);
+        }
+
+        return { day, mon, year };
+    }
+
     Date::Date() : m_day{ 1 }, m_mon{ 1 }, m_year{ BASE_YEAR } {}
 
     Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
@@ -258,50 +293,6 @@ namespace cgr
         return *this = CurrentDate();
     }
 
-    Date operator-(const Date &date, int n)
-    {
-        using enum Date::InvalidDate::Reason;
-
-        if (n < 0) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
-        }
-
-        const auto totalDays{ DaysSinceBase(date) };
-        if (totalDays <= n) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
-                " days before falls before the base date (01/01/1900)" };
-        }
-
-        return DateFromDaysSinceBase(totalDays - n);
-    }
-
-    int operator-(const Date &date1, const Date &date2) noexcept
-    {
-        return std::abs(DaysSinceBase(date1) - DaysSinceBase(date2));
-    }
-
-    Date operator+(const Date &date, int n)
-    {
-        using enum Date::InvalidDate::Reason;
-
-        if (n < 0) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
-        }
-
-        auto totalDays{ DaysSinceBase(date) };
-        if ((std::numeric_limits<int>::max() - n) < totalDays) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
-                " days after cannot be represented" };
-        }
-
-        return DateFromDaysSinceBase(totalDays + n);
-    }
-
-    Date operator+(int n, const Date &date)
-    {
-        return date + n;
-    }
-
     Date &Date::operator+=(int n)
     {
         return *this = *this + n;
@@ -334,6 +325,84 @@ namespace cgr
         const auto ret{ *this };
         --*this;
         return ret;
+    }
+
+    bool Date::IsLeap(int year)
+    {
+        if (year < BASE_YEAR) {
+            throw std::invalid_argument{ "invalid year: " + std::to_string(year) +
+                " is less than the base year (1900)" };
+        }
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    }
+
+    int Date::CurrentMonthDay()
+    {
+        return CurrentDate().MonthDay();
+    }
+
+    int Date::CurrentMonth()
+    {
+        return CurrentDate().Month();
+    }
+
+    int Date::CurrentYear()
+    {
+        return CurrentDate().Year();
+    }
+
+    int Date::CurrentYearDay()
+    {
+        return CurrentDate().YearDay();
+    }
+
+    int Date::CurrentWeekday()
+    {
+        return CurrentDate().Weekday();
+    }
+
+    Date operator+(const Date &date, int n)
+    {
+        using enum Date::InvalidDate::Reason;
+
+        if (n < 0) {
+            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
+        }
+
+        auto totalDays{ DaysSinceBase(date) };
+        if ((std::numeric_limits<int>::max() - n) < totalDays) {
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
+                " days after cannot be represented" };
+        }
+
+        return DateFromDaysSinceBase(totalDays + n);
+    }
+
+    Date operator+(int n, const Date &date)
+    {
+        return date + n;
+    }
+
+    Date operator-(const Date &date, int n)
+    {
+        using enum Date::InvalidDate::Reason;
+
+        if (n < 0) {
+            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
+        }
+
+        const auto totalDays{ DaysSinceBase(date) };
+        if (totalDays <= n) {
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
+                " days before falls before the base date (01/01/1900)" };
+        }
+
+        return DateFromDaysSinceBase(totalDays - n);
+    }
+
+    int operator-(const Date &date1, const Date &date2) noexcept
+    {
+        return std::abs(DaysSinceBase(date1) - DaysSinceBase(date2));
     }
 
     bool operator<(const Date &lhs, const Date &rhs) noexcept
@@ -387,74 +456,5 @@ namespace cgr
     {
         return os << date.m_day << ' ' << monthNames[date.m_mon] << ' ' << date.m_year << ' '
             << weekdayNames[date.Weekday()];
-    }
-
-    Date Date::CurrentDate()
-    {
-        return Date{ std::time(nullptr) };
-    }
-
-    int Date::CurrentMonthDay()
-    {
-        return CurrentDate().MonthDay();
-    }
-
-    int Date::CurrentMonth()
-    {
-        return CurrentDate().Month();
-    }
-
-    int Date::CurrentYear()
-    {
-        return CurrentDate().Year();
-    }
-
-    int Date::CurrentYearDay()
-    {
-        return CurrentDate().YearDay();
-    }
-
-    int Date::CurrentWeekday()
-    {
-        return CurrentDate().Weekday();
-    }
-
-    bool Date::IsLeap(int year)
-    {
-        if (year < BASE_YEAR) {
-            throw std::invalid_argument{ "invalid year: " + std::to_string(year) +
-                " is less than the base year (1900)" };
-        }
-        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
-    }
-
-    Date Date::RandomDate(int minYear, int maxYear)
-    {
-        if ((minYear < BASE_YEAR) || (maxYear < BASE_YEAR)) {
-            throw std::invalid_argument{ "a year less than base year (1900) is not allowed" };
-        }
-
-        if (minYear > maxYear) {
-            throw std::invalid_argument{ "min year cannot be greater than max year" };
-        }
-
-        static std::mt19937 eng{
-            static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count())
-        };
-        auto year{ std::uniform_int_distribution{ minYear, maxYear }(eng) };
-        auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
-        int day{};
-        switch (mon) {
-            case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
-                day = std::uniform_int_distribution{ 1, 30 }(eng);
-                break;
-            case FEBRUARY:
-                day = std::uniform_int_distribution{ 1, IsLeap(year) ? 29 : 28 }(eng);
-                break;
-            default:
-                day = std::uniform_int_distribution{ 1, 31 }(eng);
-        }
-
-        return { day, mon, year };
     }
 }
