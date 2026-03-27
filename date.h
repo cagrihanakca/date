@@ -1,7 +1,6 @@
 #ifndef DATE_H
 #define DATE_H
 
-#include <array>
 #include <ctime>
 #include <iosfwd>
 #include <stdexcept>
@@ -11,7 +10,7 @@ namespace cgr
 {
     class Date {
     public:
-        Date() noexcept = default;
+        Date();
         Date(int day, int mon, int year);
         explicit Date(const char *p);
         explicit Date(const std::string &date);
@@ -49,8 +48,6 @@ namespace cgr
         friend std::istream &operator>>(std::istream &is, Date &date);
         friend std::ostream &operator<<(std::ostream &os, const Date &date);
 
-        static constexpr int baseYear{ 1900 };
-
         [[nodiscard]] static Date CurrentDate();
         [[nodiscard]] static int CurrentMonthDay();
         [[nodiscard]] static int CurrentMonth();
@@ -59,7 +56,7 @@ namespace cgr
         [[nodiscard]] static int CurrentWeekday();
 
         [[nodiscard]] static bool IsLeap(int year);
-        [[nodiscard]] static Date RandomDate(int minYear = baseYear, int maxYear = CurrentYear());
+        [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
 
         class InvalidDate : public std::invalid_argument {
         public:
@@ -72,29 +69,9 @@ namespace cgr
             Reason m_reason;
         };
     private:
-        int m_day{ 1 };
-        int m_mon{ 1 };
-        int m_year{ baseYear };
-        void Validate() const;
-        [[nodiscard]] int TotalDays() const noexcept;
-        [[nodiscard]] static Date DateFromTotalDays(int totalDays) noexcept;
-        enum Weekday {
-            MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
-        };
-        enum Month {
-            JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
-        };
-        static inline std::array<std::string, 13> months{
-            "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
-            "November", "December"
-        };
-        static constexpr std::array<std::array<int, 13>, 2> monthDays{{
-            { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
-            { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
-        }};
-        static inline std::array<std::string, 8> weekdays{
-            "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-        };
+        int m_day;
+        int m_mon;
+        int m_year;
     };
 
     [[nodiscard]] Date operator+(int n, const Date &date);
