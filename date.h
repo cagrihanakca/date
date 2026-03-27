@@ -30,9 +30,9 @@ namespace cgr
         Date &Set(int day, int mon, int year);
         Date &SetCurrentDate();
 
-        [[nodiscard]] Date operator-(int day) const;
-        friend int operator-(const Date &date1, const Date &date2) noexcept;
         friend Date operator+(const Date &date, int n);
+        friend Date operator-(const Date &date, int n);
+        friend int operator-(const Date &date1, const Date &date2) noexcept;
 
         Date &operator+=(int day);
         Date &operator-=(int day);
@@ -74,12 +74,20 @@ namespace cgr
         int m_year;
     };
 
+    [[nodiscard]] Date operator+(const Date &date, int n);
     [[nodiscard]] Date operator+(int n, const Date &date);
+    [[nodiscard]] Date operator-(const Date &date, int n);
+    [[nodiscard]] int operator-(const Date &date1, const Date &date2) noexcept;
 
+    [[nodiscard]] bool operator<(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator==(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs) noexcept;
+
+    std::istream &operator>>(std::istream &is, Date &date);
+    std::ostream &operator<<(std::ostream &os, const Date &date);
 }
 
 #endif // DATE_H

@@ -258,20 +258,21 @@ namespace cgr
         return *this = CurrentDate();
     }
 
-    Date Date::operator-(int day) const
+    Date operator-(const Date &date, int n)
     {
-        using enum InvalidDate::Reason;
+        using enum Date::InvalidDate::Reason;
 
-        if (day < 0) {
-            throw InvalidDate{ DAY, "invalid day: " + std::to_string(day) + ". a day cannot be negative" };
+        if (n < 0) {
+            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
         }
 
-        const auto totalDays{ DaysSinceBase(*this) };
-        if (totalDays <= day) {
-            throw InvalidDate{ RANGE, "invalid date: " + std::to_string(day) +
+        const auto totalDays{ DaysSinceBase(date) };
+        if (totalDays <= n) {
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
                 " days before falls before the base date (01/01/1900)" };
         }
-        return DateFromDaysSinceBase(totalDays - day);
+
+        return DateFromDaysSinceBase(totalDays - n);
     }
 
     int operator-(const Date &date1, const Date &date2) noexcept
