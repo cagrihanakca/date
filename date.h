@@ -10,6 +10,20 @@ namespace cgr
 {
     class Date {
     public:
+        class InvalidDate : public std::invalid_argument {
+        public:
+            enum class Reason {
+                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
+            };
+            InvalidDate(Reason reason, const std::string &errMsg);
+            [[nodiscard]] Reason GetReason() const noexcept;
+        private:
+            Reason m_reason;
+        };
+
+        [[nodiscard]] static Date CurrentDate();
+        [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
+
         Date();
         Date(int day, int mon, int year);
         explicit Date(const char *p);
@@ -30,10 +44,6 @@ namespace cgr
         Date &Set(int day, int mon, int year);
         Date &SetCurrentDate();
 
-        friend Date operator+(const Date &date, int n);
-        friend Date operator-(const Date &date, int n);
-        friend int operator-(const Date &date1, const Date &date2) noexcept;
-
         Date &operator+=(int day);
         Date &operator-=(int day);
 
@@ -42,32 +52,23 @@ namespace cgr
         Date &operator--();
         Date operator--(int);
 
-        friend bool operator<(const Date &lhs, const Date &rhs) noexcept;
-        friend bool operator==(const Date &lhs, const Date &rhs) noexcept;
+        [[nodiscard]] static bool IsLeap(int year);
 
-        friend std::istream &operator>>(std::istream &is, Date &date);
-        friend std::ostream &operator<<(std::ostream &os, const Date &date);
-
-        [[nodiscard]] static Date CurrentDate();
         [[nodiscard]] static int CurrentMonthDay();
         [[nodiscard]] static int CurrentMonth();
         [[nodiscard]] static int CurrentYear();
         [[nodiscard]] static int CurrentYearDay();
         [[nodiscard]] static int CurrentWeekday();
 
-        [[nodiscard]] static bool IsLeap(int year);
-        [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
+        friend Date operator+(const Date &date, int n);
+        friend Date operator-(const Date &date, int n);
+        friend int operator-(const Date &date1, const Date &date2) noexcept;
 
-        class InvalidDate : public std::invalid_argument {
-        public:
-            enum class Reason {
-                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
-            };
-            InvalidDate(Reason reason, const std::string &errMsg);
-            [[nodiscard]] Reason GetReason() const noexcept;
-        private:
-            Reason m_reason;
-        };
+        friend bool operator<(const Date &lhs, const Date &rhs) noexcept;
+        friend bool operator==(const Date &lhs, const Date &rhs) noexcept;
+
+        friend std::istream &operator>>(std::istream &is, Date &date);
+        friend std::ostream &operator<<(std::ostream &os, const Date &date);
     private:
         int m_day;
         int m_mon;
@@ -80,10 +81,10 @@ namespace cgr
     [[nodiscard]] int operator-(const Date &date1, const Date &date2) noexcept;
 
     [[nodiscard]] bool operator<(const Date &lhs, const Date &rhs) noexcept;
-    [[nodiscard]] bool operator==(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs) noexcept;
+    [[nodiscard]] bool operator==(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs) noexcept;
 
     std::istream &operator>>(std::istream &is, Date &date);
