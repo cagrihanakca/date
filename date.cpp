@@ -40,6 +40,8 @@ namespace
         "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     };
 
+    const std::regex datePattern{ R"(^\d{2}/\d{2}/\d{4}$)" };
+
     void Validate(int day, int month, int year)
     {
         using enum Date::InvalidDate::Reason;
@@ -162,7 +164,7 @@ namespace cgr
     {
         using namespace std::literals::string_literals;
 
-        if (!std::regex_match(str, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
+        if (!std::regex_match(str, datePattern)) {
             throw InvalidDate{ InvalidDate::Reason::FORMAT, "invalid date format: "s + str +
                 " isn't compatible dd/mm/yyyy" };
         }
@@ -411,7 +413,7 @@ namespace cgr
     {
         std::string input;
         is >> input;
-        if (!std::regex_match(input, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
+        if (!std::regex_match(input, datePattern)) {
             throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT, "invalid date format: " + input +
                 " isn't compatible dd/mm/yyyy" };
         }
