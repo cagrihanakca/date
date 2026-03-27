@@ -26,7 +26,7 @@ namespace
         JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
     };
 
-    constexpr std::array<std::array<int, 13>, 2> daysInMonth{{
+    constexpr std::array<std::array<int, 13>, 2> daysInMonths{{
         { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
         { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
     }};
@@ -74,40 +74,42 @@ namespace
         }
     }
 
-    [[nodiscard]] int DaysSinceBase(const Date &date) noexcept
+    [[nodiscard]] int DaysSinceBase(const Date &d) noexcept
     {
-        int totalDays{};
-        for (auto i{ BASE_YEAR }; i < date.Year(); ++i) {
-            totalDays += Date::IsLeap(i) ? 366 : 365;
+        int daysSinceBase{};
+        for (auto year{ BASE_YEAR }; year < d.Year(); ++year) {
+            daysSinceBase += Date::IsLeap(year) ? 366 : 365;
         }
 
-        totalDays += date.YearDay();
+        daysSinceBase += d.DayOfYear();
 
-        return totalDays;
+        return daysSinceBase;
     }
 
-    [[nodiscard]] Date DateFromDaysSinceBase(int totalDays) noexcept
+    [[nodiscard]] Date DateFromDaysSinceBase(int daysSinceBase) noexcept
     {
         auto year{ BASE_YEAR };
-        while (totalDays > (Date::IsLeap(year) ? 366 : 365)) {
-            totalDays -= (Date::IsLeap(year) ? 366 : 365);
+        while (daysSinceBase > (Date::IsLeap(year) ? 366 : 365)) {
+            daysSinceBase -= (Date::IsLeap(year) ? 366 : 365);
             ++year;
         }
 
-        auto mon{ 1 };
-        while (totalDays > daysInMonth[Date::IsLeap(year)][mon]) {
-            totalDays -= daysInMonth[Date::IsLeap(year)][mon];
-            ++mon;
+        auto month{ 1 };
+        while (daysSinceBase > daysInMonths[Date::IsLeap(year)][month]) {
+            daysSinceBase -= daysInMonths[Date::IsLeap(year)][month];
+            ++month;
         }
 
-        return { totalDays, mon, year };
+        auto day{ daysSinceBase };
+
+        return { day, month, year };
     }
 }
 
 namespace cgr
 {
-    Date::InvalidDate::InvalidDate(Reason reason, const std::string &msg)
-        : std::invalid_argument{ msg }, m_reason{ reason } {}
+    Date::InvalidDate::InvalidDate(Reason reason, const std::string &message)
+        : std::invalid_argument{ message }, m_reason{ reason } {}
 
     Date::InvalidDate::Reason Date::InvalidDate::GetReason() const noexcept
     {
@@ -129,61 +131,61 @@ namespace cgr
             throw std::invalid_argument{ "min year cannot be greater than max year" };
         }
 
-        static std::mt19937 eng{
+        static std::mt19937 rng{
             static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count())
         };
-        auto year{ std::uniform_int_distribution{ minYear, maxYear }(eng) };
-        auto mon{ std::uniform_int_distribution{ 1, 12 }(eng) };
+        auto year{ std::uniform_int_distribution{ minYear, maxYear }(rng) };
+        auto month{ std::uniform_int_distribution{ 1, 12 }(rng) };
         int day{};
-        switch (mon) {
+        switch (month) {
             case APRIL: case JUNE: case SEPTEMBER: case NOVEMBER:
-                day = std::uniform_int_distribution{ 1, 30 }(eng);
+                day = std::uniform_int_distribution{ 1, 30 }(rng);
                 break;
             case FEBRUARY:
-                day = std::uniform_int_distribution{ 1, IsLeap(year) ? 29 : 28 }(eng);
+                day = std::uniform_int_distribution{ 1, IsLeap(year) ? 29 : 28 }(rng);
                 break;
             default:
-                day = std::uniform_int_distribution{ 1, 31 }(eng);
+                day = std::uniform_int_distribution{ 1, 31 }(rng);
         }
 
-        return { day, mon, year };
+        return { day, month, year };
     }
 
-    Date::Date() : m_day{ 1 }, m_mon{ 1 }, m_year{ BASE_YEAR } {}
+    Date::Date() : m_day{ 1 }, m_month{ 1 }, m_year{ BASE_YEAR } {}
 
-    Date::Date(int day, int mon, int year) : m_day{ day }, m_mon{ mon }, m_year{ year }
+    Date::Date(int day, int month, int year) : m_day{ day }, m_month{ month }, m_year{ year }
     {
-        Validate(m_day, m_mon, m_year);
+        Validate(m_day, m_month, m_year);
     }
 
-    Date::Date(const char *p)
+    Date::Date(const char *str)
     {
         using namespace std::literals::string_literals;
 
-        if (!std::regex_match(p, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
-            throw InvalidDate{ InvalidDate::Reason::FORMAT, "invalid date format: "s + p +
+        if (!std::regex_match(str, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
+            throw InvalidDate{ InvalidDate::Reason::FORMAT, "invalid date format: "s + str +
                 " isn't compatible dd/mm/yyyy" };
         }
 
-        m_day = std::atoi(p);
-        m_mon = std::atoi(p + 3);
-        m_year = std::atoi(p + 6);
-        Validate(m_day, m_mon, m_year);
+        m_day = std::atoi(str);
+        m_month = std::atoi(str + 3);
+        m_year = std::atoi(str + 6);
+        Validate(m_day, m_month, m_year);
     }
 
-    Date::Date(const std::string &date) : Date{ date.c_str() } {}
+    Date::Date(const std::string &str) : Date{ str.c_str() } {}
 
     Date::Date(std::time_t timer)
     {
-        const auto *tp{ std::localtime(&timer) };
-        if (!tp) {
+        const auto *timePtr{ std::localtime(&timer) };
+        if (!timePtr) {
             throw InvalidDate{ InvalidDate::Reason::EPOCH, "conversion from the time since epoch to the date failed" };
         }
 
-        m_day = tp->tm_mday;
-        m_mon = tp->tm_mon + 1;
-        m_year = tp->tm_year + 1900;
-        Validate(m_day, m_mon, m_year);
+        m_day = timePtr->tm_mday;
+        m_month = timePtr->tm_mon + 1;
+        m_year = timePtr->tm_year + 1900;
+        Validate(m_day, m_month, m_year);
     }
 
     Date::Date(std::istream &is)
@@ -191,14 +193,14 @@ namespace cgr
         is >> *this;
     }
 
-    int Date::MonthDay() const noexcept
+    int Date::Day() const noexcept
     {
         return m_day;
     }
 
     int Date::Month() const noexcept
     {
-        return m_mon;
+        return m_month;
     }
 
     int Date::Year() const noexcept
@@ -206,16 +208,16 @@ namespace cgr
         return m_year;
     }
 
-    int Date::YearDay() const noexcept
+    int Date::DayOfYear() const noexcept
     {
-        auto yearDay{ m_day };
-        for (auto i{ 1 }; i < m_mon; ++i) {
-            yearDay += daysInMonth[IsLeap(m_year)][i];
+        auto dayOfYear{ m_day };
+        for (auto month{ 1 }; month < m_month; ++month) {
+            dayOfYear += daysInMonths[IsLeap(m_year)][month];
         }
-        return yearDay;
+        return dayOfYear;
     }
 
-    int Date::YearWeek() const noexcept
+    int Date::WeekOfYear() const noexcept
     {
         Date firstWeek;
         if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.Weekday() > THURSDAY) {
@@ -232,27 +234,27 @@ namespace cgr
         return (DaysSinceBase(*this) - 1) % 7 + 1;
     }
 
-    Date &Date::MonthDay(int day)
+    Date &Date::Day(int day)
     {
-        const auto temp{ m_day };
+        const auto oldDay{ m_day };
         m_day = day;
         try {
-            Validate(m_day, m_mon, m_year);
+            Validate(m_day, m_month, m_year);
         } catch (const InvalidDate &) {
-            m_day = temp;
+            m_day = oldDay;
             throw;
         }
         return *this;
     }
 
-    Date &Date::Month(int mon)
+    Date &Date::Month(int month)
     {
-        const auto temp{ m_mon };
-        m_mon = mon;
+        const auto oldMonth{ m_month };
+        m_month = month;
         try {
-            Validate(m_day, m_mon, m_year);
+            Validate(m_day, m_month, m_year);
         } catch(const InvalidDate &) {
-            m_mon = temp;
+            m_month = oldMonth;
             throw;
         }
         return *this;
@@ -260,29 +262,29 @@ namespace cgr
 
     Date &Date::Year(int year)
     {
-        const auto temp{ m_year };
+        const auto oldYear{ m_year };
         m_year = year;
         try {
-            Validate(m_day, m_mon, m_year);
+            Validate(m_day, m_month, m_year);
         } catch (const InvalidDate &) {
-            m_year = temp;
+            m_year = oldYear;
             throw;
         }
         return *this;
     }
 
-    Date &Date::Set(int day, int mon, int year)
+    Date &Date::Set(int day, int month, int year)
     {
-        const auto tempDay{ m_day }, tempMon{ m_mon }, tempYear{ m_year };
+        const auto oldDay{ m_day }, oldMonth{ m_month }, oldYear{ m_year };
         m_day = day;
-        m_mon = mon;
+        m_month = month;
         m_year = year;
         try {
-            Validate(m_day, m_mon, m_year);
+            Validate(m_day, m_month, m_year);
         } catch (const InvalidDate &) {
-            m_day = tempDay;
-            m_mon = tempMon;
-            m_year = tempYear;
+            m_day = oldDay;
+            m_month = oldMonth;
+            m_year = oldYear;
             throw;
         }
         return *this;
@@ -293,14 +295,14 @@ namespace cgr
         return *this = CurrentDate();
     }
 
-    Date &Date::operator+=(int n)
+    Date &Date::operator+=(int days)
     {
-        return *this = *this + n;
+        return *this = *this + days;
     }
 
-    Date &Date::operator-=(int n)
+    Date &Date::operator-=(int days)
     {
-        return *this = *this - n;
+        return *this = *this - days;
     }
 
     Date &Date::operator++()
@@ -338,7 +340,7 @@ namespace cgr
 
     int Date::CurrentMonthDay()
     {
-        return CurrentDate().MonthDay();
+        return CurrentDate().Day();
     }
 
     int Date::CurrentMonth()
@@ -353,7 +355,7 @@ namespace cgr
 
     int Date::CurrentYearDay()
     {
-        return CurrentDate().YearDay();
+        return CurrentDate().DayOfYear();
     }
 
     int Date::CurrentWeekday()
@@ -361,48 +363,48 @@ namespace cgr
         return CurrentDate().Weekday();
     }
 
-    Date operator+(const Date &date, int n)
+    Date operator+(const Date &d, int days)
     {
         using enum Date::InvalidDate::Reason;
 
-        if (n < 0) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
+        if (days < 0) {
+            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(days) + ". a day cannot be negative" };
         }
 
-        auto totalDays{ DaysSinceBase(date) };
-        if ((std::numeric_limits<int>::max() - n) < totalDays) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
+        auto daysSinceBase{ DaysSinceBase(d) };
+        if ((std::numeric_limits<int>::max() - days) < daysSinceBase) {
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(days) +
                 " days after cannot be represented" };
         }
 
-        return DateFromDaysSinceBase(totalDays + n);
+        return DateFromDaysSinceBase(daysSinceBase + days);
     }
 
-    Date operator+(int n, const Date &date)
+    Date operator+(int days, const Date &d)
     {
-        return date + n;
+        return d + days;
     }
 
-    Date operator-(const Date &date, int n)
+    Date operator-(const Date &d, int days)
     {
         using enum Date::InvalidDate::Reason;
 
-        if (n < 0) {
-            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(n) + ". a day cannot be negative" };
+        if (days < 0) {
+            throw Date::InvalidDate{ DAY, "invalid day: " + std::to_string(days) + ". a day cannot be negative" };
         }
 
-        const auto totalDays{ DaysSinceBase(date) };
-        if (totalDays <= n) {
-            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(n) +
+        const auto daysSinceBase{ DaysSinceBase(d) };
+        if (daysSinceBase <= days) {
+            throw Date::InvalidDate{ RANGE, "invalid date: " + std::to_string(days) +
                 " days before falls before the base date (01/01/1900)" };
         }
 
-        return DateFromDaysSinceBase(totalDays - n);
+        return DateFromDaysSinceBase(daysSinceBase - days);
     }
 
-    int operator-(const Date &date1, const Date &date2) noexcept
+    int operator-(const Date &lhs, const Date &rhs) noexcept
     {
-        return std::abs(DaysSinceBase(date1) - DaysSinceBase(date2));
+        return std::abs(DaysSinceBase(lhs) - DaysSinceBase(rhs));
     }
 
     bool operator<(const Date &lhs, const Date &rhs) noexcept
@@ -435,26 +437,26 @@ namespace cgr
         return !(lhs == rhs);
     }
 
-    std::istream &operator>>(std::istream &is, Date &date)
+    std::istream &operator>>(std::istream &is, Date &d)
     {
-        std::string in;
-        is >> in;
-        if (!std::regex_match(in, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
-            throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT, "invalid date format: " + in +
+        std::string input;
+        is >> input;
+        if (!std::regex_match(input, std::regex{ R"(^\d{2}/\d{2}/\d{4}$)" })) {
+            throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT, "invalid date format: " + input +
                 " isn't compatible dd/mm/yyyy" };
         }
 
-        date.m_day = std::atoi(in.c_str());
-        date.m_mon = std::atoi(in.c_str() + 3);
-        date.m_year = std::atoi(in.c_str() + 6);
-        Validate(date.m_day, date.m_mon, date.m_year);
+        d.m_day = std::atoi(input.c_str());
+        d.m_month = std::atoi(input.c_str() + 3);
+        d.m_year = std::atoi(input.c_str() + 6);
+        Validate(d.m_day, d.m_month, d.m_year);
 
         return is;
     }
 
-    std::ostream &operator<<(std::ostream &os, const Date &date)
+    std::ostream &operator<<(std::ostream &os, const Date &d)
     {
-        return os << date.m_day << ' ' << monthNames[date.m_mon] << ' ' << date.m_year << ' '
-            << weekdayNames[date.Weekday()];
+        return os << d.m_day << ' ' << monthNames[d.m_month] << ' ' << d.m_year << ' '
+            << weekdayNames[d.Weekday()];
     }
 }

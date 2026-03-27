@@ -15,7 +15,7 @@ namespace cgr
             enum class Reason {
                 DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
             };
-            InvalidDate(Reason reason, const std::string &errMsg);
+            InvalidDate(Reason reason, const std::string &message);
             [[nodiscard]] Reason GetReason() const noexcept;
         private:
             Reason m_reason;
@@ -25,27 +25,27 @@ namespace cgr
         [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
 
         Date();
-        Date(int day, int mon, int year);
-        explicit Date(const char *p);
-        explicit Date(const std::string &date);
+        Date(int day, int month, int year);
+        explicit Date(const char *str);
+        explicit Date(const std::string &str);
         explicit Date(std::time_t timer);
         explicit Date(std::istream &is);
 
-        [[nodiscard]] int MonthDay() const noexcept;
+        [[nodiscard]] int Day() const noexcept;
         [[nodiscard]] int Month() const noexcept;
         [[nodiscard]] int Year() const noexcept;
-        [[nodiscard]] int YearDay() const noexcept;
-        [[nodiscard]] int YearWeek() const noexcept;
+        [[nodiscard]] int DayOfYear() const noexcept;
+        [[nodiscard]] int WeekOfYear() const noexcept;
         [[nodiscard]] int Weekday() const noexcept;
 
-        Date &MonthDay(int day);
-        Date &Month(int mon);
+        Date &Day(int day);
+        Date &Month(int month);
         Date &Year(int year);
-        Date &Set(int day, int mon, int year);
+        Date &Set(int day, int month, int year);
         Date &SetCurrentDate();
 
-        Date &operator+=(int day);
-        Date &operator-=(int day);
+        Date &operator+=(int days);
+        Date &operator-=(int days);
 
         Date &operator++();
         Date operator++(int);
@@ -60,25 +60,25 @@ namespace cgr
         [[nodiscard]] static int CurrentYearDay();
         [[nodiscard]] static int CurrentWeekday();
 
-        friend Date operator+(const Date &date, int n);
-        friend Date operator-(const Date &date, int n);
-        friend int operator-(const Date &date1, const Date &date2) noexcept;
+        friend Date operator+(const Date &d, int days);
+        friend Date operator-(const Date &d, int days);
+        friend int operator-(const Date &lhs, const Date &rhs) noexcept;
 
         friend bool operator<(const Date &lhs, const Date &rhs) noexcept;
         friend bool operator==(const Date &lhs, const Date &rhs) noexcept;
 
-        friend std::istream &operator>>(std::istream &is, Date &date);
-        friend std::ostream &operator<<(std::ostream &os, const Date &date);
+        friend std::istream &operator>>(std::istream &is, Date &d);
+        friend std::ostream &operator<<(std::ostream &os, const Date &d);
     private:
         int m_day;
-        int m_mon;
+        int m_month;
         int m_year;
     };
 
-    [[nodiscard]] Date operator+(const Date &date, int n);
-    [[nodiscard]] Date operator+(int n, const Date &date);
-    [[nodiscard]] Date operator-(const Date &date, int n);
-    [[nodiscard]] int operator-(const Date &date1, const Date &date2) noexcept;
+    [[nodiscard]] Date operator+(const Date &d, int days);
+    [[nodiscard]] Date operator+(int days, const Date &d);
+    [[nodiscard]] Date operator-(const Date &d, int days);
+    [[nodiscard]] int operator-(const Date &lhs, const Date &rhs) noexcept;
 
     [[nodiscard]] bool operator<(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs) noexcept;
@@ -87,8 +87,8 @@ namespace cgr
     [[nodiscard]] bool operator==(const Date &lhs, const Date &rhs) noexcept;
     [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs) noexcept;
 
-    std::istream &operator>>(std::istream &is, Date &date);
-    std::ostream &operator<<(std::ostream &os, const Date &date);
+    std::istream &operator>>(std::istream &is, Date &d);
+    std::ostream &operator<<(std::ostream &os, const Date &d);
 }
 
 #endif // DATE_H
