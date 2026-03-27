@@ -12,6 +12,7 @@
 #include <regex>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 namespace
 {
@@ -109,8 +110,8 @@ namespace
 
 namespace cgr
 {
-    Date::InvalidDate::InvalidDate(Reason reason, const std::string &message)
-        : std::invalid_argument{ message }, m_reason{ reason } {}
+    Date::InvalidDate::InvalidDate(Reason reason, std::string message)
+        : std::invalid_argument{ std::move(message) }, m_reason{ reason } {}
 
     Date::InvalidDate::Reason Date::InvalidDate::GetReason() const noexcept
     {

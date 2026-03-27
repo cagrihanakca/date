@@ -15,7 +15,7 @@ namespace cgr
             enum class Reason {
                 DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
             };
-            InvalidDate(Reason reason, const std::string &message);
+            InvalidDate(Reason reason, std::string message);
             [[nodiscard]] Reason GetReason() const noexcept;
         private:
             Reason m_reason;
