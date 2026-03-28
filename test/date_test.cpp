@@ -201,3 +201,14 @@ TEST(GetterTest, WeekOfYear)
     EXPECT_EQ(Date{ "29/02/2020" }.WeekOfYear(), 9);
     EXPECT_EQ(Date{ "31/12/2020" }.WeekOfYear(), 53);
 }
+
+TEST(GetterTest, Weekday)
+{
+    EXPECT_EQ(Date{ "06/01/2014" }.Weekday(), 1);
+    EXPECT_EQ(Date{ "25/09/2018" }.Weekday(), 2);
+    EXPECT_EQ(Date{ "01/01/2014" }.Weekday(), 3);
+    EXPECT_EQ(Date{ "31/12/2015" }.Weekday(), 4);
+    EXPECT_EQ(Date{ "01/01/2016" }.Weekday(), 5);
+    EXPECT_EQ(Date{ "31/12/2016" }.Weekday(), 6);
+    EXPECT_EQ(Date{ "25/09/2016" }.Weekday(), 7);
+}
