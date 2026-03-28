@@ -55,6 +55,7 @@ TEST(CtorTest, DayMonYearCtor)
     EXPECT_THROW(Date(32, 12, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(12, 0, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(12, 12, 1899), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 12, 10'000), Date::InvalidDate);
     EXPECT_THROW(Date(31, 4, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(30, 2, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(29, 2, 2023), Date::InvalidDate);
@@ -73,12 +74,12 @@ TEST(CtorTest, CStringCtor)
     EXPECT_THROW(Date{ "32/12/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/0/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/1899" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/10000" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "31/4/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "30/2/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "29/2/2023" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "2/12/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/2/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/20242" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12 12 2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12.12.2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "aaaa12/12/2024" }, Date::InvalidDate);
@@ -101,6 +102,7 @@ TEST(CtorTest, StringCtor)
     EXPECT_THROW(Date{ "32/12/2024"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/0/2024"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/1899"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/10000"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "31/4/2024"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "30/2/2024"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "29/2/2023"s }, Date::InvalidDate);
@@ -145,8 +147,9 @@ TEST(CtorTest, IStreamCtor)
     EXPECT_EQ(d.Year(), 2024);
 
     const std::vector<std::string> inputs{
-        "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "31/4/2024", "30/2/2024", "29/2/2023", "2/12/2024",
-        "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024", "12/12/ccccc2024"
+        "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "12/12/10000", "31/4/2024", "30/2/2024", "29/2/2023",
+        "2/12/2024", "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
+        "12/12/ccccc2024"
     };
 
     for (const auto &input : inputs) {
@@ -266,6 +269,7 @@ TEST(SetterTest, Year)
     EXPECT_NO_THROW(Date{ "29/02/2020" }.Year(2024));
 
     EXPECT_THROW(Date{ "12/12/2024" }.Year(1899), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(10'000), Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/2024" }.Year(0), Date::InvalidDate);
     EXPECT_THROW(Date{ "29/02/2020" }.Year(2021), Date::InvalidDate);
 }
