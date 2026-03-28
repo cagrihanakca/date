@@ -223,15 +223,15 @@ TEST(SetterTest, Day)
     EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(12));
     EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(31));
 
-    EXPECT_ANY_THROW(Date{ "12/12/2024" }.Day(0));
-    EXPECT_ANY_THROW(Date{ "12/12/2024" }.Day(-12));
-    EXPECT_ANY_THROW(Date{ "12/12/2024" }.Day(32));
-    EXPECT_ANY_THROW(Date{ "30/04/2024" }.Day(31));
-    EXPECT_ANY_THROW(Date{ "28/02/2023" }.Day(29));
-    EXPECT_ANY_THROW(Date{ "28/02/2023" }.Day(30));
-    EXPECT_ANY_THROW(Date{ "28/02/2023" }.Day(31));
-    EXPECT_ANY_THROW(Date{ "29/02/2024" }.Day(30));
-    EXPECT_ANY_THROW(Date{ "29/02/2024" }.Day(31));
+    EXPECT_THROW(Date{ "12/12/2024" }.Day(0), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Day(-12), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Day(32), Date::InvalidDate);
+    EXPECT_THROW(Date{ "30/04/2024" }.Day(31), Date::InvalidDate);
+    EXPECT_THROW(Date{ "28/02/2023" }.Day(29), Date::InvalidDate);
+    EXPECT_THROW(Date{ "28/02/2023" }.Day(30), Date::InvalidDate);
+    EXPECT_THROW(Date{ "28/02/2023" }.Day(31), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/02/2024" }.Day(30), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/02/2024" }.Day(31), Date::InvalidDate);
 }
 
 TEST(SetterTest, Month)
