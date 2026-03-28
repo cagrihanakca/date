@@ -37,3 +37,21 @@ TEST(CtorTest, DefaultCtor)
     EXPECT_EQ(d.Month(), 1);
     EXPECT_EQ(d.Year(), 1900);
 }
+
+TEST(CtorTest, DayMonYearCtor)
+{
+    ASSERT_NO_THROW(Date(12, 12, 2024));
+
+    Date d{ 12, 12, 2024 };
+    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
+
+    EXPECT_THROW(Date(0, 12, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(32, 12, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 0, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 12, 1899), Date::InvalidDate);
+    EXPECT_THROW(Date(31, 4, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(30, 2, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(29, 2, 2023), Date::InvalidDate);
+}
