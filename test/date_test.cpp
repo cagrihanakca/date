@@ -1,117 +1,271 @@
 #include <ctime>
 #include <sstream>
 #include <string>
-#include "date.h"
+#include <vector>
 #include "gtest/gtest.h"
+#include "date.h"
 
-using namespace pro;
+using namespace cgr;
 
-TEST(ConstructorTest, DefaultCtor)
+TEST(InvalidDateTest, Ctor)
+{
+    EXPECT_NO_THROW(Date::InvalidDate(Date::InvalidDate::Reason::DAY, "invalid day"));
+}
+
+TEST(InvalidDateTest, GetReason)
+{
+    using Date::InvalidDate::Reason::DAY;
+
+    ASSERT_NO_THROW(Date::InvalidDate(DAY, "invalid day"));
+
+    Date::InvalidDate ex{ DAY, "invalid day" };
+    EXPECT_EQ(ex.GetReason(), DAY);
+}
+
+TEST(InvalidDateTest, What)
+{
+    using Date::InvalidDate::Reason::MONTH;
+
+    ASSERT_NO_THROW(Date::InvalidDate(MONTH, "invalid month"));
+
+    Date::InvalidDate ex{ MONTH, "invalid month" };
+    EXPECT_STREQ(ex.what(), "invalid month");
+}
+
+TEST(CtorTest, DefaultCtor)
 {
     ASSERT_NO_THROW(Date{});
 
-    Date testDate;
-
-    EXPECT_EQ(testDate.MonthDay(), 1);
-    EXPECT_EQ(testDate.Month(), 1);
-    EXPECT_EQ(testDate.Year(), Date::baseYear);
+    Date d;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 1);
+    EXPECT_EQ(d.Year(), 1900);
 }
 
-TEST(ConstructorTest, DayMonYearCtor)
+TEST(CtorTest, DayMonYearCtor)
 {
     ASSERT_NO_THROW(Date(12, 12, 2024));
 
-    Date testDate{ 12, 12, 2024 };
+    Date d{ 12, 12, 2024 };
+    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_EQ(testDate.MonthDay(), 12);
-    EXPECT_EQ(testDate.Month(), 12);
-    EXPECT_EQ(testDate.Year(), 2024);
-
-    EXPECT_THROW(Date(38, 12, 2024), std::invalid_argument);
-    EXPECT_THROW(Date(12, 65, 2024), std::invalid_argument);
-    EXPECT_THROW(Date(12, 12, 1474), std::invalid_argument);
+    EXPECT_THROW(Date(0, 12, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(32, 12, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 0, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 12, 1899), Date::InvalidDate);
+    EXPECT_THROW(Date(31, 4, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(30, 2, 2024), Date::InvalidDate);
+    EXPECT_THROW(Date(29, 2, 2023), Date::InvalidDate);
 }
 
-TEST(ConstructorTest, CStringCtor)
+TEST(CtorTest, CStringCtor)
 {
-    ASSERT_NO_THROW(Date("12/12/2024"));
+    ASSERT_NO_THROW(Date{ "12/12/2024" });
 
-    Date testDate{ "12/12/2024" };
+    Date d{ "12/12/2024" };
+    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_EQ(testDate.MonthDay(), 12);
-    EXPECT_EQ(testDate.Month(), 12);
-    EXPECT_EQ(testDate.Year(), 2024);
-
-    EXPECT_THROW(Date{ "38/12/2024" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/65/2024" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/12/1474" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12 12 2024" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12.12.2024" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "aaaa12/12/2024" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/bbbb12/2024" }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/12/ccccc2024" }, std::invalid_argument);
+    EXPECT_THROW(Date{ "0/12/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "32/12/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/0/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/1899" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/4/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "30/2/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/2/2023" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "2/12/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/2/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/20242" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12 12 2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12.12.2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "aaaa12/12/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/bbbb12/2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/ccccc2024" }, Date::InvalidDate);
 }
 
-TEST(ConstructorTest, StringCtor)
+TEST(CtorTest, StringCtor)
 {
     using namespace std::literals::string_literals;
 
-    ASSERT_NO_THROW(Date("12/12/2024"s));
+    ASSERT_NO_THROW(Date{ "12/12/2024"s });
 
-    Date testDate{ "12/12/2024"s };
+    Date d{ "12/12/2024"s };
+    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_EQ(testDate.MonthDay(), 12);
-    EXPECT_EQ(testDate.Month(), 12);
-    EXPECT_EQ(testDate.Year(), 2024);
-
-    EXPECT_THROW(Date{ "38/12/2024"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/65/2024"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/12/1474"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12 12 2024"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12.12.2024"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, std::invalid_argument);
-    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, std::invalid_argument);
+    EXPECT_THROW(Date{ "0/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "32/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/0/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/1899"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/4/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "30/2/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/2/2023"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "2/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/2/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/20242"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12 12 2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12.12.2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, Date::InvalidDate);
 }
 
-TEST(ConstructorTest, CalendarTimeCtor)
+TEST(CtorTest, CalendarTimeCtor)
 {
     std::time_t timer{};
     std::time(&timer);
 
     ASSERT_NO_THROW(Date{ timer });
 
-    Date testDate{ timer };
-    const auto *tp{ std::localtime(&timer) };
-
-    EXPECT_EQ(testDate.MonthDay(), tp->tm_mday);
-    EXPECT_EQ(testDate.Month(), tp->tm_mon + 1);
-    EXPECT_EQ(testDate.Year(), tp->tm_year + 1900);
-
-    EXPECT_THROW(Date{ -1 }, std::runtime_error);
+    Date d{ timer };
+    const auto *timePtr{ localtime(&timer) };
+    EXPECT_EQ(d.Day(), timePtr->tm_mday);
+    EXPECT_EQ(d.Month(), timePtr->tm_mon + 1);
+    EXPECT_EQ(d.Year(), timePtr->tm_year + 1900);
 }
 
-TEST(ConstructorTest, IstreamCtor)
+TEST(CtorTest, IStreamCtor)
 {
-    std::istringstream istr{ "12/12/2024" };
+    std::istringstream iss;
+    EXPECT_THROW(Date{ iss }, Date::InvalidDate);
 
-    ASSERT_NO_THROW(Date{ istr });
+    iss.clear();
+    iss.str("12/12/2024");
+    ASSERT_NO_THROW(Date{ iss });
 
-    istr.clear();
-    istr.str("12/12/2024");
-
-    Date testDate{ istr };
-
-    EXPECT_EQ(testDate.MonthDay(), 12);
-    EXPECT_EQ(testDate.Month(), 12);
-    EXPECT_EQ(testDate.Year(), 2024);
+    iss.clear();
+    iss.str("12/12/2024");
+    Date d{ iss };
+    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
 
     const std::vector<std::string> inputs{
-        "38/12/2024", "12/65/2024", "12/12/1474", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
-        "12/12/ccccc2024"
+        "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "31/4/2024", "30/2/2024", "29/2/2023", "2/12/2024",
+        "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024", "12/12/ccccc2024"
     };
-    for (const auto &in : inputs) {
-        std::istringstream istr{ in };
-        EXPECT_THROW(Date{ in }, std::invalid_argument);
+
+    for (const auto &input : inputs) {
+        std::istringstream iss{ input };
+        EXPECT_THROW(Date{ iss }, Date::InvalidDate);
     }
+}
+
+TEST(GetterTest, Day)
+{
+    EXPECT_EQ(Date{ "01/12/2024" }.Day(), 1);
+    EXPECT_EQ(Date{ "12/12/2024" }.Day(), 12);
+    EXPECT_EQ(Date{ "31/12/2024" }.Day(), 31);
+}
+
+TEST(GetterTest, Month)
+{
+    EXPECT_EQ(Date{ "12/01/2024" }.Month(), 1);
+    EXPECT_EQ(Date{ "12/09/2024" }.Month(), 9);
+    EXPECT_EQ(Date{ "12/12/2024" }.Month(), 12);
+}
+
+TEST(GetterTest, Year)
+{
+    EXPECT_EQ(Date{ "12/12/1900" }.Year(), 1900);
+    EXPECT_EQ(Date{ "12/12/2026" }.Year(), 2026);
+    EXPECT_EQ(Date{ "12/12/9999" }.Year(), 9999);
+}
+
+TEST(GetterTest, DayOfYear)
+{
+    EXPECT_EQ(Date{ "01/01/2023" }.DayOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2023" }.DayOfYear(), 365);
+    EXPECT_EQ(Date{ "31/12/2024" }.DayOfYear(), 366);
+}
+
+TEST(GetterTest, WeekOfYear)
+{
+    EXPECT_EQ(Date{ "01/01/2014" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "06/01/2014" }.WeekOfYear(), 2);
+    EXPECT_EQ(Date{ "25/09/2014" }.WeekOfYear(), 39);
+    EXPECT_EQ(Date{ "31/12/2014" }.WeekOfYear(), 53);
+    EXPECT_EQ(Date{ "01/01/2015" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2015" }.WeekOfYear(), 53);
+    EXPECT_EQ(Date{ "01/01/2016" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "04/01/2016" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2016" }.WeekOfYear(), 52);
+    EXPECT_EQ(Date{ "01/01/2017" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "02/01/2017" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "01/01/2018" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2018" }.WeekOfYear(), 53);
+    EXPECT_EQ(Date{ "29/02/2020" }.WeekOfYear(), 9);
+    EXPECT_EQ(Date{ "31/12/2020" }.WeekOfYear(), 53);
+}
+
+TEST(GetterTest, Weekday)
+{
+    EXPECT_EQ(Date{ "06/01/2014" }.Weekday(), 1);
+    EXPECT_EQ(Date{ "25/09/2018" }.Weekday(), 2);
+    EXPECT_EQ(Date{ "01/01/2014" }.Weekday(), 3);
+    EXPECT_EQ(Date{ "31/12/2015" }.Weekday(), 4);
+    EXPECT_EQ(Date{ "01/01/2016" }.Weekday(), 5);
+    EXPECT_EQ(Date{ "31/12/2016" }.Weekday(), 6);
+    EXPECT_EQ(Date{ "25/09/2016" }.Weekday(), 7);
+}
+
+TEST(SetterTest, Day)
+{
+    Date d{ "12/12/2024" };
+    d.Day(15);
+    EXPECT_EQ(d.Day(), 15);
+
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(1));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(12));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(31));
+
+    EXPECT_THROW(Date{ "12/12/2024" }.Day(0), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Day(-12), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Day(32), Date::InvalidDate);
+    EXPECT_THROW(Date{ "30/04/2024" }.Day(31), Date::InvalidDate);
+    EXPECT_THROW(Date{ "28/02/2023" }.Day(29), Date::InvalidDate);
+    EXPECT_THROW(Date{ "28/02/2023" }.Day(30), Date::InvalidDate);
+    EXPECT_THROW(Date{ "28/02/2023" }.Day(31), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/02/2024" }.Day(30), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/02/2024" }.Day(31), Date::InvalidDate);
+}
+
+TEST(SetterTest, Month)
+{
+    Date d{ "12/12/2024" };
+    d.Month(3);
+    EXPECT_EQ(d.Month(), 3);
+
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Month(1));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Month(6));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Month(12));
+    EXPECT_NO_THROW(Date{ "29/01/2024" }.Month(2));
+
+    EXPECT_THROW(Date{ "12/12/2024" }.Month(0), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Month(-12), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Month(13), Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/05/2024" }.Month(4), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/03/2023" }.Month(2), Date::InvalidDate);
+    EXPECT_THROW(Date{ "30/04/2023" }.Month(2), Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/03/2023" }.Month(2), Date::InvalidDate);
+}
+
+TEST(SetterTest, Year)
+{
+    Date d{ "12/12/2024" };
+    d.Year(2026);
+    EXPECT_EQ(d.Year(), 2026);
+
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(1900));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(5000));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(9999));
+    EXPECT_NO_THROW(Date{ "29/02/2020" }.Year(2024));
+
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(1899), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(0), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/02/2020" }.Year(2021), Date::InvalidDate);
 }
