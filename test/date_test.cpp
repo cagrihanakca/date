@@ -253,3 +253,19 @@ TEST(SetterTest, Month)
     EXPECT_THROW(Date{ "30/04/2023" }.Month(2), Date::InvalidDate);
     EXPECT_THROW(Date{ "31/03/2023" }.Month(2), Date::InvalidDate);
 }
+
+TEST(SetterTest, Year)
+{
+    Date d{ "12/12/2024" };
+    d.Year(2026);
+    EXPECT_EQ(d.Year(), 2026);
+
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(1900));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(5000));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(9999));
+    EXPECT_NO_THROW(Date{ "29/02/2020" }.Year(2024));
+
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(1899), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(0), Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/02/2020" }.Year(2021), Date::InvalidDate);
+}
