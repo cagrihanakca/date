@@ -1,3 +1,4 @@
+#include <ctime>
 #include <string>
 #include "gtest/gtest.h"
 #include "date.h"
@@ -109,4 +110,18 @@ TEST(CtorTest, StringCtor)
     EXPECT_THROW(Date{ "aaaa12/12/2024"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/bbbb12/2024"s }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/ccccc2024"s }, Date::InvalidDate);
+}
+
+TEST(CtorTest, CalendarTimeCtor)
+{
+    std::time_t timer{};
+    std::time(&timer);
+
+    ASSERT_NO_THROW(Date{ timer });
+
+    Date d{ timer };
+    const auto *timePtr{ localtime(&timer) };
+    EXPECT_EQ(d.Day(), timePtr->tm_mday);
+    EXPECT_EQ(d.Month(), timePtr->tm_mon + 1);
+    EXPECT_EQ(d.Year(), timePtr->tm_year + 1900);
 }
