@@ -2,6 +2,7 @@
 
 #include <array>
 #include <chrono>
+#include <compare>
 #include <cstdlib>
 #include <ctime>
 #include <format>
@@ -310,6 +311,19 @@ namespace cgr
         return ret;
     }
 
+    std::strong_ordering Date::operator<=>(const Date &rhs) const noexcept
+    {
+        if (const auto cmp{ m_year <=> rhs.m_year }; cmp != 0) {
+            return cmp;
+        }
+
+        if (const auto cmp{ m_month <=> rhs.m_month }; cmp != 0) {
+            return cmp;
+        }
+
+        return m_day <=> rhs.m_day;
+    }
+
     bool Date::IsLeap(int year)
     {
         if (year < BASE_YEAR) {
@@ -359,36 +373,6 @@ namespace cgr
     int operator-(const Date &lhs, const Date &rhs) noexcept
     {
         return std::abs(DaysSinceBase(lhs) - DaysSinceBase(rhs));
-    }
-
-    bool operator<(const Date &lhs, const Date &rhs) noexcept
-    {
-        return DaysSinceBase(lhs) < DaysSinceBase(rhs);
-    }
-
-    bool operator<=(const Date &lhs, const Date &rhs) noexcept
-    {
-        return !(rhs < lhs);
-    }
-
-    bool operator>(const Date &lhs, const Date &rhs) noexcept
-    {
-        return rhs < lhs;
-    }
-
-    bool operator>=(const Date &lhs, const Date &rhs) noexcept
-    {
-        return !(lhs < rhs);
-    }
-
-    bool operator==(const Date &lhs, const Date &rhs) noexcept
-    {
-        return DaysSinceBase(lhs) == DaysSinceBase(rhs);
-    }
-
-    bool operator!=(const Date &lhs, const Date &rhs) noexcept
-    {
-        return !(lhs == rhs);
     }
 
     std::istream &operator>>(std::istream &is, Date &d)

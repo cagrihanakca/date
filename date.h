@@ -1,6 +1,7 @@
 #ifndef DATE_H
 #define DATE_H
 
+#include <compare>
 #include <ctime>
 #include <iosfwd>
 #include <stdexcept>
@@ -50,14 +51,14 @@ namespace cgr
         Date &operator--();
         Date operator--(int);
 
+        [[nodiscard]] std::strong_ordering operator<=>(const Date &rhs) const noexcept;
+        [[nodiscard]] bool operator==(const Date &rhs) const noexcept = default;
+
         [[nodiscard]] static bool IsLeap(int year);
 
         friend Date operator+(const Date &d, int days);
         friend Date operator-(const Date &d, int days);
         friend int operator-(const Date &lhs, const Date &rhs) noexcept;
-
-        friend bool operator<(const Date &lhs, const Date &rhs) noexcept;
-        friend bool operator==(const Date &lhs, const Date &rhs) noexcept;
 
         friend std::istream &operator>>(std::istream &is, Date &d);
         friend std::ostream &operator<<(std::ostream &os, const Date &d);
@@ -71,13 +72,6 @@ namespace cgr
     [[nodiscard]] Date operator+(int days, const Date &d);
     [[nodiscard]] Date operator-(const Date &d, int days);
     [[nodiscard]] int operator-(const Date &lhs, const Date &rhs) noexcept;
-
-    [[nodiscard]] bool operator<(const Date &lhs, const Date &rhs) noexcept;
-    [[nodiscard]] bool operator<=(const Date &lhs, const Date &rhs) noexcept;
-    [[nodiscard]] bool operator>(const Date &lhs, const Date &rhs) noexcept;
-    [[nodiscard]] bool operator>=(const Date &lhs, const Date &rhs) noexcept;
-    [[nodiscard]] bool operator==(const Date &lhs, const Date &rhs) noexcept;
-    [[nodiscard]] bool operator!=(const Date &lhs, const Date &rhs) noexcept;
 
     std::istream &operator>>(std::istream &is, Date &d);
     std::ostream &operator<<(std::ostream &os, const Date &d);
