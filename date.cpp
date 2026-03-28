@@ -185,13 +185,16 @@ namespace cgr
     Date::Date(std::time_t timer)
     {
         std::tm time{};
+
 #ifdef _WIN32
         if (localtime_s(&time, &timer)) {
-#else
-        if (!localtime_r(&timer, &time)) {
-#endif
             throw InvalidDate{ InvalidDate::Reason::EPOCH, "conversion from the time since epoch to the date failed" };
         }
+#else
+        if (!localtime_r(&timer, &time)) {
+            throw InvalidDate{ InvalidDate::Reason::EPOCH, "conversion from the time since epoch to the date failed" };
+        }
+#endif
 
         m_day = time.tm_mday;
         m_month = time.tm_mon + 1;
