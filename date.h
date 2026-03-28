@@ -1,5 +1,5 @@
-#ifndef DATE_H
-#define DATE_H
+#ifndef CGR_DATE_H
+#define CGR_DATE_H
 
 #include <compare>
 #include <ctime>
@@ -77,4 +77,4 @@ namespace cgr
     std::ostream &operator<<(std::ostream &os, const Date &d);
 }
 
-#endif // DATE_H
+#endif // CGR_DATE_H
