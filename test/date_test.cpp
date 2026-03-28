@@ -172,3 +172,10 @@ TEST(GetterTest, Year)
     Date d{ 12, 12, 2024 };
     EXPECT_EQ(d.Year(), 2024);
 }
+
+TEST(GetterTest, DayOfYear)
+{
+    EXPECT_EQ(Date(1, 1, 2023).DayOfYear(), 1);
+    EXPECT_EQ(Date(31, 12, 2023).DayOfYear(), 365);
+    EXPECT_EQ(Date(31, 12, 2024).DayOfYear(), 366);
+}
