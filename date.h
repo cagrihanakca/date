@@ -25,7 +25,7 @@ namespace cgr
         [[nodiscard]] static Date Today();
         [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
 
-        Date();
+        Date() noexcept;
         Date(int day, int month, int year);
         explicit Date(const char *str);
         explicit Date(const std::string &str);

@@ -151,7 +151,7 @@ namespace cgr
         return { day, month, year };
     }
 
-    Date::Date() : m_day{ 1 }, m_month{ 1 }, m_year{ BASE_YEAR } {}
+    Date::Date() noexcept : m_day{ 1 }, m_month{ 1 }, m_year{ BASE_YEAR } {}
 
     Date::Date(int day, int month, int year) : m_day{ day }, m_month{ month }, m_year{ year }
     {
