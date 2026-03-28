@@ -190,7 +190,28 @@ namespace cgr
 
     Date::Date(std::istream &is)
     {
-        is >> *this;
+        if (std::string input; is >> input) {
+            if (std::regex_match(input, datePattern)) {
+                const auto newDay{ std::atoi(input.c_str()) };
+                const auto newMonth{ std::atoi(input.c_str() + 3) };
+                const auto newYear{ std::atoi(input.c_str() + 6) };
+                try {
+                    Validate(newDay, newMonth, newYear);
+                    m_day = newDay;
+                    m_month = newMonth;
+                    m_year = newYear;
+                } catch (const InvalidDate &) {
+                    is.setstate(std::ios::failbit);
+                    throw;
+                }
+            } else {
+                is.setstate(std::ios::failbit);
+                throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT,
+                    std::format("invalid date format: {} isn't compatible dd/mm/yyyy", input) };
+            }
+        } else {
+            throw Date::InvalidDate{ Date::InvalidDate::Reason::STREAM, std::format("input stream is not good state") };
+        }
     }
 
     int Date::Day() const noexcept
@@ -407,18 +428,23 @@ namespace cgr
 
     std::istream &operator>>(std::istream &is, Date &d)
     {
-        std::string input;
-        is >> input;
-        if (!std::regex_match(input, datePattern)) {
-            throw Date::InvalidDate{ Date::InvalidDate::Reason::FORMAT,
-                std::format("invalid date format: {} isn't compatible dd/mm/yyyy", input) };
-
+        if (std::string input; is >> input) {
+            if (std::regex_match(input, datePattern)) {
+                const auto newDay{ std::atoi(input.c_str()) };
+                const auto newMonth{ std::atoi(input.c_str() + 3) };
+                const auto newYear{ std::atoi(input.c_str() + 6) };
+                try {
+                    Validate(newDay, newMonth, newYear);
+                    d.m_day = newDay;
+                    d.m_month = newMonth;
+                    d.m_year = newYear;
+                } catch (const Date::InvalidDate &) {
+                    is.setstate(std::ios::failbit);
+                }
+            } else {
+                is.setstate(std::ios::failbit);
+            }
         }
-
-        d.m_day = std::atoi(input.c_str());
-        d.m_month = std::atoi(input.c_str() + 3);
-        d.m_year = std::atoi(input.c_str() + 6);
-        Validate(d.m_day, d.m_month, d.m_year);
 
         return is;
     }

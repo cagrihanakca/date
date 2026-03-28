@@ -13,7 +13,7 @@ namespace cgr
         class InvalidDate : public std::invalid_argument {
         public:
             enum class Reason {
-                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE
+                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE, STREAM
             };
             InvalidDate(Reason reason, std::string message);
             [[nodiscard]] Reason GetReason() const noexcept;
