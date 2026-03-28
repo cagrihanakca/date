@@ -18,7 +18,8 @@ namespace
 {
     using namespace cgr;
 
-    constexpr int BASE_YEAR{ 1900 };
+    constexpr int MIN_YEAR{ 1900 };
+    constexpr int MAX_YEAR{ 9999 };
 
     enum Weekday {
         MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
@@ -57,8 +58,12 @@ namespace
                 std::format("invalid month: {} (the month must be between [1, 12])", month) };
         }
 
-        if (year < BASE_YEAR) {
-            throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is less than the base year (1900)", year) };
+        if (year < MIN_YEAR) {
+            throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is less than the min year (1900)", year) };
+        }
+
+        if (year > MAX_YEAR) {
+            throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is greater than the max year (9999)", year) };
         }
 
         if ((day == 31) &&
@@ -76,33 +81,33 @@ namespace
         }
     }
 
-    [[nodiscard]] int DaysSinceBase(const Date &d) noexcept
+    [[nodiscard]] int DaysSinceMinYear(const Date &d) noexcept
     {
-        int daysSinceBase{};
-        for (auto year{ BASE_YEAR }; year < d.Year(); ++year) {
-            daysSinceBase += Date::IsLeap(year) ? 366 : 365;
+        int daysSinceMinYear{};
+        for (auto year{ MIN_YEAR }; year < d.Year(); ++year) {
+            daysSinceMinYear += Date::IsLeap(year) ? 366 : 365;
         }
 
-        daysSinceBase += d.DayOfYear();
+        daysSinceMinYear += d.DayOfYear();
 
-        return daysSinceBase;
+        return daysSinceMinYear;
     }
 
-    [[nodiscard]] Date DateFromDaysSinceBase(int daysSinceBase) noexcept
+    [[nodiscard]] Date DateFromDaysSinceMinYear(int daysSinceMinYear) noexcept
     {
-        auto year{ BASE_YEAR };
-        while (daysSinceBase > (Date::IsLeap(year) ? 366 : 365)) {
-            daysSinceBase -= (Date::IsLeap(year) ? 366 : 365);
+        auto year{ MIN_YEAR };
+        while (daysSinceMinYear > (Date::IsLeap(year) ? 366 : 365)) {
+            daysSinceMinYear -= (Date::IsLeap(year) ? 366 : 365);
             ++year;
         }
 
         auto month{ 1 };
-        while (daysSinceBase > daysInMonths[Date::IsLeap(year)][month]) {
-            daysSinceBase -= daysInMonths[Date::IsLeap(year)][month];
+        while (daysSinceMinYear > daysInMonths[Date::IsLeap(year)][month]) {
+            daysSinceMinYear -= daysInMonths[Date::IsLeap(year)][month];
             ++month;
         }
 
-        auto day{ daysSinceBase };
+        auto day{ daysSinceMinYear };
 
         return { day, month, year };
     }
@@ -125,8 +130,12 @@ namespace cgr
 
     Date Date::RandomDate(int minYear, int maxYear)
     {
-        if ((minYear < BASE_YEAR) || (maxYear < BASE_YEAR)) {
-            throw std::invalid_argument{ "a year less than base year (1900) is not allowed" };
+        if ((minYear < MIN_YEAR) || (maxYear < MIN_YEAR)) {
+            throw std::invalid_argument{ "a year less than min year (1900) is not allowed" };
+        }
+
+        if ((minYear > MAX_YEAR) || (maxYear > MAX_YEAR)) {
+            throw std::invalid_argument{ "a year greater than max year (9999) is not allowed" };
         }
 
         if (minYear > maxYear) {
@@ -151,7 +160,7 @@ namespace cgr
         return { day, month, year };
     }
 
-    Date::Date() noexcept : m_day{ 1 }, m_month{ 1 }, m_year{ BASE_YEAR } {}
+    Date::Date() noexcept : m_day{ 1 }, m_month{ 1 }, m_year{ MIN_YEAR } {}
 
     Date::Date(int day, int month, int year) : m_day{ day }, m_month{ month }, m_year{ year }
     {
@@ -256,7 +265,7 @@ namespace cgr
 
     int Date::Weekday() const noexcept
     {
-        return (DaysSinceBase(*this) - 1) % 7 + 1;
+        return (DaysSinceMinYear(*this) - 1) % 7 + 1;
     }
 
     Date &Date::Day(int day)
@@ -334,8 +343,12 @@ namespace cgr
 
     bool Date::IsLeap(int year)
     {
-        if (year < BASE_YEAR) {
-            throw std::invalid_argument{ std::format("invalid year: {} is less than the base year (1900)", year) };
+        if (year < MIN_YEAR) {
+            throw std::invalid_argument{ std::format("invalid year: {} is less than the min year (1900)", year) };
+        }
+
+        if (year > MAX_YEAR) {
+            throw std::invalid_argument{ std::format("invalid year: {} is greater than the max year (9999)", year) };
         }
 
         return (year % 4 == 0) && (year % 100 != 0 || year % 400 == 0);
@@ -349,12 +362,12 @@ namespace cgr
             throw Date::InvalidDate{ DAY, std::format("invalid day: {}. a day cannot be negative", days) };
         }
 
-        auto daysSinceBase{ DaysSinceBase(d) };
-        if ((std::numeric_limits<int>::max() - days) < daysSinceBase) {
+        auto daysSinceMinYear{ DaysSinceMinYear(d) };
+        if ((std::numeric_limits<int>::max() - days) < daysSinceMinYear) {
             throw Date::InvalidDate{ RANGE, std::format("invalid date: {} days after cannot be represented", days) };
         }
 
-        return DateFromDaysSinceBase(daysSinceBase + days);
+        return DateFromDaysSinceMinYear(daysSinceMinYear + days);
     }
 
     Date operator+(int days, const Date &d)
@@ -370,18 +383,18 @@ namespace cgr
             throw Date::InvalidDate{ DAY, std::format("invalid day: {}. a day cannot be negative", days) };
         }
 
-        const auto daysSinceBase{ DaysSinceBase(d) };
-        if (daysSinceBase <= days) {
+        const auto daysSinceMinYear{ DaysSinceMinYear(d) };
+        if (daysSinceMinYear <= days) {
             throw Date::InvalidDate{ RANGE,
-                std::format("invalid date: {} days before falls before the base date (01/01/1900)", days) };
+                std::format("invalid date: {} days before falls before the min date (01/01/1900)", days) };
         }
 
-        return DateFromDaysSinceBase(daysSinceBase - days);
+        return DateFromDaysSinceMinYear(daysSinceMinYear - days);
     }
 
     int operator-(const Date &lhs, const Date &rhs) noexcept
     {
-        return std::abs(DaysSinceBase(lhs) - DaysSinceBase(rhs));
+        return std::abs(DaysSinceMinYear(lhs) - DaysSinceMinYear(rhs));
     }
 
     std::istream &operator>>(std::istream &is, Date &d)
