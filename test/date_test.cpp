@@ -182,3 +182,22 @@ TEST(GetterTest, DayOfYear)
     EXPECT_EQ(Date{ "31/12/2023" }.DayOfYear(), 365);
     EXPECT_EQ(Date{ "31/12/2024" }.DayOfYear(), 366);
 }
+
+TEST(GetterTest, WeekOfYear)
+{
+    EXPECT_EQ(Date{ "01/01/2014" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "06/01/2014" }.WeekOfYear(), 2);
+    EXPECT_EQ(Date{ "25/09/2014" }.WeekOfYear(), 39);
+    EXPECT_EQ(Date{ "31/12/2014" }.WeekOfYear(), 53);
+    EXPECT_EQ(Date{ "01/01/2015" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2015" }.WeekOfYear(), 53);
+    EXPECT_EQ(Date{ "01/01/2016" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "04/01/2016" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2016" }.WeekOfYear(), 52);
+    EXPECT_EQ(Date{ "01/01/2017" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "02/01/2017" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "01/01/2018" }.WeekOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2018" }.WeekOfYear(), 53);
+    EXPECT_EQ(Date{ "29/02/2020" }.WeekOfYear(), 9);
+    EXPECT_EQ(Date{ "31/12/2020" }.WeekOfYear(), 53);
+}
