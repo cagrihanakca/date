@@ -178,14 +178,18 @@ namespace cgr
 
     Date::Date(std::time_t timer)
     {
-        const auto *timePtr{ std::localtime(&timer) };
-        if (!timePtr) {
+        std::tm time{};
+#ifdef _WIN32
+        if (localtime_s(&time, &timer)) {
+#else
+        if (!localtime_r(&timer, &time)) {
+#endif
             throw InvalidDate{ InvalidDate::Reason::EPOCH, "conversion from the time since epoch to the date failed" };
         }
 
-        m_day = timePtr->tm_mday;
-        m_month = timePtr->tm_mon + 1;
-        m_year = timePtr->tm_year + 1900;
+        m_day = time.tm_mday;
+        m_month = time.tm_mon + 1;
+        m_year = time.tm_year + 1900;
         Validate(m_day, m_month, m_year);
     }
 
