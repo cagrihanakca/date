@@ -1,7 +1,6 @@
 #include "date.h"
 
 #include <array>
-#include <chrono>
 #include <compare>
 #include <cstdlib>
 #include <ctime>
@@ -134,9 +133,7 @@ namespace cgr
             throw std::invalid_argument{ "min year cannot be greater than max year" };
         }
 
-        thread_local std::mt19937 rng{
-            static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count())
-        };
+        thread_local std::mt19937 rng{ std::random_device{}() };
         auto year{ std::uniform_int_distribution{ minYear, maxYear }(rng) };
         auto month{ std::uniform_int_distribution{ 1, 12 }(rng) };
         int day{};
