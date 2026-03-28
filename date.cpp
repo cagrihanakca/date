@@ -257,40 +257,22 @@ namespace cgr
 
     Date &Date::Day(int day)
     {
-        const auto oldDay{ m_day };
+        Validate(day, m_month, m_year);
         m_day = day;
-        try {
-            Validate(m_day, m_month, m_year);
-        } catch (const InvalidDate &) {
-            m_day = oldDay;
-            throw;
-        }
         return *this;
     }
 
     Date &Date::Month(int month)
     {
-        const auto oldMonth{ m_month };
+        Validate(m_day, month, m_year);
         m_month = month;
-        try {
-            Validate(m_day, m_month, m_year);
-        } catch(const InvalidDate &) {
-            m_month = oldMonth;
-            throw;
-        }
         return *this;
     }
 
     Date &Date::Year(int year)
     {
-        const auto oldYear{ m_year };
+        Validate(m_day, m_month, year);
         m_year = year;
-        try {
-            Validate(m_day, m_month, m_year);
-        } catch (const InvalidDate &) {
-            m_year = oldYear;
-            throw;
-        }
         return *this;
     }
 
