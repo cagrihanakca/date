@@ -212,3 +212,24 @@ TEST(GetterTest, Weekday)
     EXPECT_EQ(Date{ "31/12/2016" }.Weekday(), 6);
     EXPECT_EQ(Date{ "25/09/2016" }.Weekday(), 7);
 }
+
+TEST(SetterTest, Day)
+{
+    Date d{ "12/12/2024" };
+    d.Day(15);
+    EXPECT_EQ(d.Day(), 15);
+
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(1));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(12));
+    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(31));
+
+    EXPECT_ANY_THROW(Date{ "12/12/2024" }.Day(0));
+    EXPECT_ANY_THROW(Date{ "12/12/2024" }.Day(-12));
+    EXPECT_ANY_THROW(Date{ "12/12/2024" }.Day(32));
+    EXPECT_ANY_THROW(Date{ "30/04/2024" }.Day(31));
+    EXPECT_ANY_THROW(Date{ "28/02/2023" }.Day(29));
+    EXPECT_ANY_THROW(Date{ "28/02/2023" }.Day(30));
+    EXPECT_ANY_THROW(Date{ "28/02/2023" }.Day(31));
+    EXPECT_ANY_THROW(Date{ "29/02/2024" }.Day(30));
+    EXPECT_ANY_THROW(Date{ "29/02/2024" }.Day(31));
+}
