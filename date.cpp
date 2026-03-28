@@ -134,7 +134,7 @@ namespace cgr
             throw std::invalid_argument{ "min year cannot be greater than max year" };
         }
 
-        static std::mt19937 rng{
+        thread_local std::mt19937 rng{
             static_cast<std::mt19937::result_type>(std::chrono::system_clock::now().time_since_epoch().count())
         };
         auto year{ std::uniform_int_distribution{ minYear, maxYear }(rng) };
