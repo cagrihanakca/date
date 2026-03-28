@@ -166,3 +166,9 @@ TEST(GetterTest, Month)
     Date d{ 12, 12, 2024 };
     EXPECT_EQ(d.Month(), 12);
 }
+
+TEST(GetterTest, Year)
+{
+    Date d{ 12, 12, 2024 };
+    EXPECT_EQ(d.Year(), 2024);
+}
