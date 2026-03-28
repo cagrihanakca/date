@@ -157,25 +157,28 @@ TEST(CtorTest, IStreamCtor)
 
 TEST(GetterTest, Day)
 {
-    Date d{ 12, 12, 2024 };
-    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(Date{ "01/12/2024" }.Day(), 1);
+    EXPECT_EQ(Date{ "12/12/2024" }.Day(), 12);
+    EXPECT_EQ(Date{ "31/12/2024" }.Day(), 31);
 }
 
 TEST(GetterTest, Month)
 {
-    Date d{ 12, 12, 2024 };
-    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(Date{ "12/01/2024" }.Month(), 1);
+    EXPECT_EQ(Date{ "12/09/2024" }.Month(), 9);
+    EXPECT_EQ(Date{ "12/12/2024" }.Month(), 12);
 }
 
 TEST(GetterTest, Year)
 {
-    Date d{ 12, 12, 2024 };
-    EXPECT_EQ(d.Year(), 2024);
+    EXPECT_EQ(Date{ "12/12/1900" }.Year(), 1900);
+    EXPECT_EQ(Date{ "12/12/2026" }.Year(), 2026);
+    EXPECT_EQ(Date{ "12/12/9999" }.Year(), 9999);
 }
 
 TEST(GetterTest, DayOfYear)
 {
-    EXPECT_EQ(Date(1, 1, 2023).DayOfYear(), 1);
-    EXPECT_EQ(Date(31, 12, 2023).DayOfYear(), 365);
-    EXPECT_EQ(Date(31, 12, 2024).DayOfYear(), 366);
+    EXPECT_EQ(Date{ "01/01/2023" }.DayOfYear(), 1);
+    EXPECT_EQ(Date{ "31/12/2023" }.DayOfYear(), 365);
+    EXPECT_EQ(Date{ "31/12/2024" }.DayOfYear(), 366);
 }
