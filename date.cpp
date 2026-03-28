@@ -276,23 +276,6 @@ namespace cgr
         return *this;
     }
 
-    Date &Date::Set(int day, int month, int year)
-    {
-        const auto oldDay{ m_day }, oldMonth{ m_month }, oldYear{ m_year };
-        m_day = day;
-        m_month = month;
-        m_year = year;
-        try {
-            Validate(m_day, m_month, m_year);
-        } catch (const InvalidDate &) {
-            m_day = oldDay;
-            m_month = oldMonth;
-            m_year = oldYear;
-            throw;
-        }
-        return *this;
-    }
-
     Date &Date::operator+=(int days)
     {
         return *this = *this + days;

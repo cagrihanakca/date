@@ -41,7 +41,6 @@ namespace cgr
         Date &Day(int day);
         Date &Month(int month);
         Date &Year(int year);
-        Date &Set(int day, int month, int year);
 
         Date &operator+=(int days);
         Date &operator-=(int days);
