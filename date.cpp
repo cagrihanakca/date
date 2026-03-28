@@ -48,11 +48,11 @@ namespace
     {
         using enum Date::InvalidDate::Reason;
 
-        if (day < 1 || day > 31) {
+        if ((day < 1) || (day > 31)) {
             throw Date::InvalidDate{ DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
         }
 
-        if (month < JANUARY || month > DECEMBER) {
+        if ((month < JANUARY) || (month > DECEMBER)) {
             throw Date::InvalidDate{ MONTH,
                 std::format("invalid month: {} (the month must be between [1, 12])", month) };
         }
@@ -61,16 +61,16 @@ namespace
             throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is less than the base year (1900)", year) };
         }
 
-        if (day == 31 &&
+        if ((day == 31) &&
             (month == FEBRUARY || month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER)) {
             throw Date::InvalidDate{ MONTH, std::format("invalid month: {} cannot have 31 days", monthNames[month]) };
         }
 
-        if (day == 30 && month == FEBRUARY) {
+        if ((day == 30) && (month == FEBRUARY)) {
             throw Date::InvalidDate{ DAY, "invalid day: February cannot have 30 days" };
         }
 
-        if (day == 29 && month == FEBRUARY && !Date::IsLeap(year)) {
+        if ((day == 29) && (month == FEBRUARY) && !Date::IsLeap(year)) {
             throw Date::InvalidDate{ YEAR,
                 std::format("invalid year: {} isn't leap. February cannot have 29 days if a year isn't leap", year) };
         }
@@ -212,7 +212,8 @@ namespace cgr
                     std::format("invalid date format: {} isn't compatible dd/mm/yyyy", input) };
             }
         } else {
-            throw Date::InvalidDate{ Date::InvalidDate::Reason::STREAM, std::format("input stream is not good state") };
+            throw Date::InvalidDate{ Date::InvalidDate::Reason::STREAM,
+                std::format("input stream isn't in good state") };
         }
     }
 
@@ -237,6 +238,7 @@ namespace cgr
         for (auto month{ 1 }; month < m_month; ++month) {
             dayOfYear += daysInMonths[IsLeap(m_year)][month];
         }
+
         return dayOfYear;
     }
 
@@ -261,6 +263,7 @@ namespace cgr
     {
         Validate(day, m_month, m_year);
         m_day = day;
+
         return *this;
     }
 
@@ -268,6 +271,7 @@ namespace cgr
     {
         Validate(m_day, month, m_year);
         m_month = month;
+
         return *this;
     }
 
@@ -275,6 +279,7 @@ namespace cgr
     {
         Validate(m_day, m_month, year);
         m_year = year;
+
         return *this;
     }
 
@@ -297,6 +302,7 @@ namespace cgr
     {
         const auto ret{ *this };
         ++*this;
+
         return ret;
     }
 
@@ -309,6 +315,7 @@ namespace cgr
     {
         const auto ret{ *this };
         --*this;
+
         return ret;
     }
 
@@ -330,7 +337,8 @@ namespace cgr
         if (year < BASE_YEAR) {
             throw std::invalid_argument{ std::format("invalid year: {} is less than the base year (1900)", year) };
         }
-        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+
+        return (year % 4 == 0) && (year % 100 != 0 || year % 400 == 0);
     }
 
     Date operator+(const Date &d, int days)
@@ -401,7 +409,7 @@ namespace cgr
 
     std::ostream &operator<<(std::ostream &os, const Date &d)
     {
-        return os << d.m_day << ' ' << monthNames[d.m_month] << ' ' << d.m_year << ' '
-            << weekdayNames[d.Weekday()];
+        return os << d.m_day << ' ' << monthNames[d.m_month] << ' ' << d.m_year << ' ' <<
+            weekdayNames[d.Weekday()];
     }
 }
