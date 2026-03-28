@@ -154,3 +154,9 @@ TEST(CtorTest, IStreamCtor)
         EXPECT_THROW(Date{ iss }, Date::InvalidDate);
     }
 }
+
+TEST(GetterTest, Day)
+{
+    Date d{ 12, 12, 2024 };
+    EXPECT_EQ(d.Day(), 12);
+}
