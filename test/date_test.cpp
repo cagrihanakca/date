@@ -1,5 +1,6 @@
-#include "date.h"
+#include <string>
 #include "gtest/gtest.h"
+#include "date.h"
 
 using namespace cgr;
 
@@ -80,4 +81,32 @@ TEST(CtorTest, CStringCtor)
     EXPECT_THROW(Date{ "aaaa12/12/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/bbbb12/2024" }, Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/ccccc2024" }, Date::InvalidDate);
+}
+
+TEST(CtorTest, StringCtor)
+{
+    using namespace std::literals::string_literals;
+
+    ASSERT_NO_THROW(Date{ "12/12/2024"s });
+
+    Date d{ "12/12/2024"s };
+    EXPECT_EQ(d.Day(), 12);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
+
+    EXPECT_THROW(Date{ "0/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "32/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/0/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/1899"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/4/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "30/2/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "29/2/2023"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "2/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/2/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/20242"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12 12 2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12.12.2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, Date::InvalidDate);
 }
