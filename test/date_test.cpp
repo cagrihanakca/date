@@ -328,3 +328,18 @@ TEST(OperatorTest, AdditionAssignment)
     EXPECT_THROW(Date{ "01/01/1900" } += std::numeric_limits<int>::max(), Date::InvalidDate);
     EXPECT_THROW(Date{ "31/12/9999" } += 1, Date::InvalidDate);
 }
+
+TEST(OperatorTest, SubtractionAssignment)
+{
+    ASSERT_NO_THROW(Date{ "12/01/2024" } -= 20);
+
+    Date d{ "12/01/2024" };
+    d -= 20;
+    EXPECT_EQ(d.Day(), 23);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2023);
+
+    EXPECT_THROW(Date{ "12/12/2024" } -= -1, std::invalid_argument);
+    EXPECT_THROW(Date{ "01/01/1900" } -= 1, Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/12/9999" } -= std::numeric_limits<int>::max(), Date::InvalidDate);
+}
