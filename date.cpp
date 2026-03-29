@@ -385,10 +385,10 @@ namespace cgr
 
     Date operator+(const Date &d, int days)
     {
-        using enum Date::InvalidDate::Reason;
+        using Date::InvalidDate::Reason::RANGE;
 
         if (days < 0) {
-            throw Date::InvalidDate{ DAY, std::format("invalid day: {}. a day cannot be negative", days) };
+            throw std::invalid_argument{ std::format("invalid day: {}. a day cannot be negative", days) };
         }
 
         auto daysSinceMinYear{ DaysSinceMinYear(d) };
@@ -412,15 +412,13 @@ namespace cgr
 
     Date operator-(const Date &d, int days)
     {
-        using enum Date::InvalidDate::Reason;
-
         if (days < 0) {
-            throw Date::InvalidDate{ DAY, std::format("invalid day: {}. a day cannot be negative", days) };
+            throw std::invalid_argument{ std::format("invalid day: {}. a day cannot be negative", days) };
         }
 
         const auto daysSinceMinYear{ DaysSinceMinYear(d) };
         if (daysSinceMinYear <= days) {
-            throw Date::InvalidDate{ RANGE,
+            throw Date::InvalidDate{ Date::InvalidDate::Reason::RANGE,
                 std::format("invalid date: {} days before falls before the min date (01/01/1900)", days) };
         }
 
