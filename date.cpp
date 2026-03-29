@@ -394,7 +394,13 @@ namespace cgr
 
         auto daysSinceMinYear{ DaysSinceMinYear(d) };
         if ((std::numeric_limits<int>::max() - days) < daysSinceMinYear) {
-            throw Date::InvalidDate{ RANGE, std::format("invalid date: {} days after cannot be represented", days) };
+            throw Date::InvalidDate{ RANGE,
+                std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days) };
+        }
+
+        if (daysSinceMinYear + days > DaysSinceMinYear(Date{ 31, 12, MAX_YEAR })) {
+            throw Date::InvalidDate{ RANGE,
+                std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days) };
         }
 
         return DateFromDaysSinceMinYear(daysSinceMinYear + days);
