@@ -52,13 +52,13 @@ namespace cgr
         Date &Month(int month);
         Date &Year(int year);
 
-        Date &operator+=(int days);
-        Date &operator-=(int days);
+        Date &operator+=(int days) &;
+        Date &operator-=(int days) &;
 
-        Date &operator++();
-        Date operator++(int);
-        Date &operator--();
-        Date operator--(int);
+        Date &operator++() &;
+        Date operator++(int) &;
+        Date &operator--() &;
+        Date operator--(int) &;
 
         [[nodiscard]] std::strong_ordering operator<=>(const Date &rhs) const noexcept;
         [[nodiscard]] bool operator==(const Date &rhs) const noexcept = default;
