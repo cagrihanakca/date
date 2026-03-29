@@ -392,6 +392,12 @@ TEST(OperatorTest, PrefixIncrement)
     EXPECT_EQ(d.Month(), 1);
     EXPECT_EQ(d.Year(), 2025);
 
+    d = Date{ "12/12/2024" };
+    EXPECT_EQ(++d, Date{ "13/12/2024" });
+    EXPECT_EQ(d.Day(), 13);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
+
     d = Date{ "29/02/2024" };
     ++d;
     EXPECT_EQ(d.Day(), 1);
