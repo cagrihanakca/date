@@ -22,6 +22,12 @@ namespace cgr
             Reason m_reason;
         };
 
+        struct ISOWeek {
+            int year;
+            int week;
+            [[nodiscard]] bool operator==(const ISOWeek &rhs) const noexcept = default;
+        };
+
         [[nodiscard]] static Date Today();
         [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
 
@@ -36,8 +42,8 @@ namespace cgr
         [[nodiscard]] int Month() const noexcept;
         [[nodiscard]] int Year() const noexcept;
         [[nodiscard]] int DayOfYear() const noexcept;
-        [[nodiscard]] int WeekOfYear() const noexcept;
         [[nodiscard]] int Weekday() const noexcept;
+        [[nodiscard]] ISOWeek WeekOfYear() const noexcept;
 
         Date &Day(int day);
         Date &Month(int month);
