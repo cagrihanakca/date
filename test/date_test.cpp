@@ -1,5 +1,6 @@
 #include <ctime>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include "gtest/gtest.h"
@@ -48,6 +49,22 @@ TEST(StaticFactoryTest, Today)
     EXPECT_EQ(today.Day(), timePtr->tm_mday);
     EXPECT_EQ(today.Month(), timePtr->tm_mon + 1);
     EXPECT_EQ(today.Year(), timePtr->tm_year + 1900);
+}
+
+TEST(StaticFactoryTest, RandomDate)
+{
+    ASSERT_NO_THROW(static_cast<void>(Date::RandomDate(1950, 2050)));
+
+    EXPECT_GE(Date::RandomDate().Year(), Date::MIN_YEAR);
+    EXPECT_LE(Date::RandomDate().Year(), Date::Today().Year());
+    EXPECT_GE(Date::RandomDate(1950, 2000).Year(), 1950);
+    EXPECT_LE(Date::RandomDate(1950, 2000).Year(), 2000);
+
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1899, 2000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, 1899)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(10'000, 2000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, 10'000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(2000, 1950)), std::invalid_argument);
 }
 
 TEST(CtorTest, DefaultCtor)
