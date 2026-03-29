@@ -126,6 +126,10 @@ namespace
 
     [[nodiscard]] Date LastDayOfLastWeek(int year) noexcept
     {
+        if (year == MAX_YEAR) {
+            return Date{ 31, 12, MAX_YEAR };
+        }
+
         Date lastDayOfLastWeek;
         if (const auto lastDayOfYear{ Date{ 31, 12, year } }; lastDayOfYear.Weekday() < THURSDAY) {
             lastDayOfLastWeek = lastDayOfYear - lastDayOfYear.Weekday();
