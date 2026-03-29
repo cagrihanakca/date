@@ -385,3 +385,27 @@ TEST(OperatorTest, SubtractionAssignment)
     d = Date{ "31/12/9999" };
     EXPECT_THROW(d -= std::numeric_limits<int>::max(), Date::InvalidDate);
 }
+
+TEST(OperatorTest, PrefixIncrement)
+{
+    Date d{ "31/12/2024" };
+    ASSERT_NO_THROW(++d);
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 1);
+    EXPECT_EQ(d.Year(), 2025);
+
+    d = Date{ "29/02/2024" };
+    ++d;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 3);
+    EXPECT_EQ(d.Year(), 2024);
+
+    d = Date{ "28/02/2023" };
+    ++d;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 3);
+    EXPECT_EQ(d.Year(), 2023);
+
+    d = Date{ "31/12/9999" };
+    EXPECT_THROW(++d, Date::InvalidDate);
+}
