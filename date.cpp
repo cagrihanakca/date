@@ -321,12 +321,12 @@ namespace cgr
         return *this;
     }
 
-    Date &Date::operator+=(int days)
+    Date &Date::operator+=(int days) &
     {
         return *this = *this + days;
     }
 
-    Date &Date::operator-=(int days)
+    Date &Date::operator-=(int days) &
     {
         return *this = *this - days;
     }

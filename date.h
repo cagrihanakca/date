@@ -52,8 +52,8 @@ namespace cgr
         Date &Month(int month);
         Date &Year(int year);
 
-        Date &operator+=(int days);
-        Date &operator-=(int days);
+        Date &operator+=(int days) &;
+        Date &operator-=(int days) &;
 
         Date &operator++();
         Date operator++(int);

@@ -316,30 +316,72 @@ TEST(SetterTest, Year)
 
 TEST(OperatorTest, AdditionAssignment)
 {
-    ASSERT_NO_THROW(Date{ "12/12/2024" } += 20);
-
     Date d{ "12/12/2024" };
-    d += 20;
+    ASSERT_NO_THROW(d += 20);
+
     EXPECT_EQ(d.Day(), 1);
     EXPECT_EQ(d.Month(), 1);
     EXPECT_EQ(d.Year(), 2025);
 
-    EXPECT_THROW(Date{ "12/12/2024" } += -1, std::invalid_argument);
-    EXPECT_THROW(Date{ "01/01/1900" } += std::numeric_limits<int>::max(), Date::InvalidDate);
-    EXPECT_THROW(Date{ "31/12/9999" } += 1, Date::InvalidDate);
+    d += 0;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 1);
+    EXPECT_EQ(d.Year(), 2025);
+
+    d = Date{ "29/02/2024" };
+    d += 1;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 3);
+    EXPECT_EQ(d.Year(), 2024);
+
+    d = Date{ "28/02/2023" };
+    d += 1;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 3);
+    EXPECT_EQ(d.Year(), 2023);
+
+    d = Date{ "12/12/2024" };
+    EXPECT_THROW(d += -1, std::invalid_argument);
+
+    d = Date{ "01/01/2024" };
+    EXPECT_THROW(d += std::numeric_limits<int>::max(), Date::InvalidDate);
+
+    d = Date{ "31/12/9999" };
+    EXPECT_THROW(d += 1, Date::InvalidDate);
 }
 
 TEST(OperatorTest, SubtractionAssignment)
 {
-    ASSERT_NO_THROW(Date{ "12/01/2024" } -= 20);
-
     Date d{ "12/01/2024" };
-    d -= 20;
+    ASSERT_NO_THROW(d -= 20);
+
     EXPECT_EQ(d.Day(), 23);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2023);
 
-    EXPECT_THROW(Date{ "12/12/2024" } -= -1, std::invalid_argument);
-    EXPECT_THROW(Date{ "01/01/1900" } -= 1, Date::InvalidDate);
-    EXPECT_THROW(Date{ "31/12/9999" } -= std::numeric_limits<int>::max(), Date::InvalidDate);
+    d -= 0;
+    EXPECT_EQ(d.Day(), 23);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2023);
+
+    d = Date{ "01/03/2024" };
+    d -= 1;
+    EXPECT_EQ(d.Day(), 29);
+    EXPECT_EQ(d.Month(), 2);
+    EXPECT_EQ(d.Year(), 2024);
+
+    d = Date{ "01/03/2023" };
+    d -= 1;
+    EXPECT_EQ(d.Day(), 28);
+    EXPECT_EQ(d.Month(), 2);
+    EXPECT_EQ(d.Year(), 2023);
+
+    d = Date{ "12/12/2024" };
+    EXPECT_THROW(d -= -1, std::invalid_argument);
+
+    d = Date{ "01/01/1900" };
+    EXPECT_THROW(d -= 1, Date::InvalidDate);
+
+    d = Date{ "31/12/9999" };
+    EXPECT_THROW(d -= std::numeric_limits<int>::max(), Date::InvalidDate);
 }
