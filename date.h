@@ -11,6 +11,9 @@ namespace cgr
 {
     class Date {
     public:
+        static constexpr int MIN_YEAR{ 1900 };
+        static constexpr int MAX_YEAR{ 9999 };
+
         class InvalidDate : public std::invalid_argument {
         public:
             enum class Reason {
@@ -29,9 +32,9 @@ namespace cgr
         };
 
         [[nodiscard]] static Date Today();
-        [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
+        [[nodiscard]] static Date RandomDate(int minYear = MIN_YEAR, int maxYear = Today().Year());
 
-        Date() noexcept;
+        Date() = default;
         Date(int day, int month, int year);
         explicit Date(const char *str);
         explicit Date(const std::string &str);
@@ -69,9 +72,9 @@ namespace cgr
         friend std::istream &operator>>(std::istream &is, Date &d);
         friend std::ostream &operator<<(std::ostream &os, const Date &d);
     private:
-        int m_day;
-        int m_month;
-        int m_year;
+        int m_day{ 1 };
+        int m_month{ 1 };
+        int m_year{ MIN_YEAR };
     };
 
     [[nodiscard]] Date operator+(const Date &d, int days);
