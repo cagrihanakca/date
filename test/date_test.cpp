@@ -32,6 +32,12 @@ TEST(InvalidDateTest, What)
     EXPECT_STREQ(ex.what(), "invalid month");
 }
 
+TEST(ISOWeekTest, Equality)
+{
+    EXPECT_EQ(Date{ "12/12/2024" }.WeekOfYear(), Date{ "12/12/2024" }.WeekOfYear());
+    EXPECT_NE(Date{ "12/12/2024" }.WeekOfYear(), Date{ "24/12/2024" }.WeekOfYear());
+}
+
 TEST(CtorTest, DefaultCtor)
 {
     ASSERT_NO_THROW(Date{});
