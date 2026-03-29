@@ -185,8 +185,6 @@ namespace cgr
         return { day, month, year };
     }
 
-    Date::Date() noexcept : m_day{ 1 }, m_month{ 1 }, m_year{ MIN_YEAR } {}
-
     Date::Date(int day, int month, int year) : m_day{ day }, m_month{ month }, m_year{ year }
     {
         Validate(m_day, m_month, m_year);

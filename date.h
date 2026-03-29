@@ -34,7 +34,7 @@ namespace cgr
         [[nodiscard]] static Date Today();
         [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
 
-        Date() noexcept;
+        Date() = default;
         Date(int day, int month, int year);
         explicit Date(const char *str);
         explicit Date(const std::string &str);
@@ -72,9 +72,9 @@ namespace cgr
         friend std::istream &operator>>(std::istream &is, Date &d);
         friend std::ostream &operator<<(std::ostream &os, const Date &d);
     private:
-        int m_day;
-        int m_month;
-        int m_year;
+        int m_day{ 1 };
+        int m_month{ 1 };
+        int m_year{ MIN_YEAR };
     };
 
     [[nodiscard]] Date operator+(const Date &d, int days);
