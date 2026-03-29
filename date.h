@@ -11,6 +11,9 @@ namespace cgr
 {
     class Date {
     public:
+        static constexpr int MIN_YEAR{ 1900 };
+        static constexpr int MAX_YEAR{ 9999 };
+
         class InvalidDate : public std::invalid_argument {
         public:
             enum class Reason {

@@ -18,9 +18,6 @@ namespace
 {
     using namespace cgr;
 
-    constexpr int MIN_YEAR{ 1900 };
-    constexpr int MAX_YEAR{ 9999 };
-
     enum Weekday {
         MONDAY = 1, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
     };
@@ -58,11 +55,11 @@ namespace
                 std::format("invalid month: {} (the month must be between [1, 12])", month) };
         }
 
-        if (year < MIN_YEAR) {
+        if (year < Date::MIN_YEAR) {
             throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is less than the min year (1900)", year) };
         }
 
-        if (year > MAX_YEAR) {
+        if (year > Date::MAX_YEAR) {
             throw Date::InvalidDate{ YEAR, std::format("invalid year: {} is greater than the max year (9999)", year) };
         }
 
@@ -84,7 +81,7 @@ namespace
     [[nodiscard]] int DaysSinceMinYear(const Date &d) noexcept
     {
         int daysSinceMinYear{};
-        for (auto year{ MIN_YEAR }; year < d.Year(); ++year) {
+        for (auto year{ Date::MIN_YEAR }; year < d.Year(); ++year) {
             daysSinceMinYear += Date::IsLeap(year) ? 366 : 365;
         }
 
@@ -95,7 +92,7 @@ namespace
 
     [[nodiscard]] Date DateFromDaysSinceMinYear(int daysSinceMinYear) noexcept
     {
-        auto year{ MIN_YEAR };
+        auto year{ Date::MIN_YEAR };
         while (daysSinceMinYear > (Date::IsLeap(year) ? 366 : 365)) {
             daysSinceMinYear -= (Date::IsLeap(year) ? 366 : 365);
             ++year;
@@ -126,8 +123,8 @@ namespace
 
     [[nodiscard]] Date LastDayOfLastWeek(int year) noexcept
     {
-        if (year == MAX_YEAR) {
-            return Date{ 31, 12, MAX_YEAR };
+        if (year == Date::MAX_YEAR) {
+            return Date{ 31, 12, Date::MAX_YEAR };
         }
 
         Date lastDayOfLastWeek;
@@ -402,7 +399,7 @@ namespace cgr
                 std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days) };
         }
 
-        if (daysSinceMinYear + days > DaysSinceMinYear(Date{ 31, 12, MAX_YEAR })) {
+        if (daysSinceMinYear + days > DaysSinceMinYear(Date{ 31, 12, Date::MAX_YEAR })) {
             throw Date::InvalidDate{ RANGE,
                 std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days) };
         }
