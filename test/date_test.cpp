@@ -1,5 +1,6 @@
 #include <ctime>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include "gtest/gtest.h"
@@ -30,6 +31,40 @@ TEST(InvalidDateTest, What)
 
     Date::InvalidDate ex{ MONTH, "invalid month" };
     EXPECT_STREQ(ex.what(), "invalid month");
+}
+
+TEST(ISOWeekTest, Equality)
+{
+    EXPECT_EQ(Date{ "12/12/2024" }.WeekOfYear(), Date{ "12/12/2024" }.WeekOfYear());
+    EXPECT_NE(Date{ "12/12/2024" }.WeekOfYear(), Date{ "24/12/2024" }.WeekOfYear());
+}
+
+TEST(StaticFactoryTest, Today)
+{
+    std::time_t timer{};
+    std::time(&timer);
+    const auto *timePtr{ localtime(&timer) };
+
+    Date today{ Date::Today() };
+    EXPECT_EQ(today.Day(), timePtr->tm_mday);
+    EXPECT_EQ(today.Month(), timePtr->tm_mon + 1);
+    EXPECT_EQ(today.Year(), timePtr->tm_year + 1900);
+}
+
+TEST(StaticFactoryTest, RandomDate)
+{
+    ASSERT_NO_THROW(static_cast<void>(Date::RandomDate(1950, 2050)));
+
+    EXPECT_GE(Date::RandomDate().Year(), Date::MIN_YEAR);
+    EXPECT_LE(Date::RandomDate().Year(), Date::Today().Year());
+    EXPECT_GE(Date::RandomDate(1950, 2000).Year(), 1950);
+    EXPECT_LE(Date::RandomDate(1950, 2000).Year(), 2000);
+
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1899, 2000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, 1899)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(10'000, 2000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, 10'000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(2000, 1950)), std::invalid_argument);
 }
 
 TEST(CtorTest, DefaultCtor)
@@ -120,11 +155,9 @@ TEST(CtorTest, CalendarTimeCtor)
 {
     std::time_t timer{};
     std::time(&timer);
-
-    ASSERT_NO_THROW(Date{ timer });
+    const auto *timePtr{ localtime(&timer) };
 
     Date d{ timer };
-    const auto *timePtr{ localtime(&timer) };
     EXPECT_EQ(d.Day(), timePtr->tm_mday);
     EXPECT_EQ(d.Month(), timePtr->tm_mon + 1);
     EXPECT_EQ(d.Year(), timePtr->tm_year + 1900);
@@ -186,6 +219,17 @@ TEST(GetterTest, DayOfYear)
     EXPECT_EQ(Date{ "31/12/2024" }.DayOfYear(), 366);
 }
 
+TEST(GetterTest, Weekday)
+{
+    EXPECT_EQ(Date{ "06/01/2014" }.Weekday(), 1);
+    EXPECT_EQ(Date{ "25/09/2018" }.Weekday(), 2);
+    EXPECT_EQ(Date{ "01/01/2014" }.Weekday(), 3);
+    EXPECT_EQ(Date{ "31/12/2015" }.Weekday(), 4);
+    EXPECT_EQ(Date{ "01/01/2016" }.Weekday(), 5);
+    EXPECT_EQ(Date{ "31/12/2016" }.Weekday(), 6);
+    EXPECT_EQ(Date{ "25/09/2016" }.Weekday(), 7);
+}
+
 TEST(GetterTest, WeekOfYear)
 {
     EXPECT_EQ(Date{ "01/01/1900" }.WeekOfYear(), Date::ISOWeek(Date::MIN_YEAR, 1));
@@ -209,17 +253,6 @@ TEST(GetterTest, WeekOfYear)
     EXPECT_EQ(Date{ "30/12/9999" }.WeekOfYear(), Date::ISOWeek(Date::MAX_YEAR, 52));
     EXPECT_EQ(Date{ "31/12/9999" }.WeekOfYear(), Date::ISOWeek(Date::MAX_YEAR, 52));
     EXPECT_EQ(Date{ "01/01/9999" }.WeekOfYear(), Date::ISOWeek(9998, 53));
-}
-
-TEST(GetterTest, Weekday)
-{
-    EXPECT_EQ(Date{ "06/01/2014" }.Weekday(), 1);
-    EXPECT_EQ(Date{ "25/09/2018" }.Weekday(), 2);
-    EXPECT_EQ(Date{ "01/01/2014" }.Weekday(), 3);
-    EXPECT_EQ(Date{ "31/12/2015" }.Weekday(), 4);
-    EXPECT_EQ(Date{ "01/01/2016" }.Weekday(), 5);
-    EXPECT_EQ(Date{ "31/12/2016" }.Weekday(), 6);
-    EXPECT_EQ(Date{ "25/09/2016" }.Weekday(), 7);
 }
 
 TEST(SetterTest, Day)
