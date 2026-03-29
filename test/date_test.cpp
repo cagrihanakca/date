@@ -318,7 +318,6 @@ TEST(OperatorTest, AdditionAssignment)
 {
     Date d{ "12/12/2024" };
     ASSERT_NO_THROW(d += 20);
-
     EXPECT_EQ(d.Day(), 1);
     EXPECT_EQ(d.Month(), 1);
     EXPECT_EQ(d.Year(), 2025);
@@ -354,7 +353,6 @@ TEST(OperatorTest, SubtractionAssignment)
 {
     Date d{ "12/01/2024" };
     ASSERT_NO_THROW(d -= 20);
-
     EXPECT_EQ(d.Day(), 23);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2023);
