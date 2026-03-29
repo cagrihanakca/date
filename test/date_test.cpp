@@ -138,11 +138,9 @@ TEST(CtorTest, CalendarTimeCtor)
 {
     std::time_t timer{};
     std::time(&timer);
-
-    ASSERT_NO_THROW(Date{ timer });
+    const auto *timePtr{ localtime(&timer) };
 
     Date d{ timer };
-    const auto *timePtr{ localtime(&timer) };
     EXPECT_EQ(d.Day(), timePtr->tm_mday);
     EXPECT_EQ(d.Month(), timePtr->tm_mon + 1);
     EXPECT_EQ(d.Year(), timePtr->tm_year + 1900);
