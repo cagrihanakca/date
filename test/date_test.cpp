@@ -188,6 +188,8 @@ TEST(GetterTest, DayOfYear)
 
 TEST(GetterTest, WeekOfYear)
 {
+    EXPECT_EQ(Date{ "01/01/1900" }.WeekOfYear(), Date::ISOWeek(1900, 1));
+    EXPECT_EQ(Date{ "31/12/1900" }.WeekOfYear(), Date::ISOWeek(1901, 1));
     EXPECT_EQ(Date{ "01/01/2014" }.WeekOfYear(), Date::ISOWeek(2014, 1));
     EXPECT_EQ(Date{ "06/01/2014" }.WeekOfYear(), Date::ISOWeek(2014, 2));
     EXPECT_EQ(Date{ "25/09/2014" }.WeekOfYear(), Date::ISOWeek(2014, 39));
@@ -203,6 +205,10 @@ TEST(GetterTest, WeekOfYear)
     EXPECT_EQ(Date{ "31/12/2018" }.WeekOfYear(), Date::ISOWeek(2019, 1));
     EXPECT_EQ(Date{ "31/12/2020" }.WeekOfYear(), Date::ISOWeek(2020, 53));
     EXPECT_EQ(Date{ "29/02/2020" }.WeekOfYear(), Date::ISOWeek(2020, 9));
+    EXPECT_EQ(Date{ "29/12/9999" }.WeekOfYear(), Date::ISOWeek(9999, 52));
+    EXPECT_EQ(Date{ "30/12/9999" }.WeekOfYear(), Date::ISOWeek(9999, 52));
+    EXPECT_EQ(Date{ "31/12/9999" }.WeekOfYear(), Date::ISOWeek(9999, 52));
+    EXPECT_EQ(Date{ "01/01/9999" }.WeekOfYear(), Date::ISOWeek(9998, 53));
 }
 
 TEST(GetterTest, Weekday)
