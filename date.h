@@ -32,7 +32,7 @@ namespace cgr
         };
 
         [[nodiscard]] static Date Today();
-        [[nodiscard]] static Date RandomDate(int minYear, int maxYear);
+        [[nodiscard]] static Date RandomDate(int minYear = MIN_YEAR, int maxYear = Today().Year());
 
         Date() = default;
         Date(int day, int month, int year);
