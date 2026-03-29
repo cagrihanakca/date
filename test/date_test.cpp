@@ -1,4 +1,5 @@
 #include <ctime>
+#include <limits>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -311,4 +312,19 @@ TEST(SetterTest, Year)
     EXPECT_THROW(Date{ "12/12/2024" }.Year(10'000), Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/2024" }.Year(0), Date::InvalidDate);
     EXPECT_THROW(Date{ "29/02/2020" }.Year(2021), Date::InvalidDate);
+}
+
+TEST(OperatorTest, AdditionAssignment)
+{
+    ASSERT_NO_THROW(Date{ "12/12/2024" } += 20);
+
+    Date d{ "12/12/2024" };
+    d += 20;
+    EXPECT_EQ(d.Day(), 1);
+    EXPECT_EQ(d.Month(), 1);
+    EXPECT_EQ(d.Year(), 2025);
+
+    EXPECT_THROW(Date{ "12/12/2024" } += -1, std::invalid_argument);
+    EXPECT_THROW(Date{ "01/01/1900" } += std::numeric_limits<int>::max(), Date::InvalidDate);
+    EXPECT_THROW(Date{ "31/12/9999" } += 1, Date::InvalidDate);
 }
