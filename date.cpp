@@ -111,6 +111,30 @@ namespace
 
         return { day, month, year };
     }
+
+    [[nodiscard]] Date FirstDayOfFirstWeek(int year) noexcept
+    {
+        Date firstDayOfFirstWeek;
+        if (const auto firstDayOfYear{ Date{ 1, 1, year } }; firstDayOfYear.Weekday() <= THURSDAY) {
+            firstDayOfFirstWeek = firstDayOfYear - (firstDayOfYear.Weekday() - MONDAY);
+        } else {
+            firstDayOfFirstWeek = firstDayOfYear + (SUNDAY - firstDayOfYear.Weekday() + 1);
+        }
+
+        return firstDayOfFirstWeek;
+    }
+
+    [[nodiscard]] Date LastDayOfLastWeek(int year) noexcept
+    {
+        Date lastDayOfLastWeek;
+        if (const auto lastDayOfYear{ Date{ 31, 12, year } }; lastDayOfYear.Weekday() < THURSDAY) {
+            lastDayOfLastWeek = lastDayOfYear - lastDayOfYear.Weekday();
+        } else {
+            lastDayOfLastWeek = lastDayOfYear + (SUNDAY - lastDayOfYear.Weekday());
+        }
+
+        return lastDayOfLastWeek;
+    }
 }
 
 namespace cgr
@@ -254,21 +278,24 @@ namespace cgr
         return dayOfYear;
     }
 
-    int Date::WeekOfYear() const noexcept
-    {
-        Date firstWeek;
-        if (const auto firstDay{ Date{ 1, 1, m_year } }; firstDay.Weekday() > THURSDAY) {
-            firstWeek = firstDay + (8 - firstDay.Weekday());
-        } else {
-            firstWeek = firstDay - (firstDay.Weekday() - 1);
-        }
-
-        return (*this - firstWeek) / 7 + 1;
-    }
-
     int Date::Weekday() const noexcept
     {
         return (DaysSinceMinYear(*this) - 1) % 7 + 1;
+    }
+
+    Date::ISOWeek Date::WeekOfYear() const noexcept
+    {
+        const auto firstDayOfFirstWeek{ FirstDayOfFirstWeek(m_year) };
+        const auto lastDayOfLastWeek{ LastDayOfLastWeek(m_year) };
+        if ((*this >= firstDayOfFirstWeek) && (*this <= lastDayOfLastWeek)) {
+            return { m_year, (*this - firstDayOfFirstWeek) / 7 + 1 };
+        }
+
+        if (*this < firstDayOfFirstWeek) {
+            return { m_year - 1, (*this - FirstDayOfFirstWeek(m_year - 1)) / 7 + 1 };
+        }
+
+        return { m_year + 1, 1 };
     }
 
     Date &Date::Day(int day)
