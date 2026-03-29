@@ -443,3 +443,33 @@ TEST(OperatorTest, PostfixIncrement)
     d = Date{ "31/12/9999" };
     EXPECT_THROW(d++, Date::InvalidDate);
 }
+
+TEST(OperatorTest, PrefixDecrement)
+{
+    Date d{ "01/01/2024" };
+    ASSERT_NO_THROW(--d);
+    EXPECT_EQ(d.Day(), 31);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2023);
+
+    d = Date{ "12/12/2024" };
+    EXPECT_EQ(--d, Date{ "11/12/2024" });
+    EXPECT_EQ(d.Day(), 11);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
+
+    d = Date{ "01/03/2024" };
+    --d;
+    EXPECT_EQ(d.Day(), 29);
+    EXPECT_EQ(d.Month(), 2);
+    EXPECT_EQ(d.Year(), 2024);
+
+    d = Date{ "01/03/2023" };
+    --d;
+    EXPECT_EQ(d.Day(), 28);
+    EXPECT_EQ(d.Month(), 2);
+    EXPECT_EQ(d.Year(), 2023);
+
+    d = Date{ "01/01/1900" };
+    EXPECT_THROW(--d, Date::InvalidDate);
+}
