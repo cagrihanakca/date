@@ -38,6 +38,18 @@ TEST(ISOWeekTest, Equality)
     EXPECT_NE(Date{ "12/12/2024" }.WeekOfYear(), Date{ "24/12/2024" }.WeekOfYear());
 }
 
+TEST(StaticFactoryTest, Today)
+{
+    std::time_t timer{};
+    std::time(&timer);
+    const auto *timePtr{ localtime(&timer) };
+
+    Date today{ Date::Today() };
+    EXPECT_EQ(today.Day(), timePtr->tm_mday);
+    EXPECT_EQ(today.Month(), timePtr->tm_mon + 1);
+    EXPECT_EQ(today.Year(), timePtr->tm_year + 1900);
+}
+
 TEST(CtorTest, DefaultCtor)
 {
     ASSERT_NO_THROW(Date{});
