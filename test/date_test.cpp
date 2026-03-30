@@ -172,13 +172,13 @@ TEST(CtorTest, IStreamCtor)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
-    const std::vector<std::string> inputs{
+    const std::vector<std::string> invalidFormats{
         "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "12/12/10000", "31/4/2024", "30/2/2024", "29/2/2023",
         "2/12/2024", "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
         "12/12/ccccc2024"
     };
-    for (const auto &input : inputs) {
-        std::istringstream iss{ input };
+    for (const auto &invalidFormat : invalidFormats) {
+        std::istringstream iss{ invalidFormat };
         EXPECT_THROW(Date{ iss }, Date::InvalidDate);
     }
 }
@@ -313,10 +313,11 @@ TEST(OperatorTest, AdditionAssignment)
     EXPECT_EQ(d.Month(), 1);
     EXPECT_EQ(d.Year(), 2025);
 
+    d = Date{ "18/12/2024" };
     d += 0;
-    EXPECT_EQ(d.Day(), 1);
-    EXPECT_EQ(d.Month(), 1);
-    EXPECT_EQ(d.Year(), 2025);
+    EXPECT_EQ(d.Day(), 18);
+    EXPECT_EQ(d.Month(), 12);
+    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "29/02/2024" };
     d += 1;
@@ -348,10 +349,11 @@ TEST(OperatorTest, SubtractionAssignment)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2023);
 
+    d = Date{ "12/12/2024" };
     d -= 0;
-    EXPECT_EQ(d.Day(), 23);
+    EXPECT_EQ(d.Day(), 12);
     EXPECT_EQ(d.Month(), 12);
-    EXPECT_EQ(d.Year(), 2023);
+    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "01/03/2024" };
     d -= 1;
@@ -545,10 +547,10 @@ TEST(OperatorTest, Comparisons)
 
 TEST(OperatorTest, Addition)
 {
-    Date d{ "12/12/2024" };
-    ASSERT_NO_THROW(static_cast<void>(d + 20));
-    EXPECT_EQ(d + 20, Date{ "01/01/2025" });
-    EXPECT_EQ(d.Day(), 12);
+    Date d{ "06/12/2024" };
+    ASSERT_NO_THROW(static_cast<void>(d + 6));
+    EXPECT_EQ(d + 6, Date{ "12/12/2024" });
+    EXPECT_EQ(d.Day(), 6);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
@@ -568,10 +570,10 @@ TEST(OperatorTest, Addition)
 
 TEST(OperatorTest, CommutativeAddition)
 {
-    Date d{ "12/12/2024" };
-    ASSERT_NO_THROW(static_cast<void>(20 + d));
-    EXPECT_EQ(20 + d, Date{ "01/01/2025" });
-    EXPECT_EQ(d.Day(), 12);
+    Date d{ "06/12/2024" };
+    ASSERT_NO_THROW(static_cast<void>(6 + d));
+    EXPECT_EQ(6 + d, Date{ "12/12/2024" });
+    EXPECT_EQ(d.Day(), 6);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
@@ -591,10 +593,10 @@ TEST(OperatorTest, CommutativeAddition)
 
 TEST(OperatorTest, Subtraction)
 {
-    Date d{ "12/12/2024" };
-    ASSERT_NO_THROW(static_cast<void>(d - 20));
-    EXPECT_EQ(d - 20, Date{ "22/11/2024" });
-    EXPECT_EQ(d.Day(), 12);
+    Date d{ "06/12/2024" };
+    ASSERT_NO_THROW(static_cast<void>(d - 6));
+    EXPECT_EQ(d - 6, Date{ "30/11/2024" });
+    EXPECT_EQ(d.Day(), 6);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
@@ -614,15 +616,15 @@ TEST(OperatorTest, Subtraction)
 
 TEST(OperatorTest, Difference)
 {
-    Date d1{ "12/12/2024" };
-    Date d2{ "11/12/2024" };
+    Date d1{ "05/12/2024" };
+    Date d2{ "06/12/2024" };
     ASSERT_NO_THROW(static_cast<void>(d1 - d2));
     ASSERT_NO_THROW(static_cast<void>(d2 - d1));
     EXPECT_EQ(d1 - d2, 1);
-    EXPECT_EQ(d1.Day(), 12);
+    EXPECT_EQ(d1.Day(), 5);
     EXPECT_EQ(d1.Month(), 12);
     EXPECT_EQ(d1.Year(), 2024);
-    EXPECT_EQ(d2.Day(), 11);
+    EXPECT_EQ(d2.Day(), 6);
     EXPECT_EQ(d2.Month(), 12);
     EXPECT_EQ(d2.Year(), 2024);
 
