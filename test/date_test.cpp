@@ -669,3 +669,28 @@ TEST(StaticUtilityTest, IsLeap)
     EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MIN_YEAR - 1)), std::invalid_argument);
     EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MAX_YEAR + 1)), std::invalid_argument);
 }
+
+TEST(StreamTest, Extractor)
+{
+    std::istringstream iss{ "12/12/2024" };
+    Date d{ "06/12/2024" };
+    EXPECT_TRUE(iss >> d);
+    EXPECT_EQ(d, Date{ "12/12/2024" });
+
+    d = Date{ "18/12/2024" };
+    EXPECT_FALSE(iss >> d);
+    EXPECT_EQ(d, Date{ "18/12/2024" });
+    iss.clear();
+
+    d = Date{ "24/12/2024" };
+    const std::vector<std::string> invalidFormats{
+        "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "12/12/10000", "31/4/2024", "30/2/2024", "29/2/2023",
+        "2/12/2024", "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
+        "12/12/ccccc2024"
+    };
+    for (const auto &invalidFormat : invalidFormats) {
+        std::istringstream iss{ invalidFormat };
+        EXPECT_FALSE(iss >> d);
+        EXPECT_EQ(d, Date{ "24/12/2024" });
+    }
+}
