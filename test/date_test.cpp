@@ -333,7 +333,7 @@ TEST(OperatorTest, AdditionAssignment)
     d = Date{ "12/12/2024" };
     EXPECT_THROW(d += -1, std::invalid_argument);
 
-    d = Date{ "01/01/2024" };
+    d = Date{ "01/01/1900" };
     EXPECT_THROW(d += std::numeric_limits<int>::max(), Date::InvalidDate);
 
     d = Date{ "31/12/9999" };
