@@ -636,6 +636,51 @@ TEST(OperatorTest, Subtraction)
     EXPECT_THROW(static_cast<void>(Date{ "31/12/9999" } - std::numeric_limits<int>::max()), Date::InvalidDate);
 }
 
+TEST(OperatorTest, Difference)
+{
+    Date d1{ "12/12/2024" };
+    Date d2{ "11/12/2024" };
+    ASSERT_NO_THROW(static_cast<void>(d1 - d2));
+    ASSERT_NO_THROW(static_cast<void>(d2 - d1));
+    EXPECT_EQ(d1 - d2, 1);
+    EXPECT_EQ(d1.Day(), 12);
+    EXPECT_EQ(d1.Month(), 12);
+    EXPECT_EQ(d1.Year(), 2024);
+    EXPECT_EQ(d2.Day(), 11);
+    EXPECT_EQ(d2.Month(), 12);
+    EXPECT_EQ(d2.Year(), 2024);
+
+    d1 = Date{ "12/12/2024" };
+    d2 = Date{ "12/12/2024" };
+    EXPECT_EQ(d1 - d2, 0);
+    EXPECT_EQ(d2 - d1, 0);
+
+    d1 = Date{ "11/11/2024" };
+    d2 = Date{ "11/12/2024" };
+    EXPECT_EQ(d1 - d2, 30);
+    EXPECT_EQ(d2 - d1, 30);
+
+    d1 = Date{ "11/01/2025" };
+    d2 = Date{ "11/12/2024" };
+    EXPECT_EQ(d1 - d2, 31);
+    EXPECT_EQ(d2 - d1, 31);
+
+    d1 = Date{ "12/12/2022" };
+    d2 = Date{ "12/12/2023" };
+    EXPECT_EQ(d1 - d2, 365);
+    EXPECT_EQ(d2 - d1, 365);
+
+    d1 = Date{ "12/12/2023" };
+    d2 = Date{ "12/12/2024" };
+    EXPECT_EQ(d1 - d2, 366);
+    EXPECT_EQ(d2 - d1, 366);
+
+    d1 = Date{ "01/01/1900" };
+    d2 = Date{ "31/12/9999" };
+    EXPECT_EQ(d1 - d2, 2'958'463);
+    EXPECT_EQ(d2 - d1, 2'958'463);
+}
+
 TEST(StaticUtilityTest, IsLeap)
 {
     ASSERT_NO_THROW(static_cast<void>(Date::IsLeap(2020)));
