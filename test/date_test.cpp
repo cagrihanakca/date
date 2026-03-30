@@ -503,3 +503,51 @@ TEST(OperatorTest, PostfixDecrement)
     d = Date{ "01/01/1900" };
     EXPECT_THROW(d--, Date::InvalidDate);
 }
+
+TEST(OperatorTest, Comparisons)
+{
+    Date d1{ "12/12/2024" };
+    Date d2{ "22/12/2024" };
+    EXPECT_LT(d1, d2);
+    EXPECT_LE(d1, d2);
+    EXPECT_GT(d2, d1);
+    EXPECT_GE(d2, d1);
+    EXPECT_NE(d1, d2);
+
+    d1 = Date{ "01/01/2025" };
+    d2 = Date{ "01/02/2025" };
+    EXPECT_LT(d1, d2);
+    EXPECT_LE(d1, d2);
+    EXPECT_GT(d2, d1);
+    EXPECT_GE(d2, d1);
+    EXPECT_NE(d1, d2);
+
+    d1 = Date{ "01/01/2025" };
+    d2 = Date{ "01/01/2026" };
+    EXPECT_LT(d1, d2);
+    EXPECT_LE(d1, d2);
+    EXPECT_GT(d2, d1);
+    EXPECT_GE(d2, d1);
+    EXPECT_NE(d1, d2);
+
+    d1 = Date{ "31/12/2023" };
+    d2 = Date{ "01/01/2024" };
+    EXPECT_LT(d1, d2);
+    EXPECT_LE(d1, d2);
+    EXPECT_GT(d2, d1);
+    EXPECT_GE(d2, d1);
+    EXPECT_NE(d1, d2);
+
+    d1 = Date{ "31/01/2024" };
+    d2 = Date{ "01/02/2024" };
+    EXPECT_LT(d1, d2);
+    EXPECT_LE(d1, d2);
+    EXPECT_GT(d2, d1);
+    EXPECT_GE(d2, d1);
+    EXPECT_NE(d1, d2);
+
+    d2 = d1;
+    EXPECT_LE(d1, d2);
+    EXPECT_GE(d1, d2);
+    EXPECT_EQ(d1, d2);
+}
