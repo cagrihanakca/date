@@ -58,10 +58,10 @@ TEST(StaticFactoryTest, RandomDate)
     EXPECT_GE(Date::RandomDate(1950, 2000).Year(), 1950);
     EXPECT_LE(Date::RandomDate(1950, 2000).Year(), 2000);
 
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(1899, 2000)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, 1899)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(10'000, 2000)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, 10'000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(Date::MIN_YEAR - 1, 2000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, Date::MIN_YEAR - 1)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(Date::MAX_YEAR + 1, 2000)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, Date::MAX_YEAR + 1)), std::invalid_argument);
     EXPECT_THROW(static_cast<void>(Date::RandomDate(2000, 1950)), std::invalid_argument);
 }
 
@@ -85,8 +85,8 @@ TEST(CtorTest, DayMonYearCtor)
     EXPECT_THROW(Date(0, 12, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(32, 12, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(12, 0, 2024), Date::InvalidDate);
-    EXPECT_THROW(Date(12, 12, 1899), Date::InvalidDate);
-    EXPECT_THROW(Date(12, 12, 10'000), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 12, Date::MIN_YEAR - 1), Date::InvalidDate);
+    EXPECT_THROW(Date(12, 12, Date::MAX_YEAR + 1), Date::InvalidDate);
     EXPECT_THROW(Date(31, 4, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(30, 2, 2024), Date::InvalidDate);
     EXPECT_THROW(Date(29, 2, 2023), Date::InvalidDate);
@@ -199,9 +199,9 @@ TEST(GetterTest, Month)
 
 TEST(GetterTest, Year)
 {
-    EXPECT_EQ(Date{ "12/12/1900" }.Year(), Date::MIN_YEAR);
+    EXPECT_EQ(Date{ "12/12/1900" }.Year(), 1900);
     EXPECT_EQ(Date{ "12/12/2026" }.Year(), 2026);
-    EXPECT_EQ(Date{ "12/12/9999" }.Year(), Date::MAX_YEAR);
+    EXPECT_EQ(Date{ "12/12/9999" }.Year(), 9999);
 }
 
 TEST(GetterTest, DayOfYear)
@@ -224,7 +224,7 @@ TEST(GetterTest, Weekday)
 
 TEST(GetterTest, WeekOfYear)
 {
-    EXPECT_EQ(Date{ "01/01/1900" }.WeekOfYear(), Date::ISOWeek(Date::MIN_YEAR, 1));
+    EXPECT_EQ(Date{ "01/01/1900" }.WeekOfYear(), Date::ISOWeek(1900, 1));
     EXPECT_EQ(Date{ "31/12/1900" }.WeekOfYear(), Date::ISOWeek(1901, 1));
     EXPECT_EQ(Date{ "01/01/2014" }.WeekOfYear(), Date::ISOWeek(2014, 1));
     EXPECT_EQ(Date{ "06/01/2014" }.WeekOfYear(), Date::ISOWeek(2014, 2));
@@ -241,9 +241,9 @@ TEST(GetterTest, WeekOfYear)
     EXPECT_EQ(Date{ "31/12/2018" }.WeekOfYear(), Date::ISOWeek(2019, 1));
     EXPECT_EQ(Date{ "31/12/2020" }.WeekOfYear(), Date::ISOWeek(2020, 53));
     EXPECT_EQ(Date{ "29/02/2020" }.WeekOfYear(), Date::ISOWeek(2020, 9));
-    EXPECT_EQ(Date{ "29/12/9999" }.WeekOfYear(), Date::ISOWeek(Date::MAX_YEAR, 52));
-    EXPECT_EQ(Date{ "30/12/9999" }.WeekOfYear(), Date::ISOWeek(Date::MAX_YEAR, 52));
-    EXPECT_EQ(Date{ "31/12/9999" }.WeekOfYear(), Date::ISOWeek(Date::MAX_YEAR, 52));
+    EXPECT_EQ(Date{ "29/12/9999" }.WeekOfYear(), Date::ISOWeek(9999, 52));
+    EXPECT_EQ(Date{ "30/12/9999" }.WeekOfYear(), Date::ISOWeek(9999, 52));
+    EXPECT_EQ(Date{ "31/12/9999" }.WeekOfYear(), Date::ISOWeek(9999, 52));
     EXPECT_EQ(Date{ "01/01/9999" }.WeekOfYear(), Date::ISOWeek(9998, 53));
 }
 
@@ -299,8 +299,8 @@ TEST(SetterTest, Year)
     EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(Date::MAX_YEAR));
     EXPECT_NO_THROW(Date{ "29/02/2020" }.Year(2024));
 
-    EXPECT_THROW(Date{ "12/12/2024" }.Year(1899), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Year(10'000), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(Date::MIN_YEAR - 1), Date::InvalidDate);
+    EXPECT_THROW(Date{ "12/12/2024" }.Year(Date::MAX_YEAR + 1), Date::InvalidDate);
     EXPECT_THROW(Date{ "12/12/2024" }.Year(0), Date::InvalidDate);
     EXPECT_THROW(Date{ "29/02/2020" }.Year(2021), Date::InvalidDate);
 }
