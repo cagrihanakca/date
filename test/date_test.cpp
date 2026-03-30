@@ -248,60 +248,86 @@ TEST(GetterTest, WeekOfYear)
 
 TEST(SetterTest, Day)
 {
-    Date d{ "12/12/2024" };
+    Date d{ "06/12/2024" };
     d.Day(15);
     EXPECT_EQ(d.Day(), 15);
 
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(1));
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(12));
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Day(31));
+    d = Date{ "12/12/2024" };
+    EXPECT_NO_THROW(d.Day(1));
+    EXPECT_NO_THROW(d.Day(12));
+    EXPECT_NO_THROW(d.Day(31));
 
-    EXPECT_THROW(Date{ "12/12/2024" }.Day(0), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Day(-12), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Day(32), Date::InvalidDate);
-    EXPECT_THROW(Date{ "30/04/2024" }.Day(31), Date::InvalidDate);
-    EXPECT_THROW(Date{ "28/02/2023" }.Day(29), Date::InvalidDate);
-    EXPECT_THROW(Date{ "28/02/2023" }.Day(30), Date::InvalidDate);
-    EXPECT_THROW(Date{ "28/02/2023" }.Day(31), Date::InvalidDate);
-    EXPECT_THROW(Date{ "29/02/2024" }.Day(30), Date::InvalidDate);
-    EXPECT_THROW(Date{ "29/02/2024" }.Day(31), Date::InvalidDate);
+    d = Date{ "18/12/2024" };
+    EXPECT_THROW(d.Day(0), Date::InvalidDate);
+    EXPECT_THROW(d.Day(-12), Date::InvalidDate);
+    EXPECT_THROW(d.Day(32), Date::InvalidDate);
+
+    d = Date{ "30/04/2024" };
+    EXPECT_THROW(d.Day(31), Date::InvalidDate);
+
+    d = Date{ "28/02/2023" };
+    EXPECT_THROW(d.Day(29), Date::InvalidDate);
+    EXPECT_THROW(d.Day(30), Date::InvalidDate);
+    EXPECT_THROW(d.Day(31), Date::InvalidDate);
+
+    d = Date{ "29/02/2024" };
+    EXPECT_THROW(d.Day(30), Date::InvalidDate);
+    EXPECT_THROW(d.Day(31), Date::InvalidDate);
 }
 
 TEST(SetterTest, Month)
 {
-    Date d{ "12/12/2024" };
+    Date d{ "06/12/2024" };
     d.Month(3);
     EXPECT_EQ(d.Month(), 3);
 
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Month(1));
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Month(6));
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Month(12));
-    EXPECT_NO_THROW(Date{ "29/01/2024" }.Month(2));
+    d = Date{ "12/12/2024" };
+    EXPECT_NO_THROW(d.Month(1));
+    EXPECT_NO_THROW(d.Month(6));
+    EXPECT_NO_THROW(d.Month(12));
 
-    EXPECT_THROW(Date{ "12/12/2024" }.Month(0), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Month(-12), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Month(13), Date::InvalidDate);
-    EXPECT_THROW(Date{ "31/05/2024" }.Month(4), Date::InvalidDate);
-    EXPECT_THROW(Date{ "29/03/2023" }.Month(2), Date::InvalidDate);
-    EXPECT_THROW(Date{ "30/04/2023" }.Month(2), Date::InvalidDate);
-    EXPECT_THROW(Date{ "31/03/2023" }.Month(2), Date::InvalidDate);
+    d = Date{ "29/01/2024" };
+    EXPECT_NO_THROW(d.Month(2));
+
+    d = Date{ "18/12/2024" };
+    EXPECT_THROW(d.Month(0), Date::InvalidDate);
+    EXPECT_THROW(d.Month(-12), Date::InvalidDate);
+    EXPECT_THROW(d.Month(13), Date::InvalidDate);
+
+    d = Date{ "31/05/2024" };
+    EXPECT_THROW(d.Month(4), Date::InvalidDate);
+
+    d = Date{ "29/03/2023" };
+    EXPECT_THROW(d.Month(2), Date::InvalidDate);
+
+    d = Date{ "30/04/2023" };
+    EXPECT_THROW(d.Month(2), Date::InvalidDate);
+
+    d = Date{ "31/03/2023" };
+    EXPECT_THROW(d.Month(2), Date::InvalidDate);
 }
 
 TEST(SetterTest, Year)
 {
-    Date d{ "12/12/2024" };
+    Date d{ "06/12/2024" };
     d.Year(2026);
     EXPECT_EQ(d.Year(), 2026);
 
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(Date::MIN_YEAR));
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(5000));
-    EXPECT_NO_THROW(Date{ "12/12/2024" }.Year(Date::MAX_YEAR));
-    EXPECT_NO_THROW(Date{ "29/02/2020" }.Year(2024));
+    d = Date{ "12/12/2024" };
+    EXPECT_NO_THROW(d.Year(Date::MIN_YEAR));
+    EXPECT_NO_THROW(d.Year(5000));
+    EXPECT_NO_THROW(d.Year(Date::MAX_YEAR));
 
-    EXPECT_THROW(Date{ "12/12/2024" }.Year(Date::MIN_YEAR - 1), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Year(Date::MAX_YEAR + 1), Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/2024" }.Year(0), Date::InvalidDate);
-    EXPECT_THROW(Date{ "29/02/2020" }.Year(2021), Date::InvalidDate);
+    d = Date{ "29/02/2020" };
+    EXPECT_NO_THROW(d.Year(2024));
+
+    d = Date{ "18/12/2024" };
+    EXPECT_THROW(d.Year(Date::MIN_YEAR - 1), Date::InvalidDate);
+    EXPECT_THROW(d.Year(Date::MAX_YEAR + 1), Date::InvalidDate);
+    EXPECT_THROW(d.Year(0), Date::InvalidDate);
+
+    d = Date{ "29/02/2020" };
+    EXPECT_THROW(d.Year(2021), Date::InvalidDate);
 }
 
 TEST(OperatorTest, AdditionAssignment)

@@ -297,7 +297,7 @@ namespace cgr
         return { m_year + 1, 1 };
     }
 
-    Date &Date::Day(int day)
+    Date &Date::Day(int day) &
     {
         Validate(day, m_month, m_year);
         m_day = day;
@@ -305,7 +305,7 @@ namespace cgr
         return *this;
     }
 
-    Date &Date::Month(int month)
+    Date &Date::Month(int month) &
     {
         Validate(m_day, month, m_year);
         m_month = month;
@@ -313,7 +313,7 @@ namespace cgr
         return *this;
     }
 
-    Date &Date::Year(int year)
+    Date &Date::Year(int year) &
     {
         Validate(m_day, m_month, year);
         m_year = year;

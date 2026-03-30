@@ -48,9 +48,9 @@ namespace cgr
         [[nodiscard]] int Weekday() const noexcept;
         [[nodiscard]] ISOWeek WeekOfYear() const noexcept;
 
-        Date &Day(int day);
-        Date &Month(int month);
-        Date &Year(int year);
+        Date &Day(int day) &;
+        Date &Month(int month) &;
+        Date &Year(int year) &;
 
         Date &operator+=(int days) &;
         Date &operator-=(int days) &;
