@@ -158,11 +158,7 @@ TEST(CtorTest, CalendarTimeCtor)
 
 TEST(CtorTest, IStreamCtor)
 {
-    std::istringstream iss;
-    EXPECT_THROW(Date{ iss }, Date::InvalidDate);
-    iss.clear();
-
-    iss.str("12/12/2024");
+    std::istringstream iss{ "12/12/2024" };
     ASSERT_NO_THROW(Date{ iss });
     iss.clear();
 
@@ -171,6 +167,9 @@ TEST(CtorTest, IStreamCtor)
     EXPECT_EQ(d.Day(), 12);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
+
+    iss.clear();
+    EXPECT_THROW(Date{ iss }, Date::InvalidDate);
 
     const std::vector<std::string> invalidFormats{
         "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "12/12/10000", "31/4/2024", "30/2/2024", "29/2/2023",
