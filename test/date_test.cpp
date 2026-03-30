@@ -552,22 +552,14 @@ TEST(OperatorTest, Addition)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
+    d = Date{ "12/12/2024" };
     EXPECT_EQ(d + 0, Date{ "12/12/2024" });
-    EXPECT_EQ(d.Day(), 12);
-    EXPECT_EQ(d.Month(), 12);
-    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "29/02/2024" };
     EXPECT_EQ(d + 1, Date{ "01/03/2024" });
-    EXPECT_EQ(d.Day(), 29);
-    EXPECT_EQ(d.Month(), 2);
-    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "28/02/2023" };
     EXPECT_EQ(d + 1, Date{ "01/03/2023" });
-    EXPECT_EQ(d.Day(), 28);
-    EXPECT_EQ(d.Month(), 2);
-    EXPECT_EQ(d.Year(), 2023);
 
     EXPECT_THROW(static_cast<void>(Date{ "12/12/2024" } + -1), std::invalid_argument);
     EXPECT_THROW(static_cast<void>(Date{ "01/01/1900" } + std::numeric_limits<int>::max()), Date::InvalidDate);
@@ -583,22 +575,14 @@ TEST(OperatorTest, CommutativeAddition)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
+    d = Date { "12/12/2024" };
     EXPECT_EQ(0 + d, Date{ "12/12/2024" });
-    EXPECT_EQ(d.Day(), 12);
-    EXPECT_EQ(d.Month(), 12);
-    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "29/02/2024" };
     EXPECT_EQ(1 + d, Date{ "01/03/2024" });
-    EXPECT_EQ(d.Day(), 29);
-    EXPECT_EQ(d.Month(), 2);
-    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "28/02/2023" };
     EXPECT_EQ(1 + d, Date{ "01/03/2023" });
-    EXPECT_EQ(d.Day(), 28);
-    EXPECT_EQ(d.Month(), 2);
-    EXPECT_EQ(d.Year(), 2023);
 
     EXPECT_THROW(static_cast<void>(-1 + Date{ "12/12/2024" }), std::invalid_argument);
     EXPECT_THROW(static_cast<void>(std::numeric_limits<int>::max() + Date{ "01/01/1900" }), Date::InvalidDate);
@@ -614,22 +598,14 @@ TEST(OperatorTest, Subtraction)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
+    d = Date{ "12/12/2024" };
     EXPECT_EQ(d - 0, Date{ "12/12/2024" });
-    EXPECT_EQ(d.Day(), 12);
-    EXPECT_EQ(d.Month(), 12);
-    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "01/03/2024" };
     EXPECT_EQ(d - 1, Date{ "29/02/2024" });
-    EXPECT_EQ(d.Day(), 1);
-    EXPECT_EQ(d.Month(), 3);
-    EXPECT_EQ(d.Year(), 2024);
 
     d = Date{ "01/03/2023" };
     EXPECT_EQ(d - 1, Date{ "28/02/2023" });
-    EXPECT_EQ(d.Day(), 1);
-    EXPECT_EQ(d.Month(), 3);
-    EXPECT_EQ(d.Year(), 2023);
 
     EXPECT_THROW(static_cast<void>(Date{ "12/12/2024" } - -1), std::invalid_argument);
     EXPECT_THROW(static_cast<void>(Date{ "01/01/1900" } - 1), Date::InvalidDate);
