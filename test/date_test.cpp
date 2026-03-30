@@ -542,3 +542,16 @@ TEST(OperatorTest, Comparisons)
     EXPECT_GE(d1, d2);
     EXPECT_EQ(d1, d2);
 }
+
+TEST(StaticUtilityTest, IsLeap)
+{
+    ASSERT_NO_THROW(static_cast<void>(Date::IsLeap(2020)));
+
+    EXPECT_TRUE(Date::IsLeap(2024));
+    EXPECT_FALSE(Date::IsLeap(2025));
+    EXPECT_FALSE(Date::IsLeap(1900));
+    EXPECT_TRUE(Date::IsLeap(2000));
+
+    EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MIN_YEAR - 1)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MAX_YEAR + 1)), std::invalid_argument);
+}
