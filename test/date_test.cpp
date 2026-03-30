@@ -19,7 +19,6 @@ TEST(InvalidDateTest, GetReason)
     using Date::InvalidDate::Reason::DAY;
 
     ASSERT_NO_THROW(Date::InvalidDate(DAY, "invalid day"));
-
     Date::InvalidDate ex{ DAY, "invalid day" };
     EXPECT_EQ(ex.GetReason(), DAY);
 }
@@ -29,7 +28,6 @@ TEST(InvalidDateTest, What)
     using Date::InvalidDate::Reason::MONTH;
 
     ASSERT_NO_THROW(Date::InvalidDate(MONTH, "invalid month"));
-
     Date::InvalidDate ex{ MONTH, "invalid month" };
     EXPECT_STREQ(ex.what(), "invalid month");
 }
@@ -45,7 +43,6 @@ TEST(StaticFactoryTest, Today)
     std::time_t timer{};
     std::time(&timer);
     const auto *timePtr{ localtime(&timer) };
-
     Date today{ Date::Today() };
     EXPECT_EQ(today.Day(), timePtr->tm_mday);
     EXPECT_EQ(today.Month(), timePtr->tm_mon + 1);
@@ -71,7 +68,6 @@ TEST(StaticFactoryTest, RandomDate)
 TEST(CtorTest, DefaultCtor)
 {
     ASSERT_NO_THROW(Date{});
-
     Date d;
     EXPECT_EQ(d.Day(), 1);
     EXPECT_EQ(d.Month(), 1);
@@ -81,7 +77,6 @@ TEST(CtorTest, DefaultCtor)
 TEST(CtorTest, DayMonYearCtor)
 {
     ASSERT_NO_THROW(Date(12, 12, 2024));
-
     Date d{ 12, 12, 2024 };
     EXPECT_EQ(d.Day(), 12);
     EXPECT_EQ(d.Month(), 12);
@@ -100,7 +95,6 @@ TEST(CtorTest, DayMonYearCtor)
 TEST(CtorTest, CStringCtor)
 {
     ASSERT_NO_THROW(Date{ "12/12/2024" });
-
     Date d{ "12/12/2024" };
     EXPECT_EQ(d.Day(), 12);
     EXPECT_EQ(d.Month(), 12);
@@ -128,7 +122,6 @@ TEST(CtorTest, StringCtor)
     using namespace std::literals::string_literals;
 
     ASSERT_NO_THROW(Date{ "12/12/2024"s });
-
     Date d{ "12/12/2024"s };
     EXPECT_EQ(d.Day(), 12);
     EXPECT_EQ(d.Month(), 12);
@@ -157,7 +150,6 @@ TEST(CtorTest, CalendarTimeCtor)
     std::time_t timer{};
     std::time(&timer);
     const auto *timePtr{ localtime(&timer) };
-
     Date d{ timer };
     EXPECT_EQ(d.Day(), timePtr->tm_mday);
     EXPECT_EQ(d.Month(), timePtr->tm_mon + 1);
@@ -168,12 +160,12 @@ TEST(CtorTest, IStreamCtor)
 {
     std::istringstream iss;
     EXPECT_THROW(Date{ iss }, Date::InvalidDate);
-
     iss.clear();
+
     iss.str("12/12/2024");
     ASSERT_NO_THROW(Date{ iss });
-
     iss.clear();
+
     iss.str("12/12/2024");
     Date d{ iss };
     EXPECT_EQ(d.Day(), 12);
@@ -185,7 +177,6 @@ TEST(CtorTest, IStreamCtor)
         "2/12/2024", "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
         "12/12/ccccc2024"
     };
-
     for (const auto &input : inputs) {
         std::istringstream iss{ input };
         EXPECT_THROW(Date{ iss }, Date::InvalidDate);
