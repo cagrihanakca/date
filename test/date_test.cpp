@@ -696,3 +696,34 @@ TEST(StreamTest, Extractor)
         EXPECT_EQ(d, Date{ "24/12/2024" });
     }
 }
+
+TEST(StreamTest, Inserter)
+{
+    std::ostringstream oss;
+    oss << Date{ "06/12/2024" };
+    EXPECT_EQ(oss.str(), "6 December 2024 Friday");
+    oss.str("");
+
+    oss << Date{ "12/12/2024" };
+    EXPECT_EQ(oss.str(), "12 December 2024 Thursday");
+    oss.str("");
+
+    oss << Date{ "28/02/2023" };
+    EXPECT_EQ(oss.str(), "28 February 2023 Tuesday");
+    oss.str("");
+
+    oss << Date{ "29/03/2024" };
+    EXPECT_EQ(oss.str(), "29 March 2024 Friday");
+    oss.str("");
+
+    oss << Date{ "01/01/1900" };
+    EXPECT_EQ(oss.str(), "1 January 1900 Monday");
+    oss.str("");
+
+    oss << Date{ "31/12/9999" };
+    EXPECT_EQ(oss.str(), "31 December 9999 Friday");
+    oss.str("");
+
+    oss << Date{ "12/12/2024" } << ' ' << Date{ "18/12/2024" };
+    EXPECT_EQ(oss.str(), "12 December 2024 Thursday 18 December 2024 Wednesday");
+}
