@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "gtest/gtest.h"
-#include "date.h"
+#include "cgr/date.h"
 
 using namespace cgr;
 
