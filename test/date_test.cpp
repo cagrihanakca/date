@@ -4,8 +4,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "gtest/gtest.h"
-#include "cgr/date.h"
+
+#include <cgr/date.h>
+#include <gtest/gtest.h>
 
 using namespace cgr;
 
