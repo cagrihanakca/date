@@ -1,7 +1,6 @@
 #include <ctime>
 #include <limits>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -10,26 +9,26 @@
 
 using namespace cgr;
 
-TEST(InvalidDateTest, Ctor)
+TEST(DateErrorTest, Ctor)
 {
-    EXPECT_NO_THROW(Date::InvalidDate(Date::InvalidDate::Reason::DAY, "invalid day"));
+    EXPECT_NO_THROW(Date::DateError(Date::DateError::Reason::DAY, "invalid day"));
 }
 
-TEST(InvalidDateTest, GetReason)
+TEST(DateErrorTest, GetReason)
 {
-    using Date::InvalidDate::Reason::DAY;
+    using Date::DateError::Reason::DAY;
 
-    ASSERT_NO_THROW(Date::InvalidDate(DAY, "invalid day"));
-    Date::InvalidDate ex{ DAY, "invalid day" };
+    ASSERT_NO_THROW(Date::DateError(DAY, "invalid day"));
+    Date::DateError ex{ DAY, "invalid day" };
     EXPECT_EQ(ex.GetReason(), DAY);
 }
 
-TEST(InvalidDateTest, What)
+TEST(DateErrorTest, What)
 {
-    using Date::InvalidDate::Reason::MONTH;
+    using Date::DateError::Reason::MONTH;
 
-    ASSERT_NO_THROW(Date::InvalidDate(MONTH, "invalid month"));
-    Date::InvalidDate ex{ MONTH, "invalid month" };
+    ASSERT_NO_THROW(Date::DateError(MONTH, "invalid month"));
+    Date::DateError ex{ MONTH, "invalid month" };
     EXPECT_STREQ(ex.what(), "invalid month");
 }
 
@@ -59,11 +58,11 @@ TEST(StaticFactoryTest, RandomDate)
     EXPECT_GE(Date::RandomDate(1950, 2000).Year(), 1950);
     EXPECT_LE(Date::RandomDate(1950, 2000).Year(), 2000);
 
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(Date::MIN_YEAR - 1, 2000)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, Date::MIN_YEAR - 1)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(Date::MAX_YEAR + 1, 2000)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, Date::MAX_YEAR + 1)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::RandomDate(2000, 1950)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(Date::MIN_YEAR - 1, 2000)), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, Date::MIN_YEAR - 1)), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(Date::MAX_YEAR + 1, 2000)), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(1950, Date::MAX_YEAR + 1)), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date::RandomDate(2000, 1950)), Date::DateError);
 }
 
 TEST(CtorTest, DefaultCtor)
@@ -83,14 +82,14 @@ TEST(CtorTest, DayMonYearCtor)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_THROW(Date(0, 12, 2024), Date::InvalidDate);
-    EXPECT_THROW(Date(32, 12, 2024), Date::InvalidDate);
-    EXPECT_THROW(Date(12, 0, 2024), Date::InvalidDate);
-    EXPECT_THROW(Date(12, 12, Date::MIN_YEAR - 1), Date::InvalidDate);
-    EXPECT_THROW(Date(12, 12, Date::MAX_YEAR + 1), Date::InvalidDate);
-    EXPECT_THROW(Date(31, 4, 2024), Date::InvalidDate);
-    EXPECT_THROW(Date(30, 2, 2024), Date::InvalidDate);
-    EXPECT_THROW(Date(29, 2, 2023), Date::InvalidDate);
+    EXPECT_THROW(Date(0, 12, 2024), Date::DateError);
+    EXPECT_THROW(Date(32, 12, 2024), Date::DateError);
+    EXPECT_THROW(Date(12, 0, 2024), Date::DateError);
+    EXPECT_THROW(Date(12, 12, Date::MIN_YEAR - 1), Date::DateError);
+    EXPECT_THROW(Date(12, 12, Date::MAX_YEAR + 1), Date::DateError);
+    EXPECT_THROW(Date(31, 4, 2024), Date::DateError);
+    EXPECT_THROW(Date(30, 2, 2024), Date::DateError);
+    EXPECT_THROW(Date(29, 2, 2023), Date::DateError);
 }
 
 TEST(CtorTest, CStringCtor)
@@ -101,21 +100,21 @@ TEST(CtorTest, CStringCtor)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_THROW(Date{ "0/12/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "32/12/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/0/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/1899" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/10000" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "31/4/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "30/2/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "29/2/2023" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "2/12/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/2/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12 12 2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12.12.2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "aaaa12/12/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/bbbb12/2024" }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/ccccc2024" }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "0/12/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "32/12/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12/0/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/1899" }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/10000" }, Date::DateError);
+    EXPECT_THROW(Date{ "31/4/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "30/2/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "29/2/2023" }, Date::DateError);
+    EXPECT_THROW(Date{ "2/12/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12/2/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12 12 2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12.12.2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "aaaa12/12/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12/bbbb12/2024" }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/ccccc2024" }, Date::DateError);
 }
 
 TEST(CtorTest, StringCtor)
@@ -128,22 +127,22 @@ TEST(CtorTest, StringCtor)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_THROW(Date{ "0/12/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "32/12/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/0/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/1899"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/10000"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "31/4/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "30/2/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "29/2/2023"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "2/12/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/2/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/20242"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12 12 2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12.12.2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, Date::InvalidDate);
-    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, Date::InvalidDate);
+    EXPECT_THROW(Date{ "0/12/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "32/12/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/0/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/1899"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/10000"s }, Date::DateError);
+    EXPECT_THROW(Date{ "31/4/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "30/2/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "29/2/2023"s }, Date::DateError);
+    EXPECT_THROW(Date{ "2/12/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/2/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/20242"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12 12 2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12.12.2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, Date::DateError);
 }
 
 TEST(CtorTest, CalendarTimeCtor)
@@ -170,7 +169,7 @@ TEST(CtorTest, IStreamCtor)
     EXPECT_EQ(d.Year(), 2024);
 
     iss.clear();
-    EXPECT_THROW(Date{ iss }, Date::InvalidDate);
+    EXPECT_THROW(Date{ iss }, Date::DateError);
 
     const std::vector<std::string> invalidFormats{
         "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "12/12/10000", "31/4/2024", "30/2/2024", "29/2/2023",
@@ -179,7 +178,7 @@ TEST(CtorTest, IStreamCtor)
     };
     for (const auto &invalidFormat : invalidFormats) {
         std::istringstream iss{ invalidFormat };
-        EXPECT_THROW(Date{ iss }, Date::InvalidDate);
+        EXPECT_THROW(Date{ iss }, Date::DateError);
     }
 }
 
@@ -259,21 +258,21 @@ TEST(SetterTest, Day)
     EXPECT_NO_THROW(d.Day(31));
 
     d = Date{ "18/12/2024" };
-    EXPECT_THROW(d.Day(0), Date::InvalidDate);
-    EXPECT_THROW(d.Day(-12), Date::InvalidDate);
-    EXPECT_THROW(d.Day(32), Date::InvalidDate);
+    EXPECT_THROW(d.Day(0), Date::DateError);
+    EXPECT_THROW(d.Day(-12), Date::DateError);
+    EXPECT_THROW(d.Day(32), Date::DateError);
 
     d = Date{ "30/04/2024" };
-    EXPECT_THROW(d.Day(31), Date::InvalidDate);
+    EXPECT_THROW(d.Day(31), Date::DateError);
 
     d = Date{ "28/02/2023" };
-    EXPECT_THROW(d.Day(29), Date::InvalidDate);
-    EXPECT_THROW(d.Day(30), Date::InvalidDate);
-    EXPECT_THROW(d.Day(31), Date::InvalidDate);
+    EXPECT_THROW(d.Day(29), Date::DateError);
+    EXPECT_THROW(d.Day(30), Date::DateError);
+    EXPECT_THROW(d.Day(31), Date::DateError);
 
     d = Date{ "29/02/2024" };
-    EXPECT_THROW(d.Day(30), Date::InvalidDate);
-    EXPECT_THROW(d.Day(31), Date::InvalidDate);
+    EXPECT_THROW(d.Day(30), Date::DateError);
+    EXPECT_THROW(d.Day(31), Date::DateError);
 }
 
 TEST(SetterTest, Month)
@@ -291,21 +290,21 @@ TEST(SetterTest, Month)
     EXPECT_NO_THROW(d.Month(2));
 
     d = Date{ "18/12/2024" };
-    EXPECT_THROW(d.Month(0), Date::InvalidDate);
-    EXPECT_THROW(d.Month(-12), Date::InvalidDate);
-    EXPECT_THROW(d.Month(13), Date::InvalidDate);
+    EXPECT_THROW(d.Month(0), Date::DateError);
+    EXPECT_THROW(d.Month(-12), Date::DateError);
+    EXPECT_THROW(d.Month(13), Date::DateError);
 
     d = Date{ "31/05/2024" };
-    EXPECT_THROW(d.Month(4), Date::InvalidDate);
+    EXPECT_THROW(d.Month(4), Date::DateError);
 
     d = Date{ "29/03/2023" };
-    EXPECT_THROW(d.Month(2), Date::InvalidDate);
+    EXPECT_THROW(d.Month(2), Date::DateError);
 
     d = Date{ "30/04/2023" };
-    EXPECT_THROW(d.Month(2), Date::InvalidDate);
+    EXPECT_THROW(d.Month(2), Date::DateError);
 
     d = Date{ "31/03/2023" };
-    EXPECT_THROW(d.Month(2), Date::InvalidDate);
+    EXPECT_THROW(d.Month(2), Date::DateError);
 }
 
 TEST(SetterTest, Year)
@@ -323,12 +322,12 @@ TEST(SetterTest, Year)
     EXPECT_NO_THROW(d.Year(2024));
 
     d = Date{ "18/12/2024" };
-    EXPECT_THROW(d.Year(Date::MIN_YEAR - 1), Date::InvalidDate);
-    EXPECT_THROW(d.Year(Date::MAX_YEAR + 1), Date::InvalidDate);
-    EXPECT_THROW(d.Year(0), Date::InvalidDate);
+    EXPECT_THROW(d.Year(Date::MIN_YEAR - 1), Date::DateError);
+    EXPECT_THROW(d.Year(Date::MAX_YEAR + 1), Date::DateError);
+    EXPECT_THROW(d.Year(0), Date::DateError);
 
     d = Date{ "29/02/2020" };
-    EXPECT_THROW(d.Year(2021), Date::InvalidDate);
+    EXPECT_THROW(d.Year(2021), Date::DateError);
 }
 
 TEST(OperatorTest, AdditionAssignment)
@@ -358,13 +357,13 @@ TEST(OperatorTest, AdditionAssignment)
     EXPECT_EQ(d.Year(), 2023);
 
     d = Date{ "12/12/2024" };
-    EXPECT_THROW(d += -1, std::invalid_argument);
+    EXPECT_THROW(d += -1, Date::DateError);
 
     d = Date{ "01/01/1900" };
-    EXPECT_THROW(d += std::numeric_limits<int>::max(), Date::InvalidDate);
+    EXPECT_THROW(d += std::numeric_limits<int>::max(), Date::DateError);
 
     d = Date{ "31/12/9999" };
-    EXPECT_THROW(d += 1, Date::InvalidDate);
+    EXPECT_THROW(d += 1, Date::DateError);
 }
 
 TEST(OperatorTest, SubtractionAssignment)
@@ -394,13 +393,13 @@ TEST(OperatorTest, SubtractionAssignment)
     EXPECT_EQ(d.Year(), 2023);
 
     d = Date{ "12/12/2024" };
-    EXPECT_THROW(d -= -1, std::invalid_argument);
+    EXPECT_THROW(d -= -1, Date::DateError);
 
     d = Date{ "01/01/1900" };
-    EXPECT_THROW(d -= 1, Date::InvalidDate);
+    EXPECT_THROW(d -= 1, Date::DateError);
 
     d = Date{ "31/12/9999" };
-    EXPECT_THROW(d -= std::numeric_limits<int>::max(), Date::InvalidDate);
+    EXPECT_THROW(d -= std::numeric_limits<int>::max(), Date::DateError);
 }
 
 TEST(OperatorTest, PrefixIncrement)
@@ -430,7 +429,7 @@ TEST(OperatorTest, PrefixIncrement)
     EXPECT_EQ(d.Year(), 2023);
 
     d = Date{ "31/12/9999" };
-    EXPECT_THROW(++d, Date::InvalidDate);
+    EXPECT_THROW(++d, Date::DateError);
 }
 
 TEST(OperatorTest, PostfixIncrement)
@@ -460,7 +459,7 @@ TEST(OperatorTest, PostfixIncrement)
     EXPECT_EQ(d.Year(), 2023);
 
     d = Date{ "31/12/9999" };
-    EXPECT_THROW(d++, Date::InvalidDate);
+    EXPECT_THROW(d++, Date::DateError);
 }
 
 TEST(OperatorTest, PrefixDecrement)
@@ -490,7 +489,7 @@ TEST(OperatorTest, PrefixDecrement)
     EXPECT_EQ(d.Year(), 2023);
 
     d = Date{ "01/01/1900" };
-    EXPECT_THROW(--d, Date::InvalidDate);
+    EXPECT_THROW(--d, Date::DateError);
 }
 
 TEST(OperatorTest, PostfixDecrement)
@@ -520,7 +519,7 @@ TEST(OperatorTest, PostfixDecrement)
     EXPECT_EQ(d.Year(), 2023);
 
     d = Date{ "01/01/1900" };
-    EXPECT_THROW(d--, Date::InvalidDate);
+    EXPECT_THROW(d--, Date::DateError);
 }
 
 TEST(OperatorTest, Comparisons)
@@ -589,9 +588,9 @@ TEST(OperatorTest, Addition)
     d = Date{ "28/02/2023" };
     EXPECT_EQ(d + 1, Date{ "01/03/2023" });
 
-    EXPECT_THROW(static_cast<void>(Date{ "12/12/2024" } + -1), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date{ "01/01/1900" } + std::numeric_limits<int>::max()), Date::InvalidDate);
-    EXPECT_THROW(static_cast<void>(Date{ "31/12/9999" } + 1), Date::InvalidDate);
+    EXPECT_THROW(static_cast<void>(Date{ "12/12/2024" } + -1), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date{ "01/01/1900" } + std::numeric_limits<int>::max()), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date{ "31/12/9999" } + 1), Date::DateError);
 }
 
 TEST(OperatorTest, CommutativeAddition)
@@ -612,9 +611,9 @@ TEST(OperatorTest, CommutativeAddition)
     d = Date{ "28/02/2023" };
     EXPECT_EQ(1 + d, Date{ "01/03/2023" });
 
-    EXPECT_THROW(static_cast<void>(-1 + Date{ "12/12/2024" }), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(std::numeric_limits<int>::max() + Date{ "01/01/1900" }), Date::InvalidDate);
-    EXPECT_THROW(static_cast<void>(1 + Date{ "31/12/9999" }), Date::InvalidDate);
+    EXPECT_THROW(static_cast<void>(-1 + Date{ "12/12/2024" }), Date::DateError);
+    EXPECT_THROW(static_cast<void>(std::numeric_limits<int>::max() + Date{ "01/01/1900" }), Date::DateError);
+    EXPECT_THROW(static_cast<void>(1 + Date{ "31/12/9999" }), Date::DateError);
 }
 
 TEST(OperatorTest, Subtraction)
@@ -635,9 +634,9 @@ TEST(OperatorTest, Subtraction)
     d = Date{ "01/03/2023" };
     EXPECT_EQ(d - 1, Date{ "28/02/2023" });
 
-    EXPECT_THROW(static_cast<void>(Date{ "12/12/2024" } - -1), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date{ "01/01/1900" } - 1), Date::InvalidDate);
-    EXPECT_THROW(static_cast<void>(Date{ "31/12/9999" } - std::numeric_limits<int>::max()), Date::InvalidDate);
+    EXPECT_THROW(static_cast<void>(Date{ "12/12/2024" } - -1), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date{ "01/01/1900" } - 1), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date{ "31/12/9999" } - std::numeric_limits<int>::max()), Date::DateError);
 }
 
 TEST(OperatorTest, Difference)
@@ -694,8 +693,8 @@ TEST(StaticUtilityTest, IsLeap)
     EXPECT_FALSE(Date::IsLeap(1900));
     EXPECT_TRUE(Date::IsLeap(2000));
 
-    EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MIN_YEAR - 1)), std::invalid_argument);
-    EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MAX_YEAR + 1)), std::invalid_argument);
+    EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MIN_YEAR - 1)), Date::DateError);
+    EXPECT_THROW(static_cast<void>(Date::IsLeap(Date::MAX_YEAR + 1)), Date::DateError);
 }
 
 TEST(StreamTest, Extractor)
