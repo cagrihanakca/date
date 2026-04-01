@@ -314,7 +314,26 @@ namespace cgr
 
     Date &Date::Day(int day) &
     {
-        Validate(day, m_month, m_year);
+        using DateError::Reason::DAY;
+
+        if ((day < 1) || (day > 31)) {
+            throw Date::DateError{ DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
+        }
+
+        if ((day == 31) &&
+            (m_month == FEBRUARY || m_month == APRIL || m_month == JUNE || m_month == SEPTEMBER || m_month == NOVEMBER)) {
+            throw Date::DateError{ DAY, std::format("invalid day: {} cannot have 31 days", monthNames[m_month]) };
+        }
+
+        if ((day == 30) && (m_month == FEBRUARY)) {
+            throw Date::DateError{ DAY, "invalid day: February cannot have 30 days" };
+        }
+
+        if ((day == 29) && (m_month == FEBRUARY) && !Date::IsLeap(m_year)) {
+            throw Date::DateError{ DAY,
+                std::format("invalid day: February cannot have 29 days in a non-leap year") };
+        }
+
         m_day = day;
 
         return *this;
@@ -322,7 +341,27 @@ namespace cgr
 
     Date &Date::Month(int month) &
     {
-        Validate(m_day, month, m_year);
+        using DateError::Reason::MONTH;
+
+        if ((month < JANUARY) || (month > DECEMBER)) {
+            throw Date::DateError{ MONTH,
+                std::format("invalid month: {} (the month must be between [1, 12])", month) };
+        }
+
+        if ((m_day == 31) &&
+            (month == FEBRUARY || month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER)) {
+            throw Date::DateError{ MONTH, std::format("invalid month: {} cannot have 31 days", monthNames[month]) };
+        }
+
+        if ((m_day == 30) && (month == FEBRUARY)) {
+            throw Date::DateError{ MONTH, "invalid month: February cannot have 30 days" };
+        }
+
+        if ((m_day == 29) && (month == FEBRUARY) && !Date::IsLeap(m_year)) {
+            throw Date::DateError{ MONTH,
+                std::format("invalid month: February cannot have 29 days in a non-leap year") };
+        }
+
         m_month = month;
 
         return *this;
@@ -330,7 +369,21 @@ namespace cgr
 
     Date &Date::Year(int year) &
     {
-        Validate(m_day, m_month, year);
+        using DateError::Reason::YEAR;
+
+        if (year < Date::MIN_YEAR) {
+            throw Date::DateError{ YEAR, std::format("invalid year: {} is less than the min year (1900)", year) };
+        }
+
+        if (year > Date::MAX_YEAR) {
+            throw Date::DateError{ YEAR, std::format("invalid year: {} is greater than the max year (9999)", year) };
+        }
+
+        if ((m_day == 29) && (m_month == FEBRUARY) && !Date::IsLeap(year)) {
+            throw Date::DateError{ YEAR,
+                std::format("invalid year: {} isn't leap. February cannot have 29 days in a non-leap year", year) };
+        }
+
         m_year = year;
 
         return *this;
