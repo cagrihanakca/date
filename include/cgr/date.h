@@ -3,8 +3,8 @@
 
 #include <compare>
 #include <ctime>
+#include <exception>
 #include <iosfwd>
-#include <stdexcept>
 #include <string>
 
 namespace cgr
@@ -14,15 +14,17 @@ namespace cgr
         static constexpr int MIN_YEAR{ 1900 };
         static constexpr int MAX_YEAR{ 9999 };
 
-        class InvalidDate : public std::invalid_argument {
+        class DateError : public std::exception {
         public:
             enum class Reason {
-                DAY, MONTH, YEAR, FORMAT, EPOCH, RANGE, STREAM
+                DAY, MONTH, YEAR, RANGE, FORMAT, EPOCH, STREAM, ARGUMENT, SYSTEM
             };
-            InvalidDate(Reason reason, std::string message);
+            DateError(Reason reason, std::string message);
+            [[nodiscard]] const char *what() const noexcept override;
             [[nodiscard]] Reason GetReason() const noexcept;
         private:
             Reason m_reason;
+            std::string m_message;
         };
 
         struct ISOWeek {
