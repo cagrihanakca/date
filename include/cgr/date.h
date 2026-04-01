@@ -66,13 +66,6 @@ namespace cgr
         [[nodiscard]] bool operator==(const Date &rhs) const noexcept = default;
 
         [[nodiscard]] static bool IsLeap(int year);
-
-        friend Date operator+(const Date &d, int days);
-        friend Date operator-(const Date &d, int days);
-        friend int operator-(const Date &lhs, const Date &rhs) noexcept;
-
-        friend std::istream &operator>>(std::istream &is, Date &d);
-        friend std::ostream &operator<<(std::ostream &os, const Date &d);
     private:
         int m_day{ 1 };
         int m_month{ 1 };

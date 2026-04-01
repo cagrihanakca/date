@@ -510,10 +510,7 @@ namespace cgr
                 const auto newMonth{ std::atoi(input.c_str() + 3) };
                 const auto newYear{ std::atoi(input.c_str() + 6) };
                 try {
-                    Validate(newDay, newMonth, newYear);
-                    d.m_day = newDay;
-                    d.m_month = newMonth;
-                    d.m_year = newYear;
+                    d = Date{ newDay, newMonth, newYear };
                 } catch (const Date::DateError &) {
                     is.setstate(std::ios::failbit);
                 }
@@ -527,7 +524,7 @@ namespace cgr
 
     std::ostream &operator<<(std::ostream &os, const Date &d)
     {
-        return os << d.m_day << ' ' << monthNames[d.m_month] << ' ' << d.m_year << ' ' <<
+        return os << d.Day() << ' ' << monthNames[d.Month()] << ' ' << d.Year() << ' ' <<
             weekdayNames[d.Weekday()];
     }
 }
