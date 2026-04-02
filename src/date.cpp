@@ -208,7 +208,7 @@ namespace cgr
 
         if (!std::regex_match(str, datePattern)) {
             throw DateError{ DateError::Reason::FORMAT,
-                std::format("invalid date format: {} is not compatible dd/mm/yyyy", str) };
+                std::format("invalid date format: \"{}\" is not compatible dd/mm/yyyy", str) };
         }
 
         m_day = std::atoi(str);
@@ -263,11 +263,10 @@ namespace cgr
             } else {
                 is.setstate(std::ios::failbit);
                 throw Date::DateError{ Date::DateError::Reason::FORMAT,
-                    std::format("invalid date format: {} is not compatible dd/mm/yyyy", input) };
+                    std::format("invalid date format: \"{}\" is not compatible dd/mm/yyyy", input) };
             }
         } else {
-            throw Date::DateError{ Date::DateError::Reason::STREAM,
-                std::format("input stream is not in good state") };
+            throw Date::DateError{ Date::DateError::Reason::STREAM, "input stream is not in good state" };
         }
     }
 
@@ -334,8 +333,7 @@ namespace cgr
         }
 
         if ((day == 29) && (m_month == FEBRUARY) && !Date::IsLeap(m_year)) {
-            throw Date::DateError{ DAY,
-                std::format("invalid day: February cannot have 29 days in a non-leap year") };
+            throw Date::DateError{ DAY, "invalid day: February cannot have 29 days in a non-leap year" };
         }
 
         m_day = day;
@@ -362,8 +360,7 @@ namespace cgr
         }
 
         if ((m_day == 29) && (month == FEBRUARY) && !Date::IsLeap(m_year)) {
-            throw Date::DateError{ MONTH,
-                std::format("invalid month: February cannot have 29 days in a non-leap year") };
+            throw Date::DateError{ MONTH, "invalid month: February cannot have 29 days in a non-leap year" };
         }
 
         m_month = month;
