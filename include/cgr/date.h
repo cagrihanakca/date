@@ -93,7 +93,7 @@ namespace cgr
          * @brief Constructs a date by parsing a C-string in dd/mm/yyyy format.
          * @param str The date C-string.
          * @throws DateError If str is nullptr (Reason::ARGUMENT).
-         * @throws DateError If str doesn't match the dd/mm/yyyy format (Reason::FORMAT).
+         * @throws DateError If str does not match the dd/mm/yyyy format (Reason::FORMAT).
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
@@ -103,7 +103,7 @@ namespace cgr
         /**
          * @brief Constructs a date by parsing a string in dd/mm/yyyy format.
          * @param str The date string.
-         * @throws DateError If str doesn't match the dd/mm/yyyy format (Reason::FORMAT).
+         * @throws DateError If str does not match the dd/mm/yyyy format (Reason::FORMAT).
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
@@ -121,8 +121,8 @@ namespace cgr
         /**
          * @brief Constructs a date by extracting a string in dd/mm/yyyy format from an input stream.
          * @param is The input stream.
-         * @throws DateError If the extracted string doesn't match the dd/mm/yyyy format (Reason::FORMAT).
-         * @throws DateError If the input stream isn't in good state (Reason::STREAM).
+         * @throws DateError If the extracted string does not match the dd/mm/yyyy format (Reason::FORMAT).
+         * @throws DateError If the input stream is not in good state (Reason::STREAM).
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
