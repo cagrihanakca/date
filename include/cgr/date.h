@@ -151,6 +151,7 @@ namespace cgr
          * @brief Sets the day.
          * @param day The day.
          * @throws DateError If day is out of valid range (Reason::DAY).
+         * @note Strong exception guarantee.
          */
         Date &Day(int day) &;
 
@@ -158,6 +159,7 @@ namespace cgr
          * @brief Sets the month.
          * @param month The month.
          * @throws DateError If month is out of valid range (Reason::MONTH).
+         * @note Strong exception guarantee.
          */
         Date &Month(int month) &;
 
@@ -165,6 +167,7 @@ namespace cgr
          * @brief Sets the year.
          * @param year The year.
          * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @note Strong exception guarantee.
          */
         Date &Year(int year) &;
 
@@ -173,6 +176,7 @@ namespace cgr
          * @param days The number of days.
          * @throws DateError If days is negative (Reason::ARGUMENT).
          * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+         * @note Strong exception guarantee.
          */
         Date &operator+=(int days) &;
 
@@ -181,12 +185,14 @@ namespace cgr
          * @param days The number of days.
          * @throws DateError If days is negative (Reason::ARGUMENT).
          * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+         * @note Strong exception guarantee.
          */
         Date &operator-=(int days) &;
 
         /**
          * @brief Increments the date by one day.
          * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+         * @note Strong exception guarantee.
          */
         Date &operator++() &;
 
@@ -194,12 +200,14 @@ namespace cgr
          * @brief Increments the date by one day.
          * @return The date before the increment.
          * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+         * @note Strong exception guarantee.
          */
         Date operator++(int) &;
 
         /**
          * @brief Decrements the date by one day.
          * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+         * @note Strong exception guarantee.
          */
         Date &operator--() &;
 
@@ -207,6 +215,7 @@ namespace cgr
          * @brief Decrements the date by one day.
          * @return The date before the decrement.
          * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+         * @note Strong exception guarantee.
          */
         Date operator--(int) &;
 
