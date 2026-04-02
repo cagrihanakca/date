@@ -100,6 +100,7 @@ TEST(CtorTest, CStringCtor)
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
+    EXPECT_THROW(Date{ nullptr }, Date::DateError);
     EXPECT_THROW(Date{ "0/12/2024" }, Date::DateError);
     EXPECT_THROW(Date{ "32/12/2024" }, Date::DateError);
     EXPECT_THROW(Date{ "12/0/2024" }, Date::DateError);

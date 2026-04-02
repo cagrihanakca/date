@@ -92,6 +92,7 @@ namespace cgr
         /**
          * @brief Constructs a date by parsing a C-string in dd/mm/yyyy format.
          * @param str The date C-string.
+         * @throws DateError If str is nullptr (Reason::ARGUMENT).
          * @throws DateError If str doesn't match the dd/mm/yyyy format (Reason::FORMAT).
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).

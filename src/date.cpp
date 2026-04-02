@@ -202,6 +202,10 @@ namespace cgr
 
     Date::Date(const char *str)
     {
+        if (!str) {
+            throw DateError{ DateError::Reason::ARGUMENT, "invalid C-string: str is nullptr" };
+        }
+
         if (!std::regex_match(str, datePattern)) {
             throw DateError{ DateError::Reason::FORMAT,
                 std::format("invalid date format: {} isn't compatible dd/mm/yyyy", str) };
