@@ -59,16 +59,14 @@ ctest --test-dir build
 
 int main()
 {
-    cgr::Date d1{ 11, 11, 2023 };
-    cgr::Date d2{ "12/12/2024" };
+    cgr::Date d{ "11/11/2023" };
+    std::cout << d.Day() << '/' << d.Month() << '/' << d.Year() << '\n'; // 11/11/2023
 
-    std::cout << d1.Day() << '/' << d1.Month() << '/' << d1.Year() << '\n'; // 11/11/2023
-    std::cout << d1 << '\n'; // 11 November 2023 Saturday
+    d.Day(12).Month(12).Year(2024);
+    std::cout << d << '\n'; // 12 December 2024 Thursday
 
-    d2.Day(12).Month(6).Year(1986);
-
-    std::cout << d1 + 30 << '\n';
-    std::cout << d1 - d2 << " days\n";
+    std::cout << d + 30 << '\n';
+    std::cout << d - 30 << '\n';
 
     std::cout << cgr::Date::Today() << '\n';
     std::cout << cgr::Date::RandomDate() << '\n';
