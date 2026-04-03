@@ -80,7 +80,7 @@ int main()
 }
 ```
 
-See `examples/main.cpp` for more.
+See `example/main.cpp` for more.
 
 ## Documentation
 
