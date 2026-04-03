@@ -22,7 +22,7 @@ A simple C++20 date library.
 - C++ standard: `C++20`
 - Compiler: `GCC` `Clang` `MSVC`
 - Build system: `CMake 3.14+`
-- Test dependency: `GoogleTest`
+- Test dependency: `GoogleTest` *(fetched automatically via CMake)*
 - Documentation: `Doxygen`
 
 ## Building
@@ -63,8 +63,8 @@ int main()
     cgr::Date d1{ 11, 11, 2023 };
     cgr::Date d2{ "12/12/2024" };
 
-    std::cout << d1 << '\n';
-    std::cout << d1.Day() << '/' << d1.Month() << '/' << d1.Year() << '\n';
+    std::cout << d1.Day() << '/' << d1.Month() << '/' << d1.Year() << '\n'; // 11/11/2023
+    std::cout << d1 << '\n'; // 11 November 2023 Saturday
 
     d2.Day(12).Month(6).Year(1986);
 
@@ -95,4 +95,4 @@ doxygen
 
 ## License
 
-This project is released under the [Unlicense](UNLICENSE)
+This project is released under the [Unlicense](UNLICENSE).
