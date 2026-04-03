@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(date src/date.cpp)
 target_include_directories(date PUBLIC include/)
 
-add_subdirectory(examples)
+add_subdirectory(example)
 
 enable_testing()
 add_subdirectory(test)
