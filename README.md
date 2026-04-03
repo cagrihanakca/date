@@ -23,7 +23,6 @@ A simple C++20 date library.
 - Compiler: `GCC` `Clang` `MSVC`
 - Build system: `CMake 3.14+`
 - Test dependency: `GoogleTest` *(fetched automatically via CMake)*
-- Documentation: `Doxygen`
 
 ## Building
 
@@ -87,11 +86,7 @@ See `examples/main.cpp` for more.
 
 ## Documentation
 
-Generate API documentation:
-
-```
-doxygen
-```
+[API Documentation](https://cagrihanakca.github.io/date) — generated with [Doxygen](https://www.doxygen.nl)
 
 ## License
 
