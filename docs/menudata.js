@@ -39,7 +39,16 @@ var menudata={children:[
 {text:"t",url:"functions.html#index_t"},
 {text:"w",url:"functions.html#index_w"},
 {text:"y",url:"functions.html#index_y"}]},
-{text:"Functions",url:"functions_func.html"},
+{text:"Functions",url:"functions_func.html",children:[
+{text:"d",url:"functions_func.html#index_d"},
+{text:"g",url:"functions_func.html#index_g"},
+{text:"i",url:"functions_func.html#index_i"},
+{text:"m",url:"functions_func.html#index_m"},
+{text:"o",url:"functions_func.html#index_o"},
+{text:"r",url:"functions_func.html#index_r"},
+{text:"t",url:"functions_func.html#index_t"},
+{text:"w",url:"functions_func.html#index_w"},
+{text:"y",url:"functions_func.html#index_y"}]},
 {text:"Variables",url:"functions_vars.html"},
 {text:"Enumerations",url:"functions_enum.html"}]}]},
 {text:"Files",url:"files.html",children:[

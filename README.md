@@ -7,7 +7,7 @@ A simple C++20 date library.
 
 ## Features
 
-- Date construction from day/month/year, strings, streams and epoch time
+- Date construction from day/month/year, string and epoch time
 - Getters (day, month, year, day of year, weekday, ISO week)
 - Setter chaining
 - Arithmetic operations (add, subtract, increment, decrement)

@@ -7,10 +7,12 @@
  */
 
 #include <compare>
+#include <cstddef>
 #include <ctime>
 #include <exception>
 #include <iosfwd>
 #include <string>
+#include <string_view>
 
 namespace cgr
 {
@@ -25,15 +27,15 @@ namespace cgr
         public:
             /// Indicates the reason for a DateError exception.
             enum class Reason {
-                DAY,      ///< Day is out of valid range.
-                MONTH,    ///< Month is out of valid range.
-                YEAR,     ///< Year is out of valid range.
-                RANGE,    ///< Resulting date is out of [MIN_YEAR, MAX_YEAR].
-                FORMAT,   ///< Invalid date string format.
-                EPOCH,    ///< Failed time_t conversion.
-                STREAM,   ///< Failed stream extraction.
-                ARGUMENT, ///< Invalid function argument.
-                SYSTEM    ///< Failed system operation.
+                INVALID_DAY,    ///< Day is out of valid range [1, 31].
+                INVALID_MONTH,  ///< Month is out of valid range [1, 12].
+                INVALID_YEAR,   ///< Year is out of valid range [MIN_YEAR, MAX_YEAR].
+                INVALID_DATE,   ///< Invalid day/month/year combination.
+                INVALID_FORMAT, ///< Invalid date string format.
+                OUT_OF_RANGE,   ///< Resulting date is out of [01/01/MIN_YEAR, 31/12/MAX_YEAR].
+                EPOCH_FAILURE,  ///< Failed time_t conversion.
+                LOGIC_ERROR,    ///< Logically invalid argument.
+                SYSTEM_FAILURE  ///< Failed system operation.
             };
 
             /**
@@ -62,7 +64,7 @@ namespace cgr
 
         /**
          * @brief Returns today's date.
-         * @throws DateError If today's date cannot be obtained (Reason::SYSTEM).
+         * @throws DateError If today's date cannot be obtained (Reason::SYSTEM_FAILURE).
          */
         [[nodiscard]] static Date Today();
 
@@ -70,8 +72,8 @@ namespace cgr
          * @brief Returns a random date within the given year range.
          * @param minYear The minimum year.
          * @param maxYear The maximum year.
-         * @throws DateError If minYear or maxYear is out of [MIN_YEAR, MAX_YEAR] (Reason::ARGUMENT).
-         * @throws DateError If minYear > maxYear (Reason::ARGUMENT).
+         * @throws DateError If minYear or maxYear is out of [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR).
+         * @throws DateError If minYear > maxYear (Reason::LOGIC_ERROR).
          */
         [[nodiscard]] static Date RandomDate(int minYear = MIN_YEAR, int maxYear = Today().Year());
 
@@ -83,51 +85,34 @@ namespace cgr
          * @param day The day.
          * @param month The month.
          * @param year The year.
-         * @throws DateError If day is out of valid range (Reason::DAY).
-         * @throws DateError If month is out of valid range (Reason::MONTH).
-         * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If day is out of valid range [1, 31] (Reason::INVALID_DAY).
+         * @throws DateError If month is out of valid range [1, 12] (Reason::INVALID_MONTH).
+         * @throws DateError If year is out of valid range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR).
+         * @throws DateError If day/month/year combination is invalid (Reason::INVALID_DATE).
          */
         Date(int day, int month, int year);
 
         /**
-         * @brief Constructs a date by parsing a C-string in dd/mm/yyyy format.
-         * @param str The date C-string.
-         * @throws DateError If str is nullptr (Reason::ARGUMENT).
-         * @throws DateError If str does not match the dd/mm/yyyy format (Reason::FORMAT).
-         * @throws DateError If day is out of valid range (Reason::DAY).
-         * @throws DateError If month is out of valid range (Reason::MONTH).
-         * @throws DateError If year is out of valid range (Reason::YEAR).
-         */
-        explicit Date(const char *str);
-
-        /**
          * @brief Constructs a date by parsing a string in dd/mm/yyyy format.
          * @param str The date string.
-         * @throws DateError If str does not match the dd/mm/yyyy format (Reason::FORMAT).
-         * @throws DateError If day is out of valid range (Reason::DAY).
-         * @throws DateError If month is out of valid range (Reason::MONTH).
-         * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If str does not match the dd/mm/yyyy format (Reason::INVALID_FORMAT).
+         * @throws DateError If day is out of valid range [1, 31] (Reason::INVALID_DAY).
+         * @throws DateError If month is out of valid range [1, 12] (Reason::INVALID_MONTH).
+         * @throws DateError If year is out of valid range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR).
+         * @throws DateError If day/month/year combination is invalid (Reason::INVALID_DATE).
          */
-        explicit Date(const std::string &str);
+        explicit Date(std::string_view str);
 
         /**
          * @brief Constructs a date from a time since epoch.
          * @param timer The time since epoch.
-         * @throws DateError If conversion from the time since epoch to a date fails (Reason::EPOCH).
-         * @throws DateError If the resulting date is out of [MIN_YEAR, MAX_YEAR] (Reason::RANGE).
+         * @throws DateError If conversion from the time since epoch to a date fails (Reason::EPOCH_FAILURE).
+         * @throws DateError If the resulting date is out of [01/01/MIN_YEAR, 31/12/MAX_YEAR] (Reason::OUT_OF_RANGE).
          */
         explicit Date(std::time_t timer);
 
-        /**
-         * @brief Constructs a date by extracting a string in dd/mm/yyyy format from an input stream.
-         * @param is The input stream.
-         * @throws DateError If the extracted string does not match the dd/mm/yyyy format (Reason::FORMAT).
-         * @throws DateError If the input stream is not in good state (Reason::STREAM).
-         * @throws DateError If day is out of valid range (Reason::DAY).
-         * @throws DateError If month is out of valid range (Reason::MONTH).
-         * @throws DateError If year is out of valid range (Reason::YEAR).
-         */
-        explicit Date(std::istream &is);
+        /// Prevents construction from nullptr.
+        Date(std::nullptr_t) = delete;
 
         /// Returns the day.
         [[nodiscard]] int Day() const noexcept;
@@ -150,7 +135,7 @@ namespace cgr
         /**
          * @brief Sets the day.
          * @param day The day.
-         * @throws DateError If day is out of valid range (Reason::DAY).
+         * @throws DateError If day is out of valid range [1, 31] (Reason::INVALID_DAY).
          * @note Strong exception guarantee.
          */
         Date &Day(int day) &;
@@ -158,7 +143,7 @@ namespace cgr
         /**
          * @brief Sets the month.
          * @param month The month.
-         * @throws DateError If month is out of valid range (Reason::MONTH).
+         * @throws DateError If month is out of valid range [1, 12] (Reason::INVALID_MONTH).
          * @note Strong exception guarantee.
          */
         Date &Month(int month) &;
@@ -166,7 +151,7 @@ namespace cgr
         /**
          * @brief Sets the year.
          * @param year The year.
-         * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If year is out of valid range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR).
          * @note Strong exception guarantee.
          */
         Date &Year(int year) &;
@@ -174,8 +159,8 @@ namespace cgr
         /**
          * @brief Moves the date forward by the given number of days.
          * @param days The number of days.
-         * @throws DateError If days is negative (Reason::ARGUMENT).
-         * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+         * @throws DateError If days is negative (Reason::LOGIC_ERROR).
+         * @throws DateError If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE).
          * @note Strong exception guarantee.
          */
         Date &operator+=(int days) &;
@@ -183,15 +168,15 @@ namespace cgr
         /**
          * @brief Moves the date back by the given number of days.
          * @param days The number of days.
-         * @throws DateError If days is negative (Reason::ARGUMENT).
-         * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+         * @throws DateError If days is negative (Reason::LOGIC_ERROR).
+         * @throws DateError If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE).
          * @note Strong exception guarantee.
          */
         Date &operator-=(int days) &;
 
         /**
          * @brief Increments the date by one day.
-         * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+         * @throws DateError If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE).
          * @note Strong exception guarantee.
          */
         Date &operator++() &;
@@ -199,14 +184,14 @@ namespace cgr
         /**
          * @brief Increments the date by one day.
          * @return The date before the increment.
-         * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+         * @throws DateError If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE).
          * @note Strong exception guarantee.
          */
         Date operator++(int) &;
 
         /**
          * @brief Decrements the date by one day.
-         * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+         * @throws DateError If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE).
          * @note Strong exception guarantee.
          */
         Date &operator--() &;
@@ -214,18 +199,21 @@ namespace cgr
         /**
          * @brief Decrements the date by one day.
          * @return The date before the decrement.
-         * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+         * @throws DateError If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE).
          * @note Strong exception guarantee.
          */
         Date operator--(int) &;
 
+        /// Compares two dates chronologically.
         [[nodiscard]] std::strong_ordering operator<=>(const Date &rhs) const noexcept;
+
+        /// Checks two dates for equality.
         [[nodiscard]] bool operator==(const Date &rhs) const noexcept = default;
 
         /**
          * @brief Queries whether a year is leap.
          * @param year The year.
-         * @throws DateError If the year is out of range [MIN_YEAR, MAX_YEAR] (Reason::ARGUMENT).
+         * @throws DateError If the year is out of range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR).
          */
         [[nodiscard]] static bool IsLeap(int year);
     private:
@@ -236,38 +224,50 @@ namespace cgr
 
     /**
      * @brief Returns the result of moving a date forward by the given number of days.
+     * @relates Date
      * @param d The date.
      * @param days The number of days.
-     * @throws DateError If days is negative (Reason::ARGUMENT).
-     * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+     * @throws DateError If days is negative (Reason::LOGIC_ERROR).
+     * @throws DateError If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE).
      */
     [[nodiscard]] Date operator+(const Date &d, int days);
 
     /**
      * @brief Returns the result of moving a date forward by the given number of days.
+     * @relates Date
      * @param days The number of days.
      * @param d The date.
-     * @throws DateError If days is negative (Reason::ARGUMENT).
-     * @throws DateError If the resulting date exceeds MAX_YEAR (Reason::RANGE).
+     * @throws DateError If days is negative (Reason::LOGIC_ERROR).
+     * @throws DateError If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE).
      */
     [[nodiscard]] Date operator+(int days, const Date &d);
 
     /**
      * @brief Returns the result of moving a date back by the given number of days.
+     * @relates Date
      * @param d The date.
      * @param days The number of days.
-     * @throws DateError If days is negative (Reason::ARGUMENT).
-     * @throws DateError If the resulting date falls below MIN_YEAR (Reason::RANGE).
+     * @throws DateError If days is negative (Reason::LOGIC_ERROR).
+     * @throws DateError If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE).
      */
     [[nodiscard]] Date operator-(const Date &d, int days);
 
-    /// Returns the number of days between two dates.
+    /**
+     * @brief Returns the number of days between two dates.
+     * @relates Date
+     */
     [[nodiscard]] int operator-(const Date &lhs, const Date &rhs) noexcept;
 
-    /// Extracts a date from an input stream.
+    /**
+     * @brief Extracts a date in dd/mm/yyyy format from an input stream.
+     * @relates Date
+     */
     std::istream &operator>>(std::istream &is, Date &d);
 
-    /// Inserts a date into an output stream.
+    /**
+     * @brief Inserts a date into an output stream (e.g. 12 December 2024 Thursday).
+     * @relates Date
+     */
     std::ostream &operator<<(std::ostream &os, const Date &d);
 }
 
