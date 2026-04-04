@@ -244,32 +244,6 @@ namespace cgr
         }
     }
 
-    Date::Date(std::istream &is)
-    {
-        if (std::string input; is >> input) {
-            if (std::regex_match(input, datePattern)) {
-                const auto newDay{ std::atoi(input.c_str()) };
-                const auto newMonth{ std::atoi(input.c_str() + 3) };
-                const auto newYear{ std::atoi(input.c_str() + 6) };
-                try {
-                    Validate(newDay, newMonth, newYear);
-                    m_day = newDay;
-                    m_month = newMonth;
-                    m_year = newYear;
-                } catch (const DateError &) {
-                    is.setstate(std::ios::failbit);
-                    throw;
-                }
-            } else {
-                is.setstate(std::ios::failbit);
-                throw Date::DateError{ Date::DateError::Reason::FORMAT,
-                    std::format("invalid date format: \"{}\" is not compatible dd/mm/yyyy", input) };
-            }
-        } else {
-            throw Date::DateError{ Date::DateError::Reason::STREAM, "input stream is not in good state" };
-        }
-    }
-
     int Date::Day() const noexcept
     {
         return m_day;

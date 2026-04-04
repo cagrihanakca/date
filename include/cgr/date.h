@@ -32,7 +32,6 @@ namespace cgr
                 RANGE,    ///< Resulting date is out of [MIN_YEAR, MAX_YEAR].
                 FORMAT,   ///< Invalid date string format.
                 EPOCH,    ///< Failed time_t conversion.
-                STREAM,   ///< Failed stream extraction.
                 ARGUMENT, ///< Invalid function argument.
                 SYSTEM    ///< Failed system operation.
             };
@@ -121,18 +120,6 @@ namespace cgr
          * @throws DateError If the resulting date is out of [MIN_YEAR, MAX_YEAR] (Reason::RANGE).
          */
         explicit Date(std::time_t timer);
-
-        /**
-         * @brief Constructs a date by extracting a string in dd/mm/yyyy format from an input stream.
-         * @param is The input stream.
-         * @throws DateError If the extracted string does not match the dd/mm/yyyy format (Reason::FORMAT).
-         * @throws DateError If the input stream is not in good state (Reason::STREAM).
-         * @throws DateError If day is out of valid range (Reason::DAY).
-         * @throws DateError If month is out of valid range (Reason::MONTH).
-         * @throws DateError If year is out of valid range (Reason::YEAR).
-         * @throws DateError If day/month/year combination is invalid (Reason::DATE).
-         */
-        explicit Date(std::istream &is);
 
         /// Returns the day.
         [[nodiscard]] int Day() const noexcept;

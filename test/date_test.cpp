@@ -157,32 +157,6 @@ TEST(CtorTest, CalendarTimeCtor)
     EXPECT_EQ(d.Year(), timePtr->tm_year + 1900);
 }
 
-TEST(CtorTest, IStreamCtor)
-{
-    std::istringstream iss{ "12/12/2024" };
-    ASSERT_NO_THROW(Date{ iss });
-    iss.clear();
-
-    iss.str("12/12/2024");
-    Date d{ iss };
-    EXPECT_EQ(d.Day(), 12);
-    EXPECT_EQ(d.Month(), 12);
-    EXPECT_EQ(d.Year(), 2024);
-
-    iss.clear();
-    EXPECT_THROW(Date{ iss }, Date::DateError);
-
-    const std::vector<std::string> invalidFormats{
-        "0/12/2024", "32/12/2024", "12/0/2024", "12/12/1899", "12/12/10000", "31/4/2024", "30/2/2024", "29/2/2023",
-        "2/12/2024", "12/2/2024", "12/12/20242", "12 12 2024", "12.12.2024", "aaaa12/12/2024", "12/bbbb12/2024",
-        "12/12/ccccc2024"
-    };
-    for (const auto &invalidFormat : invalidFormats) {
-        std::istringstream iss{ invalidFormat };
-        EXPECT_THROW(Date{ iss }, Date::DateError);
-    }
-}
-
 TEST(GetterTest, Day)
 {
     EXPECT_EQ(Date{ "01/12/2024" }.Day(), 1);
