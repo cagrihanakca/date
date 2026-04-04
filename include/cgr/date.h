@@ -204,7 +204,10 @@ namespace cgr
          */
         Date operator--(int) &;
 
+        /// Compares two dates chronologically.
         [[nodiscard]] std::strong_ordering operator<=>(const Date &rhs) const noexcept;
+
+        /// Checks two dates for equality.
         [[nodiscard]] bool operator==(const Date &rhs) const noexcept = default;
 
         /**

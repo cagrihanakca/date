@@ -21,5 +21,7 @@ var classcgr_1_1_date =
     [ "operator++", "classcgr_1_1_date.html#a503dd851ee22fc6d481a9f11614b2d6d", null ],
     [ "operator++", "classcgr_1_1_date.html#a59b3e2a67e918cda11aa66b8e9be5ea1", null ],
     [ "operator--", "classcgr_1_1_date.html#a908d52e3f1f7c57177f70ea042fb93f6", null ],
-    [ "operator--", "classcgr_1_1_date.html#a170b1c381aeb34f7159e93cead243735", null ]
+    [ "operator--", "classcgr_1_1_date.html#a170b1c381aeb34f7159e93cead243735", null ],
+    [ "operator<=>", "classcgr_1_1_date.html#a46aa18af170e98ee2c048580ecd84612", null ],
+    [ "operator==", "classcgr_1_1_date.html#aebfc4b94969f82877db992a459bd3d54", null ]
 ];

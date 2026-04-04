@@ -147,10 +147,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a908d52e3f1f7c57177f70ea042fb93f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements the date by one day.  <br /></td></tr>
 <tr class="memitem:a170b1c381aeb34f7159e93cead243735" id="r_a170b1c381aeb34f7159e93cead243735"><td class="memItemLeft"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a>&#160;</td><td class="memItemRight"><a class="el" href="#a170b1c381aeb34f7159e93cead243735">operator--</a> (int) &amp;</td></tr>
 <tr class="memdesc:a170b1c381aeb34f7159e93cead243735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrements the date by one day.  <br /></td></tr>
-<tr class="memitem:a46aa18af170e98ee2c048580ecd84612" id="r_a46aa18af170e98ee2c048580ecd84612"><td class="memItemLeft"><a id="a46aa18af170e98ee2c048580ecd84612" name="a46aa18af170e98ee2c048580ecd84612"></a>
-std::strong_ordering&#160;</td><td class="memItemRight"><b>operator&lt;=&gt;</b> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;rhs) const noexcept</td></tr>
-<tr class="memitem:aebfc4b94969f82877db992a459bd3d54" id="r_aebfc4b94969f82877db992a459bd3d54"><td class="memItemLeft"><a id="aebfc4b94969f82877db992a459bd3d54" name="aebfc4b94969f82877db992a459bd3d54"></a>
-bool&#160;</td><td class="memItemRight"><b>operator==</b> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;rhs) const noexcept=default</td></tr>
+<tr class="memitem:a46aa18af170e98ee2c048580ecd84612" id="r_a46aa18af170e98ee2c048580ecd84612"><td class="memItemLeft">std::strong_ordering&#160;</td><td class="memItemRight"><a class="el" href="#a46aa18af170e98ee2c048580ecd84612">operator&lt;=&gt;</a> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;rhs) const noexcept</td></tr>
+<tr class="memdesc:a46aa18af170e98ee2c048580ecd84612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares two dates chronologically.  <br /></td></tr>
+<tr class="memitem:aebfc4b94969f82877db992a459bd3d54" id="r_aebfc4b94969f82877db992a459bd3d54"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aebfc4b94969f82877db992a459bd3d54">operator==</a> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;rhs) const noexcept=default</td></tr>
+<tr class="memdesc:aebfc4b94969f82877db992a459bd3d54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks two dates for equality.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -859,6 +859,60 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Strong exception guarantee. </dd></dl>
+
+</div>
+</div>
+<a id="a46aa18af170e98ee2c048580ecd84612" name="a46aa18af170e98ee2c048580ecd84612"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46aa18af170e98ee2c048580ecd84612">&#9670;&#160;</a></span>operator&lt;=&gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::strong_ordering cgr::Date::operator&lt;=&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compares two dates chronologically. </p>
+
+</div>
+</div>
+<a id="aebfc4b94969f82877db992a459bd3d54" name="aebfc4b94969f82877db992a459bd3d54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebfc4b94969f82877db992a459bd3d54">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool cgr::Date::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel default">default</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks two dates for equality. </p>
 
 </div>
 </div>

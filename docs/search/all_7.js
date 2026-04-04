@@ -7,5 +7,7 @@ var searchData=
   ['operator_2d_2d_4',['operator--',['../classcgr_1_1_date.html#a908d52e3f1f7c57177f70ea042fb93f6',1,'cgr::Date::operator--() &amp;'],['../classcgr_1_1_date.html#a170b1c381aeb34f7159e93cead243735',1,'cgr::Date::operator--(int) &amp;']]],
   ['operator_2d_3d_5',['operator-=',['../classcgr_1_1_date.html#add8d0c87d4638fc1b77a6d3de1c36c90',1,'cgr::Date']]],
   ['operator_3c_3c_6',['operator&lt;&lt;',['../date_8h.html#acb3a18df0e0a2ce3f31173983ea3ff03',1,'cgr']]],
-  ['operator_3e_3e_7',['operator&gt;&gt;',['../date_8h.html#a9b0e7e4b3b0f5cbaeead407ff6d055d6',1,'cgr']]]
+  ['operator_3c_3d_3e_7',['operator&lt;=&gt;',['../classcgr_1_1_date.html#a46aa18af170e98ee2c048580ecd84612',1,'cgr::Date']]],
+  ['operator_3d_3d_8',['operator==',['../classcgr_1_1_date.html#aebfc4b94969f82877db992a459bd3d54',1,'cgr::Date']]],
+  ['operator_3e_3e_9',['operator&gt;&gt;',['../date_8h.html#a9b0e7e4b3b0f5cbaeead407ff6d055d6',1,'cgr']]]
 ];
