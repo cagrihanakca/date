@@ -167,6 +167,23 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:aef234d465a11673107c5325d2b8787d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum supported year.  <br /></td></tr>
 <tr class="memitem:a72e6320e7478bf557638e820ea76f3bc" id="r_a72e6320e7478bf557638e820ea76f3bc"><td class="memItemLeft">static constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#a72e6320e7478bf557638e820ea76f3bc">MAX_YEAR</a> { 9999 }</td></tr>
 <tr class="memdesc:a72e6320e7478bf557638e820ea76f3bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum supported year.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-related" class="groupheader"><a id="related" name="related"></a>
+Related Symbols</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member symbols.) </p>
+</td></tr>
+<tr class="memitem:a8e148dce315438d02f0ea92a687fa5d0" id="r_a8e148dce315438d02f0ea92a687fa5d0"><td class="memItemLeft"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a>&#160;</td><td class="memItemRight"><a class="el" href="#a8e148dce315438d02f0ea92a687fa5d0">operator+</a> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;d, int days)</td></tr>
+<tr class="memdesc:a8e148dce315438d02f0ea92a687fa5d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the result of moving a date forward by the given number of days.  <br /></td></tr>
+<tr class="memitem:ad1343dcc23b28a066ac88f18e3df636e" id="r_ad1343dcc23b28a066ac88f18e3df636e"><td class="memItemLeft"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad1343dcc23b28a066ac88f18e3df636e">operator+</a> (int days, const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;d)</td></tr>
+<tr class="memdesc:ad1343dcc23b28a066ac88f18e3df636e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the result of moving a date forward by the given number of days.  <br /></td></tr>
+<tr class="memitem:aa40039cf781397a87b91ef77870334db" id="r_aa40039cf781397a87b91ef77870334db"><td class="memItemLeft"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa40039cf781397a87b91ef77870334db">operator-</a> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;d, int days)</td></tr>
+<tr class="memdesc:aa40039cf781397a87b91ef77870334db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the result of moving a date back by the given number of days.  <br /></td></tr>
+<tr class="memitem:a3214ceadcdc737d1584f4aef4d80b63d" id="r_a3214ceadcdc737d1584f4aef4d80b63d"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a3214ceadcdc737d1584f4aef4d80b63d">operator-</a> (const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;lhs, const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a3214ceadcdc737d1584f4aef4d80b63d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of days between two dates.  <br /></td></tr>
+<tr class="memitem:abf20d922f989d05f4a4dda4b4b8238e9" id="r_abf20d922f989d05f4a4dda4b4b8238e9"><td class="memItemLeft">std::istream &amp;&#160;</td><td class="memItemRight"><a class="el" href="#abf20d922f989d05f4a4dda4b4b8238e9">operator&gt;&gt;</a> (std::istream &amp;is, <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;d)</td></tr>
+<tr class="memdesc:abf20d922f989d05f4a4dda4b4b8238e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts a date in dd/mm/yyyy format from an input stream.  <br /></td></tr>
+<tr class="memitem:af7ada80c7c34b250f290a8008f0fc047" id="r_af7ada80c7c34b250f290a8008f0fc047"><td class="memItemLeft">std::ostream &amp;&#160;</td><td class="memItemRight"><a class="el" href="#af7ada80c7c34b250f290a8008f0fc047">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;d)</td></tr>
+<tr class="memdesc:af7ada80c7c34b250f290a8008f0fc047"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a date into an output stream (e.g. 12 December 2024 Thursday).  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a calendar date. </p>
@@ -952,6 +969,235 @@ Static Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a name="doc-related-members" id="doc-related-members"></a><h2 id="header-doc-related-members" class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a8e148dce315438d02f0ea92a687fa5d0" name="a8e148dce315438d02f0ea92a687fa5d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e148dce315438d02f0ea92a687fa5d0">&#9670;&#160;</a></span>operator+() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>days</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel related">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the result of moving a date forward by the given number of days. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>The date. </td></tr>
+    <tr><td class="paramname">days</td><td>The number of days. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad1343dcc23b28a066ac88f18e3df636e" name="ad1343dcc23b28a066ac88f18e3df636e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1343dcc23b28a066ac88f18e3df636e">&#9670;&#160;</a></span>operator+() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>days</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel related">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the result of moving a date forward by the given number of days. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">days</td><td>The number of days. </td></tr>
+    <tr><td class="paramname">d</td><td>The date. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa40039cf781397a87b91ef77870334db" name="aa40039cf781397a87b91ef77870334db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa40039cf781397a87b91ef77870334db">&#9670;&#160;</a></span>operator-() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> operator- </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>days</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel related">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the result of moving a date back by the given number of days. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>The date. </td></tr>
+    <tr><td class="paramname">days</td><td>The number of days. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3214ceadcdc737d1584f4aef4d80b63d" name="a3214ceadcdc737d1584f4aef4d80b63d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3214ceadcdc737d1584f4aef4d80b63d">&#9670;&#160;</a></span>operator-() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator- </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>lhs</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel related">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of days between two dates. </p>
+
+</div>
+</div>
+<a id="abf20d922f989d05f4a4dda4b4b8238e9" name="abf20d922f989d05f4a4dda4b4b8238e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf20d922f989d05f4a4dda4b4b8238e9">&#9670;&#160;</a></span>operator&gt;&gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream &amp; operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;</td>          <td class="paramname"><span class="paramname"><em>is</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel related">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extracts a date in dd/mm/yyyy format from an input stream. </p>
+
+</div>
+</div>
+<a id="af7ada80c7c34b250f290a8008f0fc047" name="af7ada80c7c34b250f290a8008f0fc047"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7ada80c7c34b250f290a8008f0fc047">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>os</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="#a8e579ad479bd2ca74e5d07584c36de6d">Date</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel related">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inserts a date into an output stream (e.g. 12 December 2024 Thursday). </p>
 
 </div>
 </div>

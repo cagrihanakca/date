@@ -23,5 +23,11 @@ var classcgr_1_1_date =
     [ "operator--", "classcgr_1_1_date.html#a908d52e3f1f7c57177f70ea042fb93f6", null ],
     [ "operator--", "classcgr_1_1_date.html#a170b1c381aeb34f7159e93cead243735", null ],
     [ "operator<=>", "classcgr_1_1_date.html#a46aa18af170e98ee2c048580ecd84612", null ],
-    [ "operator==", "classcgr_1_1_date.html#aebfc4b94969f82877db992a459bd3d54", null ]
+    [ "operator==", "classcgr_1_1_date.html#aebfc4b94969f82877db992a459bd3d54", null ],
+    [ "operator+", "classcgr_1_1_date.html#a8e148dce315438d02f0ea92a687fa5d0", null ],
+    [ "operator+", "classcgr_1_1_date.html#ad1343dcc23b28a066ac88f18e3df636e", null ],
+    [ "operator-", "classcgr_1_1_date.html#aa40039cf781397a87b91ef77870334db", null ],
+    [ "operator-", "classcgr_1_1_date.html#a3214ceadcdc737d1584f4aef4d80b63d", null ],
+    [ "operator>>", "classcgr_1_1_date.html#abf20d922f989d05f4a4dda4b4b8238e9", null ],
+    [ "operator<<", "classcgr_1_1_date.html#af7ada80c7c34b250f290a8008f0fc047", null ]
 ];

@@ -224,6 +224,7 @@ namespace cgr
 
     /**
      * @brief Returns the result of moving a date forward by the given number of days.
+     * @relates Date
      * @param d The date.
      * @param days The number of days.
      * @throws DateError If days is negative (Reason::LOGIC_ERROR).
@@ -233,6 +234,7 @@ namespace cgr
 
     /**
      * @brief Returns the result of moving a date forward by the given number of days.
+     * @relates Date
      * @param days The number of days.
      * @param d The date.
      * @throws DateError If days is negative (Reason::LOGIC_ERROR).
@@ -242,6 +244,7 @@ namespace cgr
 
     /**
      * @brief Returns the result of moving a date back by the given number of days.
+     * @relates Date
      * @param d The date.
      * @param days The number of days.
      * @throws DateError If days is negative (Reason::LOGIC_ERROR).
@@ -249,13 +252,22 @@ namespace cgr
      */
     [[nodiscard]] Date operator-(const Date &d, int days);
 
-    /// Returns the number of days between two dates.
+    /**
+     * @brief Returns the number of days between two dates.
+     * @relates Date
+     */
     [[nodiscard]] int operator-(const Date &lhs, const Date &rhs) noexcept;
 
-    /// Extracts a date from an input stream.
+    /**
+     * @brief Extracts a date in dd/mm/yyyy format from an input stream.
+     * @relates Date
+     */
     std::istream &operator>>(std::istream &is, Date &d);
 
-    /// Inserts a date into an output stream.
+    /**
+     * @brief Inserts a date into an output stream (e.g. 12 December 2024 Thursday).
+     * @relates Date
+     */
     std::ostream &operator<<(std::ostream &os, const Date &d);
 }
 
