@@ -7,10 +7,12 @@
  */
 
 #include <compare>
+#include <cstddef>
 #include <ctime>
 #include <exception>
 #include <iosfwd>
 #include <string>
+#include <string_view>
 
 namespace cgr
 {
@@ -91,18 +93,6 @@ namespace cgr
         Date(int day, int month, int year);
 
         /**
-         * @brief Constructs a date by parsing a C-string in dd/mm/yyyy format.
-         * @param str The date C-string.
-         * @throws DateError If str is nullptr (Reason::ARGUMENT).
-         * @throws DateError If str does not match the dd/mm/yyyy format (Reason::FORMAT).
-         * @throws DateError If day is out of valid range (Reason::DAY).
-         * @throws DateError If month is out of valid range (Reason::MONTH).
-         * @throws DateError If year is out of valid range (Reason::YEAR).
-         * @throws DateError If day/month/year combination is invalid (Reason::DATE).
-         */
-        explicit Date(const char *str);
-
-        /**
          * @brief Constructs a date by parsing a string in dd/mm/yyyy format.
          * @param str The date string.
          * @throws DateError If str does not match the dd/mm/yyyy format (Reason::FORMAT).
@@ -111,7 +101,7 @@ namespace cgr
          * @throws DateError If year is out of valid range (Reason::YEAR).
          * @throws DateError If day/month/year combination is invalid (Reason::DATE).
          */
-        explicit Date(const std::string &str);
+        explicit Date(std::string_view str);
 
         /**
          * @brief Constructs a date from a time since epoch.
@@ -120,6 +110,9 @@ namespace cgr
          * @throws DateError If the resulting date is out of [MIN_YEAR, MAX_YEAR] (Reason::RANGE).
          */
         explicit Date(std::time_t timer);
+
+        /// Prevents construction from nullptr.
+        Date(std::nullptr_t) = delete;
 
         /// Returns the day.
         [[nodiscard]] int Day() const noexcept;

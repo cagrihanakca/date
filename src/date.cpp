@@ -1,6 +1,7 @@
 #include "cgr/date.h"
 
 #include <array>
+#include <charconv>
 #include <compare>
 #include <cstdlib>
 #include <ctime>
@@ -11,6 +12,7 @@
 #include <random>
 #include <regex>
 #include <string>
+#include <string_view>
 #include <utility>
 
 namespace
@@ -200,24 +202,18 @@ namespace cgr
         Validate(m_day, m_month, m_year);
     }
 
-    Date::Date(const char *str)
+    Date::Date(std::string_view str)
     {
-        if (!str) {
-            throw DateError{ DateError::Reason::ARGUMENT, "invalid C-string: str is nullptr" };
-        }
-
-        if (!std::regex_match(str, datePattern)) {
+        if (!std::regex_match(str.begin(), str.end(), datePattern)) {
             throw DateError{ DateError::Reason::FORMAT,
                 std::format("invalid date format: \"{}\" is not compatible dd/mm/yyyy", str) };
         }
 
-        m_day = std::atoi(str);
-        m_month = std::atoi(str + 3);
-        m_year = std::atoi(str + 6);
+        std::from_chars(str.data(), str.data() + 2, m_day);
+        std::from_chars(str.data() + 3, str.data() + 5, m_month);
+        std::from_chars(str.data() + 6, str.data() + 10, m_year);
         Validate(m_day, m_month, m_year);
     }
-
-    Date::Date(const std::string &str) : Date{ str.c_str() } {}
 
     Date::Date(std::time_t timer)
     {

@@ -2,6 +2,7 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <cgr/date.h>
@@ -92,58 +93,33 @@ TEST(CtorTest, DayMonYearCtor)
     EXPECT_THROW(Date(29, 2, 2023), Date::DateError);
 }
 
-TEST(CtorTest, CStringCtor)
+TEST(CtorTest, StringViewCtor)
 {
-    ASSERT_NO_THROW(Date{ "12/12/2024" });
-    Date d{ "12/12/2024" };
+    using namespace std::literals::string_literals;
+    using namespace std::literals::string_view_literals;
+
+    ASSERT_NO_THROW(Date{ "12/12/2024"sv });
+    Date d{ "12/12/2024"sv };
     EXPECT_EQ(d.Day(), 12);
     EXPECT_EQ(d.Month(), 12);
     EXPECT_EQ(d.Year(), 2024);
 
-    EXPECT_THROW(Date{ nullptr }, Date::DateError);
     EXPECT_THROW(Date{ "0/12/2024" }, Date::DateError);
     EXPECT_THROW(Date{ "32/12/2024" }, Date::DateError);
     EXPECT_THROW(Date{ "12/0/2024" }, Date::DateError);
     EXPECT_THROW(Date{ "12/12/1899" }, Date::DateError);
     EXPECT_THROW(Date{ "12/12/10000" }, Date::DateError);
-    EXPECT_THROW(Date{ "31/4/2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "30/2/2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "29/2/2023" }, Date::DateError);
-    EXPECT_THROW(Date{ "2/12/2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "12/2/2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "12 12 2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "12.12.2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "aaaa12/12/2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "12/bbbb12/2024" }, Date::DateError);
-    EXPECT_THROW(Date{ "12/12/ccccc2024" }, Date::DateError);
-}
-
-TEST(CtorTest, StringCtor)
-{
-    using namespace std::literals::string_literals;
-
-    ASSERT_NO_THROW(Date{ "12/12/2024"s });
-    Date d{ "12/12/2024"s };
-    EXPECT_EQ(d.Day(), 12);
-    EXPECT_EQ(d.Month(), 12);
-    EXPECT_EQ(d.Year(), 2024);
-
-    EXPECT_THROW(Date{ "0/12/2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "32/12/2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12/0/2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12/12/1899"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12/12/10000"s }, Date::DateError);
     EXPECT_THROW(Date{ "31/4/2024"s }, Date::DateError);
     EXPECT_THROW(Date{ "30/2/2024"s }, Date::DateError);
     EXPECT_THROW(Date{ "29/2/2023"s }, Date::DateError);
     EXPECT_THROW(Date{ "2/12/2024"s }, Date::DateError);
     EXPECT_THROW(Date{ "12/2/2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12/12/20242"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12 12 2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12.12.2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "aaaa12/12/2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12/bbbb12/2024"s }, Date::DateError);
-    EXPECT_THROW(Date{ "12/12/ccccc2024"s }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/20242"sv}, Date::DateError);
+    EXPECT_THROW(Date{ "12 12 2024"sv }, Date::DateError);
+    EXPECT_THROW(Date{ "12.12.2024"sv }, Date::DateError);
+    EXPECT_THROW(Date{ "aaaa12/12/2024"sv }, Date::DateError);
+    EXPECT_THROW(Date{ "12/bbbb12/2024"sv }, Date::DateError);
+    EXPECT_THROW(Date{ "12/12/ccccc2024"sv }, Date::DateError);
 }
 
 TEST(CtorTest, CalendarTimeCtor)
