@@ -505,9 +505,10 @@ namespace cgr
     {
         if (std::string input; is >> input) {
             if (std::regex_match(input, datePattern)) {
-                const auto newDay{ std::atoi(input.c_str()) };
-                const auto newMonth{ std::atoi(input.c_str() + 3) };
-                const auto newYear{ std::atoi(input.c_str() + 6) };
+                int newDay{}, newMonth{}, newYear{};
+                std::from_chars(input.c_str(), input.c_str() + 2, newDay);
+                std::from_chars(input.c_str() + 3, input.c_str() + 5, newMonth);
+                std::from_chars(input.c_str() + 6, input.c_str() + 10, newYear);
                 try {
                     d = Date{ newDay, newMonth, newYear };
                 } catch (const Date::DateError &) {
