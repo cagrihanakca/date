@@ -28,6 +28,7 @@ namespace cgr
                 DAY,      ///< Day is out of valid range.
                 MONTH,    ///< Month is out of valid range.
                 YEAR,     ///< Year is out of valid range.
+                DATE,     ///< Invalid day/month/year combination.
                 RANGE,    ///< Resulting date is out of [MIN_YEAR, MAX_YEAR].
                 FORMAT,   ///< Invalid date string format.
                 EPOCH,    ///< Failed time_t conversion.
@@ -86,6 +87,7 @@ namespace cgr
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If day/month/year combination is invalid (Reason::DATE).
          */
         Date(int day, int month, int year);
 
@@ -97,6 +99,7 @@ namespace cgr
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If day/month/year combination is invalid (Reason::DATE).
          */
         explicit Date(const char *str);
 
@@ -107,6 +110,7 @@ namespace cgr
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If day/month/year combination is invalid (Reason::DATE).
          */
         explicit Date(const std::string &str);
 
@@ -126,6 +130,7 @@ namespace cgr
          * @throws DateError If day is out of valid range (Reason::DAY).
          * @throws DateError If month is out of valid range (Reason::MONTH).
          * @throws DateError If year is out of valid range (Reason::YEAR).
+         * @throws DateError If day/month/year combination is invalid (Reason::DATE).
          */
         explicit Date(std::istream &is);
 

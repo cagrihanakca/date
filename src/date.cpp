@@ -64,16 +64,16 @@ namespace
 
         if ((day == 31) &&
             (month == FEBRUARY || month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER)) {
-            throw Date::DateError{ MONTH, std::format("invalid month: {} cannot have 31 days", monthNames[month]) };
+            throw Date::DateError{ DATE, std::format("invalid date: {} cannot have 31 days", monthNames[month]) };
         }
 
         if ((day == 30) && (month == FEBRUARY)) {
-            throw Date::DateError{ DAY, "invalid day: February cannot have 30 days" };
+            throw Date::DateError{ DATE, "invalid date: February cannot have 30 days" };
         }
 
         if ((day == 29) && (month == FEBRUARY) && !Date::IsLeap(year)) {
-            throw Date::DateError{ YEAR,
-                std::format("invalid year: {} is not leap. February cannot have 29 days if a year is not leap", year) };
+            throw Date::DateError{ DATE,
+                std::format("invalid date: {} is not leap. February cannot have 29 days if a year is not leap", year) };
         }
     }
 
