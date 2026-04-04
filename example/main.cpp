@@ -46,7 +46,7 @@ int main()
         d1 = cgr::Date{ "aaa12/04/2024" };
     } catch (const cgr::Date::DateError &ex) {
         std::cerr << ex.what() << "\n\n";
-        if (ex.GetReason() == cgr::Date::DateError::Reason::FORMAT) {
+        if (ex.GetReason() == cgr::Date::DateError::Reason::INVALID_FORMAT) {
             d1 = cgr::Date{ 1, 1, cgr::Date::MIN_YEAR };
         }
     }

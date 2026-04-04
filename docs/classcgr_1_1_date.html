@@ -233,10 +233,10 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day is out of valid range (Reason::DAY). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If month is out of valid range (Reason::MONTH). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If year is out of valid range (Reason::YEAR). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day/month/year combination is invalid (Reason::DATE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day is out of valid range [1, 31] (Reason::INVALID_DAY). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If month is out of valid range [1, 12] (Reason::INVALID_MONTH). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If year is out of valid range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day/month/year combination is invalid (Reason::INVALID_DATE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -275,11 +275,11 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If str does not match the dd/mm/yyyy format (Reason::FORMAT). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day is out of valid range (Reason::DAY). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If month is out of valid range (Reason::MONTH). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If year is out of valid range (Reason::YEAR). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day/month/year combination is invalid (Reason::DATE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If str does not match the dd/mm/yyyy format (Reason::INVALID_FORMAT). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day is out of valid range [1, 31] (Reason::INVALID_DAY). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If month is out of valid range [1, 12] (Reason::INVALID_MONTH). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If year is out of valid range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day/month/year combination is invalid (Reason::INVALID_DATE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -318,8 +318,8 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If conversion from the time since epoch to a date fails (Reason::EPOCH). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date is out of [MIN_YEAR, MAX_YEAR] (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If conversion from the time since epoch to a date fails (Reason::EPOCH_FAILURE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date is out of [01/01/MIN_YEAR, 31/12/MAX_YEAR] (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -380,7 +380,7 @@ Static Public Attributes</h2></td></tr>
 <p>Returns today's date. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If today's date cannot be obtained (Reason::SYSTEM). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If today's date cannot be obtained (Reason::SYSTEM_FAILURE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -424,8 +424,8 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If minYear or maxYear is out of [MIN_YEAR, MAX_YEAR] (Reason::ARGUMENT). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If minYear &gt; maxYear (Reason::ARGUMENT). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If minYear or maxYear is out of [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If minYear &gt; maxYear (Reason::LOGIC_ERROR). </td></tr>
   </table>
   </dd>
 </dl>
@@ -618,7 +618,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day is out of valid range (Reason::DAY). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If day is out of valid range [1, 31] (Reason::INVALID_DAY). </td></tr>
   </table>
   </dd>
 </dl>
@@ -650,7 +650,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If month is out of valid range (Reason::MONTH). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If month is out of valid range [1, 12] (Reason::INVALID_MONTH). </td></tr>
   </table>
   </dd>
 </dl>
@@ -682,7 +682,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If year is out of valid range (Reason::YEAR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If year is out of valid range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR). </td></tr>
   </table>
   </dd>
 </dl>
@@ -714,8 +714,8 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::ARGUMENT). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds MAX_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -747,8 +747,8 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::ARGUMENT). </td></tr>
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below MIN_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -774,7 +774,7 @@ Static Public Attributes</h2></td></tr>
 <p>Increments the date by one day. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds MAX_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -801,7 +801,7 @@ Static Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The date before the increment. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds MAX_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -827,7 +827,7 @@ Static Public Attributes</h2></td></tr>
 <p>Decrements the date by one day. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below MIN_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -854,7 +854,7 @@ Static Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The date before the decrement. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below MIN_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -948,7 +948,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the year is out of range [MIN_YEAR, MAX_YEAR] (Reason::ARGUMENT). </td></tr>
+    <tr><td class="paramname"><a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a></td><td>If the year is out of range [MIN_YEAR, MAX_YEAR] (Reason::INVALID_YEAR). </td></tr>
   </table>
   </dd>
 </dl>

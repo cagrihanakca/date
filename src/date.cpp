@@ -48,34 +48,43 @@ namespace
         using enum Date::DateError::Reason;
 
         if ((day < 1) || (day > 31)) {
-            throw Date::DateError{ DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
+            throw Date::DateError{ INVALID_DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
         }
 
         if ((month < JANUARY) || (month > DECEMBER)) {
-            throw Date::DateError{ MONTH,
-                std::format("invalid month: {} (the month must be between [1, 12])", month) };
+            throw Date::DateError{
+                INVALID_MONTH, std::format("invalid month: {} (the month must be between [1, 12])", month)
+            };
         }
 
         if (year < Date::MIN_YEAR) {
-            throw Date::DateError{ YEAR, std::format("invalid year: {} is less than the min year (1900)", year) };
+            throw Date::DateError{
+                INVALID_YEAR, std::format("invalid year: {} is less than the min year (1900)", year)
+            };
         }
 
         if (year > Date::MAX_YEAR) {
-            throw Date::DateError{ YEAR, std::format("invalid year: {} is greater than the max year (9999)", year) };
+            throw Date::DateError{
+                INVALID_YEAR, std::format("invalid year: {} is greater than the max year (9999)", year)
+            };
         }
 
         if ((day == 31) &&
             (month == FEBRUARY || month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER)) {
-            throw Date::DateError{ DATE, std::format("invalid date: {} cannot have 31 days", monthNames[month]) };
+            throw Date::DateError{
+                INVALID_DATE, std::format("invalid date: {} cannot have 31 days", monthNames[month])
+            };
         }
 
         if ((day == 30) && (month == FEBRUARY)) {
-            throw Date::DateError{ DATE, "invalid date: February cannot have 30 days" };
+            throw Date::DateError{ INVALID_DATE, "invalid date: February cannot have 30 days" };
         }
 
         if ((day == 29) && (month == FEBRUARY) && !Date::IsLeap(year)) {
-            throw Date::DateError{ DATE,
-                std::format("invalid date: {} is not leap. February cannot have 29 days if a year is not leap", year) };
+            throw Date::DateError{
+                INVALID_DATE,
+                std::format("invalid date: {} is not leap. February cannot have 29 days if a year is not leap", year)
+            };
         }
     }
 
@@ -159,24 +168,24 @@ namespace cgr
         try {
             return Date{ std::time(nullptr) };
         } catch (const DateError &) {
-            throw DateError{ DateError::Reason::SYSTEM, "failed to obtain today's date" };
+            throw DateError{ DateError::Reason::SYSTEM_FAILURE, "failed to obtain today's date" };
         }
     }
 
     Date Date::RandomDate(int minYear, int maxYear)
     {
-        using DateError::Reason::ARGUMENT;
+        using enum DateError::Reason;
 
         if ((minYear < MIN_YEAR) || (maxYear < MIN_YEAR)) {
-            throw DateError{ ARGUMENT, "a year less than min year (1900) is not allowed" };
+            throw DateError{ INVALID_YEAR, "a year less than min year (1900) is not allowed" };
         }
 
         if ((minYear > MAX_YEAR) || (maxYear > MAX_YEAR)) {
-            throw DateError{ ARGUMENT, "a year greater than max year (9999) is not allowed" };
+            throw DateError{ INVALID_YEAR, "a year greater than max year (9999) is not allowed" };
         }
 
         if (minYear > maxYear) {
-            throw DateError{ ARGUMENT, "min year cannot be greater than max year" };
+            throw DateError{ LOGIC_ERROR, "min year cannot be greater than max year" };
         }
 
         thread_local std::mt19937 rng{ std::random_device{}() };
@@ -205,8 +214,10 @@ namespace cgr
     Date::Date(std::string_view str)
     {
         if (!std::regex_match(str.begin(), str.end(), datePattern)) {
-            throw DateError{ DateError::Reason::FORMAT,
-                std::format("invalid date format: \"{}\" is not compatible dd/mm/yyyy", str) };
+            throw DateError{
+                DateError::Reason::INVALID_FORMAT,
+                std::format("invalid date format: \"{}\" is not compatible dd/mm/yyyy", str)
+            };
         }
 
         std::from_chars(str.data(), str.data() + 2, m_day);
@@ -223,11 +234,11 @@ namespace cgr
 
 #ifdef _WIN32
         if (localtime_s(&time, &timer)) {
-            throw DateError{ EPOCH, "conversion from the time since epoch to the date failed" };
+            throw DateError{ EPOCH_FAILURE, "conversion from the time since epoch to the date failed" };
         }
 #else
         if (!localtime_r(&timer, &time)) {
-            throw DateError{ EPOCH, "conversion from the time since epoch to the date failed" };
+            throw DateError{ EPOCH_FAILURE, "conversion from the time since epoch to the date failed" };
         }
 #endif
 
@@ -235,7 +246,7 @@ namespace cgr
         m_month = time.tm_mon + 1;
         m_year = time.tm_year + 1900;
         if ((m_year < MIN_YEAR) || (m_year > MAX_YEAR)) {
-            throw DateError{ RANGE,
+            throw DateError{ OUT_OF_RANGE,
                 "resulting date obtained from time since epoch is out of range (min 1900, max 9999)" };
         }
     }
@@ -287,23 +298,25 @@ namespace cgr
 
     Date &Date::Day(int day) &
     {
-        using DateError::Reason::DAY;
+        using DateError::Reason::INVALID_DAY;
 
         if ((day < 1) || (day > 31)) {
-            throw Date::DateError{ DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
+            throw Date::DateError{ INVALID_DAY, std::format("invalid day: {} (the day must be between [1, 31])", day) };
         }
 
         if ((day == 31) &&
             (m_month == FEBRUARY || m_month == APRIL || m_month == JUNE || m_month == SEPTEMBER || m_month == NOVEMBER)) {
-            throw Date::DateError{ DAY, std::format("invalid day: {} cannot have 31 days", monthNames[m_month]) };
+            throw Date::DateError{
+                INVALID_DAY, std::format("invalid day: {} cannot have 31 days", monthNames[m_month])
+            };
         }
 
         if ((day == 30) && (m_month == FEBRUARY)) {
-            throw Date::DateError{ DAY, "invalid day: February cannot have 30 days" };
+            throw Date::DateError{ INVALID_DAY, "invalid day: February cannot have 30 days" };
         }
 
         if ((day == 29) && (m_month == FEBRUARY) && !Date::IsLeap(m_year)) {
-            throw Date::DateError{ DAY, "invalid day: February cannot have 29 days in a non-leap year" };
+            throw Date::DateError{ INVALID_DAY, "invalid day: February cannot have 29 days in a non-leap year" };
         }
 
         m_day = day;
@@ -313,24 +326,27 @@ namespace cgr
 
     Date &Date::Month(int month) &
     {
-        using DateError::Reason::MONTH;
+        using DateError::Reason::INVALID_MONTH;
 
         if ((month < JANUARY) || (month > DECEMBER)) {
-            throw Date::DateError{ MONTH,
-                std::format("invalid month: {} (the month must be between [1, 12])", month) };
+            throw Date::DateError{
+                INVALID_MONTH, std::format("invalid month: {} (the month must be between [1, 12])", month)
+            };
         }
 
         if ((m_day == 31) &&
             (month == FEBRUARY || month == APRIL || month == JUNE || month == SEPTEMBER || month == NOVEMBER)) {
-            throw Date::DateError{ MONTH, std::format("invalid month: {} cannot have 31 days", monthNames[month]) };
+            throw Date::DateError{
+                INVALID_MONTH, std::format("invalid month: {} cannot have 31 days", monthNames[month])
+            };
         }
 
         if ((m_day == 30) && (month == FEBRUARY)) {
-            throw Date::DateError{ MONTH, "invalid month: February cannot have 30 days" };
+            throw Date::DateError{ INVALID_MONTH, "invalid month: February cannot have 30 days" };
         }
 
         if ((m_day == 29) && (month == FEBRUARY) && !Date::IsLeap(m_year)) {
-            throw Date::DateError{ MONTH, "invalid month: February cannot have 29 days in a non-leap year" };
+            throw Date::DateError{ INVALID_MONTH, "invalid month: February cannot have 29 days in a non-leap year" };
         }
 
         m_month = month;
@@ -340,19 +356,25 @@ namespace cgr
 
     Date &Date::Year(int year) &
     {
-        using DateError::Reason::YEAR;
+        using DateError::Reason::INVALID_YEAR;
 
         if (year < Date::MIN_YEAR) {
-            throw Date::DateError{ YEAR, std::format("invalid year: {} is less than the min year (1900)", year) };
+            throw Date::DateError{
+                INVALID_YEAR, std::format("invalid year: {} is less than the min year (1900)", year)
+            };
         }
 
         if (year > Date::MAX_YEAR) {
-            throw Date::DateError{ YEAR, std::format("invalid year: {} is greater than the max year (9999)", year) };
+            throw Date::DateError{
+                INVALID_YEAR, std::format("invalid year: {} is greater than the max year (9999)", year)
+            };
         }
 
         if ((m_day == 29) && (m_month == FEBRUARY) && !Date::IsLeap(year)) {
-            throw Date::DateError{ YEAR,
-                std::format("invalid year: {} is not leap. February cannot have 29 days in a non-leap year", year) };
+            throw Date::DateError{
+                INVALID_YEAR,
+                std::format("invalid year: {} is not leap. February cannot have 29 days in a non-leap year", year)
+            };
         }
 
         m_year = year;
@@ -411,14 +433,14 @@ namespace cgr
 
     bool Date::IsLeap(int year)
     {
-        using DateError::Reason::ARGUMENT;
+        using DateError::Reason::INVALID_YEAR;
 
         if (year < MIN_YEAR) {
-            throw DateError{ ARGUMENT, std::format("invalid year: {} is less than the min year (1900)", year) };
+            throw DateError{ INVALID_YEAR, std::format("invalid year: {} is less than the min year (1900)", year) };
         }
 
         if (year > MAX_YEAR) {
-            throw DateError{ ARGUMENT, std::format("invalid year: {} is greater than the max year (9999)", year) };
+            throw DateError{ INVALID_YEAR, std::format("invalid year: {} is greater than the max year (9999)", year) };
         }
 
         return (year % 4 == 0) && (year % 100 != 0 || year % 400 == 0);
@@ -429,18 +451,22 @@ namespace cgr
         using enum Date::DateError::Reason;
 
         if (days < 0) {
-            throw Date::DateError{ ARGUMENT, std::format("invalid day: {}. a day cannot be negative", days) };
+            throw Date::DateError{ LOGIC_ERROR, std::format("days cannot be negative: {}", days) };
         }
 
         auto daysSinceMinYear{ DaysSinceMinYear(d) };
         if ((std::numeric_limits<int>::max() - days) < daysSinceMinYear) {
-            throw Date::DateError{ RANGE,
-                std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days) };
+            throw Date::DateError{
+                OUT_OF_RANGE,
+                std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days)
+            };
         }
 
         if (daysSinceMinYear + days > DaysSinceMinYear(Date{ 31, 12, Date::MAX_YEAR })) {
-            throw Date::DateError{ RANGE,
-                std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days) };
+            throw Date::DateError{
+                OUT_OF_RANGE,
+                std::format("invalid date: {} days after cannot be represented. max date (31/12/9999)", days)
+            };
         }
 
         return DateFromDaysSinceMinYear(daysSinceMinYear + days);
@@ -456,13 +482,15 @@ namespace cgr
         using enum Date::DateError::Reason;
 
         if (days < 0) {
-            throw Date::DateError{ ARGUMENT, std::format("invalid day: {}. a day cannot be negative", days) };
+            throw Date::DateError{ LOGIC_ERROR, std::format("days cannot be negative: {}", days) };
         }
 
         const auto daysSinceMinYear{ DaysSinceMinYear(d) };
         if (daysSinceMinYear <= days) {
-            throw Date::DateError{ RANGE,
-                std::format("invalid date: {} days before falls before the min date (01/01/1900)", days) };
+            throw Date::DateError{
+                OUT_OF_RANGE,
+                std::format("invalid date: {} days before falls before the min date (01/01/1900)", days)
+            };
         }
 
         return DateFromDaysSinceMinYear(daysSinceMinYear - days);

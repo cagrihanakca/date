@@ -12,24 +12,24 @@ using namespace cgr;
 
 TEST(DateErrorTest, Ctor)
 {
-    EXPECT_NO_THROW(Date::DateError(Date::DateError::Reason::DAY, "invalid day"));
+    EXPECT_NO_THROW(Date::DateError(Date::DateError::Reason::INVALID_DAY, "invalid day"));
 }
 
 TEST(DateErrorTest, GetReason)
 {
-    using Date::DateError::Reason::DAY;
+    using Date::DateError::Reason::INVALID_DAY;
 
-    ASSERT_NO_THROW(Date::DateError(DAY, "invalid day"));
-    Date::DateError ex{ DAY, "invalid day" };
-    EXPECT_EQ(ex.GetReason(), DAY);
+    ASSERT_NO_THROW(Date::DateError(INVALID_DAY, "invalid day"));
+    Date::DateError ex{ INVALID_DAY, "invalid day" };
+    EXPECT_EQ(ex.GetReason(), INVALID_DAY);
 }
 
 TEST(DateErrorTest, What)
 {
-    using Date::DateError::Reason::MONTH;
+    using Date::DateError::Reason::INVALID_MONTH;
 
-    ASSERT_NO_THROW(Date::DateError(MONTH, "invalid month"));
-    Date::DateError ex{ MONTH, "invalid month" };
+    ASSERT_NO_THROW(Date::DateError(INVALID_MONTH, "invalid month"));
+    Date::DateError ex{ INVALID_MONTH, "invalid month" };
     EXPECT_STREQ(ex.what(), "invalid month");
 }
 

@@ -107,17 +107,17 @@ Inheritance diagram for cgr::Date::DateError:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:abf509f0169dca6b9ce100a8342ee4ebc" id="r_abf509f0169dca6b9ce100a8342ee4ebc"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebc">Reason</a> { <br />
-&#160;&#160;<a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca5b1d59b5451c06afb65ab1bc2713cfb4">DAY</a>
-, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca383316922f2516abe5abe53370284a7f">MONTH</a>
-, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebcad18101729d290479023d5eceeb29c9cf">YEAR</a>
-, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca633a6c7a6b9958f8174250094daf1e6a">DATE</a>
+&#160;&#160;<a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca6a84d0c2e7cb4b082cbba4a6843a7509">INVALID_DAY</a>
+, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca329f81909e4957cfe577af30cc068ee4">INVALID_MONTH</a>
+, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca77d57d629a2e8c4516cb2caef5075a9c">INVALID_YEAR</a>
+, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca155ba02fb3632abb0acfa17a26d54e86">INVALID_DATE</a>
 , <br />
-&#160;&#160;<a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca01036ddcc971d02f6c32c3da31a119f2">RANGE</a>
-, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca47c8929b6152d540597c758853ff95a2">FORMAT</a>
-, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebcad2e848e6bec41e6811439f1513df148c">EPOCH</a>
-, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca8dda46c0fff4137b6f660f56255d967e">ARGUMENT</a>
+&#160;&#160;<a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca252d8e34178da47f2208605a66051241">INVALID_FORMAT</a>
+, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca6feaf66704b269610cff9431d5519cad">OUT_OF_RANGE</a>
+, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca5d76220294454e61819de6db0d8abacc">EPOCH_FAILURE</a>
+, <a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca86459f87d62d413a9a81209f82b7d11f">LOGIC_ERROR</a>
 , <br />
-&#160;&#160;<a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebcafa177138f94a7ea01f549b1aa7893d03">SYSTEM</a>
+&#160;&#160;<a class="el" href="#abf509f0169dca6b9ce100a8342ee4ebca656055d0e0b2a11ebcd38cd4882a9833">SYSTEM_FAILURE</a>
 <br />
  }</td></tr>
 <tr class="memdesc:abf509f0169dca6b9ce100a8342ee4ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates the reason for a <a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a> exception.  <a href="#abf509f0169dca6b9ce100a8342ee4ebc">More...</a><br /></td></tr>
@@ -156,23 +156,23 @@ Public Member Functions</h2></td></tr>
 
 <p>Indicates the reason for a <a class="el" href="classcgr_1_1_date_1_1_date_error.html" title="Exception thrown by the Date class.">DateError</a> exception. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca5b1d59b5451c06afb65ab1bc2713cfb4" name="abf509f0169dca6b9ce100a8342ee4ebca5b1d59b5451c06afb65ab1bc2713cfb4"></a>DAY&#160;</td><td class="fielddoc"><p>Day is out of valid range. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca6a84d0c2e7cb4b082cbba4a6843a7509" name="abf509f0169dca6b9ce100a8342ee4ebca6a84d0c2e7cb4b082cbba4a6843a7509"></a>INVALID_DAY&#160;</td><td class="fielddoc"><p>Day is out of valid range [1, 31]. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca383316922f2516abe5abe53370284a7f" name="abf509f0169dca6b9ce100a8342ee4ebca383316922f2516abe5abe53370284a7f"></a>MONTH&#160;</td><td class="fielddoc"><p>Month is out of valid range. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca329f81909e4957cfe577af30cc068ee4" name="abf509f0169dca6b9ce100a8342ee4ebca329f81909e4957cfe577af30cc068ee4"></a>INVALID_MONTH&#160;</td><td class="fielddoc"><p>Month is out of valid range [1, 12]. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebcad18101729d290479023d5eceeb29c9cf" name="abf509f0169dca6b9ce100a8342ee4ebcad18101729d290479023d5eceeb29c9cf"></a>YEAR&#160;</td><td class="fielddoc"><p>Year is out of valid range. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca77d57d629a2e8c4516cb2caef5075a9c" name="abf509f0169dca6b9ce100a8342ee4ebca77d57d629a2e8c4516cb2caef5075a9c"></a>INVALID_YEAR&#160;</td><td class="fielddoc"><p>Year is out of valid range [MIN_YEAR, MAX_YEAR]. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca633a6c7a6b9958f8174250094daf1e6a" name="abf509f0169dca6b9ce100a8342ee4ebca633a6c7a6b9958f8174250094daf1e6a"></a>DATE&#160;</td><td class="fielddoc"><p>Invalid day/month/year combination. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca155ba02fb3632abb0acfa17a26d54e86" name="abf509f0169dca6b9ce100a8342ee4ebca155ba02fb3632abb0acfa17a26d54e86"></a>INVALID_DATE&#160;</td><td class="fielddoc"><p>Invalid day/month/year combination. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca01036ddcc971d02f6c32c3da31a119f2" name="abf509f0169dca6b9ce100a8342ee4ebca01036ddcc971d02f6c32c3da31a119f2"></a>RANGE&#160;</td><td class="fielddoc"><p>Resulting date is out of [MIN_YEAR, MAX_YEAR]. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca252d8e34178da47f2208605a66051241" name="abf509f0169dca6b9ce100a8342ee4ebca252d8e34178da47f2208605a66051241"></a>INVALID_FORMAT&#160;</td><td class="fielddoc"><p>Invalid date string format. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca47c8929b6152d540597c758853ff95a2" name="abf509f0169dca6b9ce100a8342ee4ebca47c8929b6152d540597c758853ff95a2"></a>FORMAT&#160;</td><td class="fielddoc"><p>Invalid date string format. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca6feaf66704b269610cff9431d5519cad" name="abf509f0169dca6b9ce100a8342ee4ebca6feaf66704b269610cff9431d5519cad"></a>OUT_OF_RANGE&#160;</td><td class="fielddoc"><p>Resulting date is out of [01/01/MIN_YEAR, 31/12/MAX_YEAR]. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebcad2e848e6bec41e6811439f1513df148c" name="abf509f0169dca6b9ce100a8342ee4ebcad2e848e6bec41e6811439f1513df148c"></a>EPOCH&#160;</td><td class="fielddoc"><p>Failed time_t conversion. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca5d76220294454e61819de6db0d8abacc" name="abf509f0169dca6b9ce100a8342ee4ebca5d76220294454e61819de6db0d8abacc"></a>EPOCH_FAILURE&#160;</td><td class="fielddoc"><p>Failed time_t conversion. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca8dda46c0fff4137b6f660f56255d967e" name="abf509f0169dca6b9ce100a8342ee4ebca8dda46c0fff4137b6f660f56255d967e"></a>ARGUMENT&#160;</td><td class="fielddoc"><p>Invalid function argument. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca86459f87d62d413a9a81209f82b7d11f" name="abf509f0169dca6b9ce100a8342ee4ebca86459f87d62d413a9a81209f82b7d11f"></a>LOGIC_ERROR&#160;</td><td class="fielddoc"><p>Logically invalid argument. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebcafa177138f94a7ea01f549b1aa7893d03" name="abf509f0169dca6b9ce100a8342ee4ebcafa177138f94a7ea01f549b1aa7893d03"></a>SYSTEM&#160;</td><td class="fielddoc"><p>Failed system operation. </p>
+<tr><td class="fieldname"><a id="abf509f0169dca6b9ce100a8342ee4ebca656055d0e0b2a11ebcd38cd4882a9833" name="abf509f0169dca6b9ce100a8342ee4ebca656055d0e0b2a11ebcd38cd4882a9833"></a>SYSTEM_FAILURE&#160;</td><td class="fielddoc"><p>Failed system operation. </p>
 </td></tr>
 </table>
 

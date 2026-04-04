@@ -169,8 +169,8 @@ Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">DateError</td><td>If days is negative (Reason::ARGUMENT). </td></tr>
-    <tr><td class="paramname">DateError</td><td>If the resulting date exceeds MAX_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname">DateError</td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname">DateError</td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -214,8 +214,8 @@ Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">DateError</td><td>If days is negative (Reason::ARGUMENT). </td></tr>
-    <tr><td class="paramname">DateError</td><td>If the resulting date exceeds MAX_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname">DateError</td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname">DateError</td><td>If the resulting date exceeds 31/12/MAX_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>
@@ -259,8 +259,8 @@ Functions</h2></td></tr>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">DateError</td><td>If days is negative (Reason::ARGUMENT). </td></tr>
-    <tr><td class="paramname">DateError</td><td>If the resulting date falls below MIN_YEAR (Reason::RANGE). </td></tr>
+    <tr><td class="paramname">DateError</td><td>If days is negative (Reason::LOGIC_ERROR). </td></tr>
+    <tr><td class="paramname">DateError</td><td>If the resulting date falls below 01/01/MIN_YEAR (Reason::OUT_OF_RANGE). </td></tr>
   </table>
   </dd>
 </dl>

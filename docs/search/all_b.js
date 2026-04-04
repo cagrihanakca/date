@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['week_0',['week',['../structcgr_1_1_date_1_1_i_s_o_week.html#a3af98f639ae74b376a3a76713631b3ab',1,'cgr::Date::ISOWeek']]],
-  ['weekday_1',['Weekday',['../classcgr_1_1_date.html#ae2801a881d51bfac743b6b3890a75fba',1,'cgr::Date']]],
-  ['weekofyear_2',['WeekOfYear',['../classcgr_1_1_date.html#a5fea5d4f5c0464272f1ad60af4ddf7fb',1,'cgr::Date']]],
-  ['what_3',['what',['../classcgr_1_1_date_1_1_date_error.html#aedeb9630cb22171bc687dfd09517bdda',1,'cgr::Date::DateError']]]
+  ['year_0',['Year',['../classcgr_1_1_date.html#a3ced16916d641b54d1150319c3d8302f',1,'cgr::Date::Year() const noexcept'],['../classcgr_1_1_date.html#a8516c9d4fd4bc3b1e50a363efaad1b2f',1,'cgr::Date::Year(int year) &amp;']]],
+  ['year_1',['year',['../structcgr_1_1_date_1_1_i_s_o_week.html#a1cbdbc0f3f3a23e16e33200a941847bd',1,'cgr::Date::ISOWeek']]]
 ];
