@@ -1,11 +1,13 @@
 include(FetchContent)
 FetchContent_Declare(
     googletest
-    URL https://github.com/google/googletest/archive/54915d462bb64e9b2bd1a3f0e70c00e6f5d817fb.zip
+    URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
     DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+
 FetchContent_MakeAvailable(googletest)
 
 add_executable(date_test date_test.cpp)

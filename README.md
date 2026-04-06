@@ -36,7 +36,7 @@ cd date
 **Configure**
 
 ```
-cmake -B build
+cmake -B build -DCMAKE_INSTALL_PREFIX=/my/install/prefix
 ```
 
 **Build**
@@ -45,13 +45,28 @@ cmake -B build
 cmake --build build
 ```
 
-**Run tests**
+**Installation**
 
 ```
-ctest --test-dir build
+cmake --install build
 ```
 
 ## Usage
+
+`CMakeLists.txt`
+
+```cmake
+cmake_minimum_required(VERSION 3.14)
+
+project(example LANGUAGES CXX)
+
+find_package(cgr-date REQUIRED)
+
+add_executable(main main.cpp)
+target_link_libraries(main cgr::date)
+```
+
+`main.cpp`
 
 ```cpp
 #include <iostream>
